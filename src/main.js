@@ -14,7 +14,8 @@ import {
     viewportSharedTexture,
     mx_worley_noise_float,
     positionWorld,
-    time
+    time,
+    mix, mul, oneMinus, positionLocal, smoothstep, rotateUV, Fn, uv, vec3, vec4
 } from 'three/tsl';
 import {
     gaussianBlur
@@ -40,6 +41,62 @@ let model, params;
 let postProcessing;
 let controls;
 let stats;
+
+const textureLoader = new THREE.TextureLoader();
+
+class CustomSinCurve extends THREE.Curve {
+    constructor(scale) {
+        super();
+    }
+
+    getPoint(t, optionalTarget = new THREE.Vector3()) {
+        const tx = 0;
+        const ty = 1 - Math.pow(1-t, 2)//Math.sin(2 * Math.PI * t);
+        const tz = 2*t;
+
+        return optionalTarget.set(tx, ty, tz);
+    }
+}
+
+class OutputFlow extends THREE.Mesh {
+    constructor() {
+        const path = new CustomSinCurve();
+        const geometry = new THREE.TubeGeometry(path, 20, 0.15, 20, false);
+
+        const noiseTexture = textureLoader.load('resources/perlin_noise_128x128.png');
+        noiseTexture.wrapS = THREE.RepeatWrapping;
+        noiseTexture.wrapT = THREE.RepeatWrapping;
+
+        const flowMaterial = new THREE.MeshBasicNodeMaterial({
+            transparent: true,
+            side: THREE.DoubleSide,
+            depthWrite: true
+        });
+
+        flowMaterial.colorNode = Fn(() => {
+            // alpha
+            const alphaNoiseUv = uv().mul(vec2(0.5, 0.3)).add(vec2(time.mul(0.5), 0));
+            const alpha = mul(
+
+                // pattern
+                texture(noiseTexture, alphaNoiseUv).r.smoothstep(0.1, 1),
+
+                // edges fade
+                smoothstep(0, 0.1, uv().x),
+                smoothstep(0, 0.1, oneMinus(uv().x)),
+                //smoothstep(0, 0.1, uv().y),
+                //smoothstep(0, 0.1, oneMinus(uv().y))
+
+            );
+
+            // color
+            const finalColor = mix(vec3(0.3, 0.15, 0.1), vec3(1, 1, 1), alpha.pow(3));
+
+            return vec4(finalColor, alpha);
+        })();
+        super(geometry, flowMaterial);
+    }
+}
 
 init();
 
@@ -91,15 +148,33 @@ function init() {
     loader.load('resources/cargoship.glb', function(gltf) {
 
         model = gltf.scene;
-        model.children[0].children[0].castShadow = true;
+        model.traverse(child => {
+            if(child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
 
         model.scale.multiplyScalar(0.5);
 
         scene.add(model);
-        //gui.add(model.position, 'z', -10, 10, .001).name('Position');
+
+        var bbox = new THREE.Box3().setFromObject(model);
+
+        // Output flows
+
+        const nFlows = 10
+        const step = (Math.abs(bbox.max.z - bbox.min.z) / nFlows);
+        for (let i=0; i<nFlows; i++) {
+            const e = new OutputFlow();
+            e.position.x = 4 + bbox.min.x; //Math.cos(2*Math.PI*i/nFlows) * 8;
+            e.position.z = step/2 + bbox.min.z + i * step; // Math.sin(2*Math.PI*i/nFlows) * 3;
+            //bbox.clampPoint(e.position, e.position);
+            e.lookAt(new THREE.Vector3(-1, 0, 0).add(e.position));
+            scene.add(e);
+        }
     });
 
-    const textureLoader = new THREE.TextureLoader();
     const iceDiffuse = textureLoader.load('resources/water.jpg');
     iceDiffuse.wrapS = THREE.RepeatWrapping;
     iceDiffuse.wrapT = THREE.RepeatWrapping;
@@ -157,6 +232,67 @@ function init() {
 
     const colorNode = transition.mix(material.colorNode, material.colorNode.add(waterLayer0));
 
+    // Smoke
+
+    const smokeGeometry = new THREE.PlaneGeometry(1, 1, 16, 64);
+    smokeGeometry.translate(0, 0.5, 0);
+    smokeGeometry.scale(1.5, 6, 1.5);
+
+    const noiseTexture = textureLoader.load('resources/perlin_noise_128x128.png');
+    noiseTexture.wrapS = THREE.RepeatWrapping;
+    noiseTexture.wrapT = THREE.RepeatWrapping;
+
+    const smokeMaterial = new THREE.MeshBasicNodeMaterial({
+        transparent: true,
+        side: THREE.DoubleSide,
+        depthWrite: false
+    });
+
+    smokeMaterial.positionNode = Fn(() => {
+        // twist
+        const twistNoiseUv = vec2(0.5, uv().y.mul(0.2).sub(time.mul(0.005)).mod(1));
+        const twist = texture(noiseTexture, twistNoiseUv).r.mul(10);
+        positionLocal.xz.assign(rotateUV(positionLocal.xz, twist, vec2(0)));
+
+        // wind
+        const windOffset = vec2(
+            texture(noiseTexture, vec2(0.25, time.mul(0.01)).mod(1)).r,//.sub(0.5),
+            texture(noiseTexture, vec2(0.75, time.mul(0.01)).mod(1)).r//.sub(0.5),
+        ).mul(uv().y.pow(2).mul(10));
+        positionLocal.addAssign(windOffset);
+
+        return positionLocal;
+
+    })();
+
+    smokeMaterial.colorNode = Fn(() => {
+        // alpha
+        const alphaNoiseUv = uv().mul(vec2(0.5, 0.3)).add(vec2(0, time.mul(0.1).negate()));
+        const alpha = mul(
+
+            // pattern
+            texture(noiseTexture, alphaNoiseUv).r.smoothstep(0.4, 1),
+
+            // edges fade
+            smoothstep(0, 0.1, uv().x),
+            smoothstep(0, 0.1, oneMinus(uv().x)),
+            smoothstep(0, 0.1, uv().y),
+            smoothstep(0, 0.1, oneMinus(uv().y))
+
+        );
+
+        // color
+        const finalColor = mix(vec3(0.1, 0.1, 0.1), vec3(1, 1, 1), alpha.pow(3));
+
+        return vec4(finalColor, alpha);
+    })();
+
+    const smoke = new THREE.Mesh(smokeGeometry, smokeMaterial);
+    smoke.position.y = 1.83;
+    smoke.position.z = 1;
+    scene.add(smoke);
+
+
     // renderer
 
     renderer = new THREE.WebGPURenderer();
@@ -170,7 +306,7 @@ function init() {
 
     controls = new OrbitControls(camera, renderer.domElement);
     controls.minDistance = 1;
-    controls.maxDistance = 10;
+    controls.maxDistance = 20;
     controls.maxPolarAngle = Math.PI * 0.9;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 1;
