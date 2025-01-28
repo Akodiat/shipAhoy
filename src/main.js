@@ -6,13 +6,14 @@ import {gaussianBlur} from 'three/addons/tsl/display/GaussianBlurNode.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import Stats from 'three/addons/libs/stats.module.js';
+import {CSS2DRenderer, CSS2DObject} from 'three/addons/renderers/CSS2DRenderer.js';
 import {OutputFlow} from './outputFlow.js';
 import {WaterMesh} from './water.js';
 
 import {Resizable} from '../lib/resizable.js';
 import {SmokeMesh} from './smoke.js';
 
-let camera, scene, renderer;
+let camera, scene, renderer, labelRenderer;
 let clock;
 let model;
 let postProcessing;
@@ -89,15 +90,25 @@ function init() {
 
         // Output flows
 
-        const nFlows = 10
-        const step = (Math.abs(bbox.max.z - bbox.min.z) / nFlows);
-        for (let i=0; i<nFlows; i++) {
+        const flows = ["Ballast water", "Sewage", "Grey water", "Tank cleaning", "Cooling water", "Scrubber water", "Bilge water"]
+        const step = (Math.abs(bbox.max.z - bbox.min.z) / flows.length);
+        for (let i=0; i<flows.length; i++) {
             const e = new OutputFlow();
             e.position.x = 4 + bbox.min.x;
             e.position.z = step/2 + bbox.min.z + i * step;
             e.lookAt(new THREE.Vector3(-1, 0, 0).add(e.position));
             scene.add(e);
+
+            const flowDiv = document.createElement("div");
+            flowDiv.className = "label";
+            flowDiv.textContent = flows[i];
+            flowDiv.style.backgroundColor = "transparent";
+            flowDiv.style.textAlign = "center";
+
+            const flowLabel = new CSS2DObject(flowDiv);
+            e.add(flowLabel);
         }
+
     });
 
     // water
@@ -127,10 +138,16 @@ function init() {
     const threeContainer = document.getElementById("threeContainer");
     threeContainer.appendChild(renderer.domElement);
 
+    labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    labelRenderer.domElement.style.position = 'absolute';
+    labelRenderer.domElement.style.top = '0px';
+    document.body.appendChild(labelRenderer.domElement);
+
     stats = new Stats();
     document.body.appendChild(stats.dom);
 
-    controls = new OrbitControls(camera, renderer.domElement);
+    controls = new OrbitControls(camera, labelRenderer.domElement);
     controls.minDistance = 1;
     controls.maxDistance = 20;
     controls.maxPolarAngle = Math.PI * 0.9;
@@ -170,6 +187,7 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(e.offsetWidth, e.offsetHeight);
+    labelRenderer.setSize(e.offsetWidth, e.offsetHeight);
 }
 
 Resizable.resizingEnded = function() {
@@ -177,6 +195,7 @@ Resizable.resizingEnded = function() {
     camera.aspect = e.offsetWidth / e.offsetHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(e.offsetWidth, e.offsetHeight);
+    labelRenderer.setSize(e.offsetWidth, e.offsetHeight);
 }
 
 function animate() {
@@ -193,4 +212,5 @@ function animate() {
         model.quaternion.setFromEuler(e);
     }
     postProcessing.render();
+    labelRenderer.render(scene, camera);
 }
