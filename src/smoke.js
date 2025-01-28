@@ -1,8 +1,8 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import {
     vec2, vec3, vec4, time, texture, mix, mul, oneMinus, positionLocal,
     smoothstep, rotateUV, Fn, uv
-} from 'three/tsl';
+} from "three/tsl";
 
 const textureLoader = new THREE.TextureLoader();
 
@@ -12,7 +12,7 @@ class SmokeMesh extends THREE.Mesh {
         smokeGeometry.translate(0, 0.5, 0);
         smokeGeometry.scale(1.5, 6, 1.5);
 
-        const noiseTexture = textureLoader.load('resources/perlin_noise_128x128.png');
+        const noiseTexture = textureLoader.load("resources/perlin_noise_128x128.png");
         noiseTexture.wrapS = THREE.RepeatWrapping;
         noiseTexture.wrapT = THREE.RepeatWrapping;
 
@@ -64,4 +64,4 @@ class SmokeMesh extends THREE.Mesh {
     }
 }
 
-export {SmokeMesh}
+export {SmokeMesh};

@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import {
     color,
     vec2,
@@ -10,7 +10,7 @@ import {
     mx_worley_noise_float,
     positionWorld,
     time
-} from 'three/tsl';
+} from "three/tsl";
 
 class WaterMesh extends THREE.Mesh {
 
@@ -51,4 +51,4 @@ class WaterMesh extends THREE.Mesh {
 
 }
 
-export {WaterMesh}
+export {WaterMesh};

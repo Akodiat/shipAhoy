@@ -1,17 +1,17 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import {
-    color, pass, normalWorld, objectPosition, screenUV, positionWorld
-} from 'three/tsl';
-import {gaussianBlur} from 'three/addons/tsl/display/GaussianBlurNode.js';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import Stats from 'three/addons/libs/stats.module.js';
-import {CSS2DRenderer, CSS2DObject} from 'three/addons/renderers/CSS2DRenderer.js';
-import {OutputFlow} from './outputFlow.js';
-import {WaterMesh} from './water.js';
+    color, pass, normalWorld, objectPosition, screenUV
+} from "three/tsl";
+import {gaussianBlur} from "three/addons/tsl/display/GaussianBlurNode.js";
+import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+import Stats from "three/addons/libs/stats.module.js";
+import {CSS2DRenderer, CSS2DObject} from "three/addons/renderers/CSS2DRenderer.js";
+import {OutputFlow} from "./outputFlow.js";
+import {WaterMesh} from "./water.js";
 
-import {Resizable} from '../lib/resizable.js';
-import {SmokeMesh} from './smoke.js';
+import {Resizable} from "../lib/resizable.js";
+import {SmokeMesh} from "./smoke.js";
 
 import * as L from "leaflet";
 
@@ -32,13 +32,14 @@ init();
 
 function init() {
 
-    var map = L.map('map').setView([57.5, 11.16], 10);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Use https://github.com/uber/h3-js to make grid and heatmap?
+    var map = L.map("map").setView([57.5, 11.16], 10);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>"
     }).addTo(map);
-    L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-        attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
+    L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
+        attribution: "Map data: &copy; <a href=\"http://www.openseamap.org\">OpenSeaMap</a> contributors"
     }).addTo(map);
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 30);
@@ -74,7 +75,7 @@ function init() {
     // model
 
     const loader = new GLTFLoader();
-    loader.load('resources/cargoship.glb', function(gltf) {
+    loader.load("resources/cargoship.glb", function(gltf) {
 
         model = gltf.scene;
         model.traverse(child => {
@@ -92,7 +93,7 @@ function init() {
 
         // Output flows
 
-        const flows = ["Ballast water", "Sewage", "Grey water", "Tank cleaning", "Cooling water", "Scrubber water", "Bilge water"]
+        const flows = ["Ballast water", "Sewage", "Grey water", "Tank cleaning", "Cooling water", "Scrubber water", "Bilge water"];
         const step = (Math.abs(bbox.max.z - bbox.min.z) / flows.length);
         for (let i=0; i<flows.length; i++) {
             const e = new OutputFlow();
@@ -118,17 +119,11 @@ function init() {
     water.position.set(0, 0, 0);
     scene.add(water);
 
-    // caustics
-    const waterPosY = positionWorld.y.sub(water.position.y);
-    let transition = waterPosY.add(.1).saturate().oneMinus();
-    transition = waterPosY.lessThan(0).select(transition, normalWorld.y.mix(transition, 0)).toVar();
-
     // smoke
     const smoke = new SmokeMesh();
     smoke.position.y = 1.83;
     smoke.position.z = 1;
     scene.add(smoke);
-
 
     // renderer
 
@@ -142,8 +137,8 @@ function init() {
 
     labelRenderer = new CSS2DRenderer();
     labelRenderer.setSize(window.innerWidth, window.innerHeight);
-    labelRenderer.domElement.style.position = 'absolute';
-    labelRenderer.domElement.style.top = '0px';
+    labelRenderer.domElement.style.position = "absolute";
+    labelRenderer.domElement.style.top = "0px";
     document.body.appendChild(labelRenderer.domElement);
 
     stats = new Stats();
@@ -176,7 +171,7 @@ function init() {
 
     //
 
-    window.addEventListener('resize', onWindowResize);
+    window.addEventListener("resize", onWindowResize);
 }
 
 function onWindowResize() {
@@ -198,7 +193,7 @@ Resizable.resizingEnded = function() {
     camera.updateProjectionMatrix();
     renderer.setSize(e.offsetWidth, e.offsetHeight);
     labelRenderer.setSize(e.offsetWidth, e.offsetHeight);
-}
+};
 
 function animate() {
     stats.update();
