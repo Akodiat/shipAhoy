@@ -12,8 +12,7 @@ import {WaterMesh} from "./water.js";
 
 import {Resizable} from "../lib/resizable.js";
 import {SmokeMesh} from "./smoke.js";
-
-import * as L from "leaflet";
+import {MapView} from "./map.js";
 
 let camera, scene, renderer, labelRenderer;
 let clock;
@@ -34,15 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function init() {
 
-    // Use https://github.com/uber/h3-js to make grid and heatmap?
-    var map = L.map("map").setView([57.5, 11.16], 10);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>"
-    }).addTo(map);
-    L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
-        attribution: "Map data: &copy; <a href=\"http://www.openseamap.org\">OpenSeaMap</a> contributors"
-    }).addTo(map);
+    // Setup map
+    new MapView("map");
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 30);
     camera.position.set(3, 2, 4);
