@@ -17,23 +17,13 @@ import {
     time,
     mix, mul, oneMinus, positionLocal, smoothstep, rotateUV, Fn, uv, vec3, vec4
 } from 'three/tsl';
-import {
-    gaussianBlur
-} from 'three/addons/tsl/display/GaussianBlurNode.js';
-
-import {
-    GLTFLoader
-} from 'three/addons/loaders/GLTFLoader.js';
-
-import {
-    OrbitControls
-} from 'three/addons/controls/OrbitControls.js';
-
-import {
-    GUI
-} from 'three/addons/libs/lil-gui.module.min.js';
-
+import {gaussianBlur} from 'three/addons/tsl/display/GaussianBlurNode.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GUI} from 'three/addons/libs/lil-gui.module.min.js';
 import Stats from 'three/addons/libs/stats.module.js';
+
+//import {Resizable} from '../lib/resizable.js';
 
 let camera, scene, renderer;
 let mixer, clock;
@@ -43,6 +33,15 @@ let controls;
 let stats;
 
 const textureLoader = new THREE.TextureLoader();
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("main").style.width = window.innerWidth + "px";
+    document.getElementById("main").style.height = window.innerHeight + "px";
+
+    Resizable.initialise("main", {"threeContainer": 0.75});
+
+});
 
 class CustomSinCurve extends THREE.Curve {
     constructor(scale) {
@@ -101,6 +100,15 @@ class OutputFlow extends THREE.Mesh {
 init();
 
 function init() {
+
+    var map = L.map('map').setView([57.5, 11.16], 10);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+        attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
+    }).addTo(map);
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 30);
     camera.position.set(3, 2, 4);
@@ -299,7 +307,10 @@ function init() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setAnimationLoop(animate);
-    document.body.appendChild(renderer.domElement);
+
+
+    const threeContainer = document.getElementById("threeContainer");
+    threeContainer.appendChild(renderer.domElement);
 
     stats = new Stats();
     document.body.appendChild(stats.dom);
@@ -336,12 +347,22 @@ function init() {
 }
 
 function onWindowResize() {
+    Resizable.activeContentWindows[0].changeSize(window.innerWidth, window.innerHeight);
+    Resizable.activeContentWindows[0].childrenResize();
 
-    camera.aspect = window.innerWidth / window.innerHeight;
+    const e = document.getElementById("threeContainer");
+
+    camera.aspect = e.offsetWidth / e.offsetHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(e.offsetWidth, e.offsetHeight);
+}
 
+Resizable.resizingEnded = function() {
+    const e = document.getElementById("threeContainer");
+    camera.aspect = e.offsetWidth / e.offsetHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(e.offsetWidth, e.offsetHeight);
 }
 
 function animate() {
