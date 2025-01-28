@@ -22,13 +22,15 @@ let postProcessing;
 let controls;
 let stats;
 
+const threeContainer = document.getElementById("threeContainer");
+
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("main").style.width = window.innerWidth + "px";
     document.getElementById("main").style.height = window.innerHeight + "px";
     Resizable.initialise("main", {"threeContainer": 0.75});
+    init();
 });
 
-init();
 
 function init() {
 
@@ -129,14 +131,19 @@ function init() {
 
     renderer = new THREE.WebGPURenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(
+        threeContainer.offsetWidth,
+        threeContainer.offsetHeight
+    );
     renderer.setAnimationLoop(animate);
 
-    const threeContainer = document.getElementById("threeContainer");
     threeContainer.appendChild(renderer.domElement);
 
     labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    labelRenderer.setSize(
+        threeContainer.offsetWidth,
+        threeContainer.offsetHeight
+    );
     labelRenderer.domElement.style.position = "absolute";
     labelRenderer.domElement.style.top = "0px";
     document.body.appendChild(labelRenderer.domElement);
@@ -175,24 +182,30 @@ function init() {
 }
 
 function onWindowResize() {
-    Resizable.activeContentWindows[0].changeSize(window.innerWidth, window.innerHeight);
+    Resizable.activeContentWindows[0].changeSize(
+        window.innerWidth,
+        window.innerHeight
+    );
     Resizable.activeContentWindows[0].childrenResize();
 
-    const e = document.getElementById("threeContainer");
-
-    camera.aspect = e.offsetWidth / e.offsetHeight;
+    camera.aspect = threeContainer.offsetWidth / threeContainer.offsetHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize(e.offsetWidth, e.offsetHeight);
-    labelRenderer.setSize(e.offsetWidth, e.offsetHeight);
+    renderer.setSize(threeContainer.offsetWidth, threeContainer.offsetHeight);
+    labelRenderer.setSize(threeContainer.offsetWidth, threeContainer.offsetHeight);
 }
 
 Resizable.resizingEnded = function() {
-    const e = document.getElementById("threeContainer");
-    camera.aspect = e.offsetWidth / e.offsetHeight;
+    camera.aspect = threeContainer.offsetWidth / threeContainer.offsetHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(e.offsetWidth, e.offsetHeight);
-    labelRenderer.setSize(e.offsetWidth, e.offsetHeight);
+    renderer.setSize(
+        threeContainer.offsetWidth,
+        threeContainer.offsetHeight
+    );
+    labelRenderer.setSize(
+        threeContainer.offsetWidth,
+        threeContainer.offsetHeight
+    );
 };
 
 function animate() {
