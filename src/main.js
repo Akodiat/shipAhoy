@@ -13,6 +13,8 @@ import {WaterMesh} from './water.js';
 import {Resizable} from '../lib/resizable.js';
 import {SmokeMesh} from './smoke.js';
 
+import * as L from "leaflet";
+
 let camera, scene, renderer, labelRenderer;
 let clock;
 let model;
