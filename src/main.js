@@ -188,16 +188,8 @@ function onWindowResize() {
 }
 
 Resizable.resizingEnded = function() {
-    camera.aspect = threeContainer.offsetWidth / threeContainer.offsetHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(
-        threeContainer.offsetWidth,
-        threeContainer.offsetHeight
-    );
-    labelRenderer.setSize(
-        threeContainer.offsetWidth,
-        threeContainer.offsetHeight
-    );
+    // Just sending a resize event works makes sure things work for Leaflet as well.
+    window.dispatchEvent(new Event("resize"));
 };
 
 function animate() {
