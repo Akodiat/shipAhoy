@@ -15,7 +15,6 @@ import {SmokeMesh} from "./smoke.js";
 import {MapView} from "./map.js";
 
 let camera, scene, renderer, labelRenderer;
-let clock;
 let model;
 let postProcessing;
 let controls;
@@ -63,8 +62,6 @@ function init() {
     scene.add(sunLight);
     scene.add(skyAmbientLight);
     scene.add(waterAmbientLight);
-
-    clock = new THREE.Clock();
 
     // model
 
@@ -147,8 +144,8 @@ function init() {
     controls.minDistance = 1;
     controls.maxDistance = 20;
     controls.maxPolarAngle = Math.PI * 0.9;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 1;
+    //controls.autoRotate = true;
+    //controls.autoRotateSpeed = 1;
     controls.target.set(0, .2, 0);
     controls.update();
 
@@ -197,11 +194,12 @@ function animate() {
     controls.update();
 
     if (model) {
-        model.position.y = Math.sin(clock.elapsedTime) * .1;
+        const t = performance.now() / 1000;
+        model.position.y = Math.sin(t) * 0.05;
         const e = new THREE.Euler(
-            Math.sin(clock.elapsedTime)* .015,
+            Math.sin(t)* .015,
             0,
-            Math.cos(clock.elapsedTime)* .01
+            Math.cos(t)* .01
         );
         model.quaternion.setFromEuler(e);
     }
