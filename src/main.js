@@ -35,6 +35,8 @@ function init() {
     // Setup map
     new MapView("map");
 
+
+    // Setup scene
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 30);
     camera.position.set(3, 2, 4);
 
@@ -47,14 +49,19 @@ function init() {
     sunLight.castShadow = true;
     sunLight.shadow.camera.near = .1;
     sunLight.shadow.camera.far = 5;
-    sunLight.shadow.camera.right = 2;
-    sunLight.shadow.camera.left = -2;
-    sunLight.shadow.camera.top = 1;
-    sunLight.shadow.camera.bottom = -2;
+    sunLight.shadow.camera.right = 4;
+    sunLight.shadow.camera.left = -4;
+    sunLight.shadow.camera.top = 4;
+    sunLight.shadow.camera.bottom = -4;
     sunLight.shadow.mapSize.width = 2048;
     sunLight.shadow.mapSize.height = 2048;
     sunLight.shadow.bias = -0.001;
+    sunLight.shadow.radius = 4;
     sunLight.position.set(.5, 3, .5);
+
+    // Uncomment to debug shadows
+    //const cameraHelper = new THREE.CameraHelper(sunLight.shadow.camera);
+    //scene.add(cameraHelper);
 
     const waterAmbientLight = new THREE.HemisphereLight(0x515172, 0x8BB9CE, 5);
     const skyAmbientLight = new THREE.HemisphereLight(0x94C7DF, 0, 1);
@@ -93,12 +100,12 @@ function init() {
             e.lookAt(new THREE.Vector3(-1, 0, 0).add(e.position));
             scene.add(e);
 
+            // Add labels
             const flowDiv = document.createElement("div");
             flowDiv.className = "label";
             flowDiv.textContent = flows[i];
             flowDiv.style.backgroundColor = "transparent";
             flowDiv.style.textAlign = "center";
-
             const flowLabel = new CSS2DObject(flowDiv);
             e.add(flowLabel);
         }
@@ -119,15 +126,16 @@ function init() {
     // renderer
 
     renderer = new THREE.WebGPURenderer();
+    renderer.shadowMap.enabled = true;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(
         threeContainer.offsetWidth,
         threeContainer.offsetHeight
     );
     renderer.setAnimationLoop(animate);
-
     threeContainer.appendChild(renderer.domElement);
 
+    // 2D renderer (used for labels)
     labelRenderer = new CSS2DRenderer();
     labelRenderer.setSize(
         threeContainer.offsetWidth,
@@ -137,19 +145,20 @@ function init() {
     labelRenderer.domElement.style.top = "0px";
     document.body.appendChild(labelRenderer.domElement);
 
+    // FPS stats shown in upper-left corner
+    // Only relevant for debugging, can remove later
     stats = new Stats();
     document.body.appendChild(stats.dom);
 
+    // Camera controls
     controls = new OrbitControls(camera, labelRenderer.domElement);
     controls.minDistance = 1;
     controls.maxDistance = 20;
     controls.maxPolarAngle = Math.PI * 0.9;
-    //controls.autoRotate = true;
-    //controls.autoRotateSpeed = 1;
     controls.target.set(0, .2, 0);
     controls.update();
 
-    // post processing
+    // Post processing (underwater effect)
 
     const scenePass = pass(scene, camera);
     const scenePassColor = scenePass.getTextureNode();
@@ -165,7 +174,7 @@ function init() {
     postProcessing = new THREE.PostProcessing(renderer);
     postProcessing.outputNode = waterMask.select(scenePassColorBlurred, scenePassColorBlurred.mul(color(0x8FB3C4)).mul(vignette));
 
-    //
+    // Handle resizing
 
     window.addEventListener("resize", onWindowResize);
 }
