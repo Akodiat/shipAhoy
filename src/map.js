@@ -76,6 +76,8 @@ class MapView {
                         }
                     }
                 }
+                // Show first property by default (remove to select nothing)
+                this.layerGroups[this.propertyNames[0]].addTo(this.map);
             });
         });
     }
