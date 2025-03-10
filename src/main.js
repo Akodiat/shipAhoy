@@ -11,7 +11,7 @@ import {OutputFlow} from "./outputFlow.js";
 import {WaterMesh} from "./water.js";
 
 import {Resizable} from "../lib/resizable.js";
-import {SmokeMesh} from "./smoke.js";
+//import {SmokeMesh} from "./smoke.js";
 import {MapView} from "./map.js";
 
 let camera, scene, renderer, labelRenderer;
@@ -76,14 +76,15 @@ function init() {
     loader.load("resources/cargoship.glb", function(gltf) {
 
         model = gltf.scene;
+        /*
         model.traverse(child => {
             if(child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
             }
         });
-
-        model.scale.multiplyScalar(0.5);
+        */
+        model.scale.multiplyScalar(4);
 
         scene.add(model);
 
@@ -118,10 +119,10 @@ function init() {
     scene.add(water);
 
     // smoke
-    const smoke = new SmokeMesh();
-    smoke.position.y = 1.83;
-    smoke.position.z = 1;
-    scene.add(smoke);
+    //const smoke = new SmokeMesh();
+    //smoke.position.y = 1.83;
+    //smoke.position.z = 1;
+    //scene.add(smoke);
 
     // renderer
 
@@ -204,7 +205,7 @@ function animate() {
 
     if (model) {
         const t = performance.now() / 1000;
-        model.position.y = Math.sin(t) * 0.05;
+        model.position.y = - 0.3 + Math.sin(t) * 0.05;
         const e = new THREE.Euler(
             Math.sin(t)* .015,
             0,

@@ -21,7 +21,7 @@ class CustomCurve extends THREE.Curve {
 
 // Declare here and reuse
 const path = new CustomCurve();
-const geometry = new THREE.TubeGeometry(path, 20, 0.15, 20, false);
+const geometry = new THREE.TubeGeometry(path, 20, 0.15, 2, false);
 
 class OutputFlow extends THREE.Mesh {
     constructor() {
@@ -31,7 +31,7 @@ class OutputFlow extends THREE.Mesh {
 
         const flowMaterial = new THREE.MeshBasicNodeMaterial({
             transparent: true,
-            side: THREE.DoubleSide,
+            //side: THREE.DoubleSide,
             depthWrite: true
         });
 
@@ -50,7 +50,7 @@ class OutputFlow extends THREE.Mesh {
             );
 
             // color
-            const finalColor = mix(vec3(0.3, 0.15, 0.1), vec3(1, 1, 1), alpha.pow(3));
+            const finalColor = mix(vec3(0.1, 0.1, 0.1), vec3(1, 1, 1), alpha.pow(3));
 
             return vec4(finalColor, alpha);
         })();
