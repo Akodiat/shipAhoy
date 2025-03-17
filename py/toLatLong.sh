@@ -1,0 +1,1 @@
+python toLatLong.py ../resources/HELCOM_marine_area.shp ../resources/HELCOM_marine_area.latlng.shp

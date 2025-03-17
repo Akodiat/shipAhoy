@@ -1,4 +1,5 @@
 import * as leaflet from "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet-src.esm.js";
+import shp from "https://unpkg.com/shpjs@6.1.0/dist/shp.esm.js";
 import avsc from "https://cdn.jsdelivr.net/npm/avsc@5.7.7/+esm";
 
 class MapView {
@@ -27,6 +28,13 @@ class MapView {
             {"OpenStreetMap": baseMap},
             {"Sea map": seaMap}
         ).addTo(this.map);
+
+        // From https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033
+        // then converted with py/toLatLong.py and zipped
+        shp("./resources/HELCOM_marine_area.latlng.zip").then(geojson => {
+            const helcomLayer = leaflet.geoJSON(geojson).addTo(this.map);
+            this.layerControl.addOverlay(helcomLayer, "HELCOM marine areas");
+        });
 
         window.fetch(new Request("./resources/data.avro")).then(response => {
             return response.blob();
