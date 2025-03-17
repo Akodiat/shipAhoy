@@ -6,15 +6,16 @@ import {gaussianBlur} from "three/addons/tsl/display/GaussianBlurNode.js";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 import Stats from "three/addons/libs/stats.module.js";
-import {CSS2DRenderer, CSS2DObject} from "three/addons/renderers/CSS2DRenderer.js";
-import {OutputFlow} from "./outputFlow.js";
+//import {OutputFlow} from "./outputFlow.js";
 import {WaterMesh} from "./water.js";
 
 import {Resizable} from "../lib/resizable.js";
 //import {SmokeMesh} from "./smoke.js";
 import {MapView} from "./map.js";
 
-let camera, scene, renderer, labelRenderer;
+import {annotations} from "./annotation.js";
+
+let camera, scene, renderer;
 let model;
 let postProcessing;
 let controls;
@@ -81,42 +82,25 @@ function init() {
             if(child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-            }
-        });
+                }
+                });
         */
         model.scale.multiplyScalar(4);
 
         scene.add(model);
-
-        var bbox = new THREE.Box3().setFromObject(model);
-
-        // Output flows
-
-        const flows = ["Ballast water", "Sewage", "Grey water", "Tank cleaning", "Cooling water", "Scrubber water", "Bilge water"];
-        const step = (Math.abs(bbox.max.z - bbox.min.z) / flows.length);
-        for (let i=0; i<flows.length; i++) {
-            const e = new OutputFlow();
-            e.position.x = 4 + bbox.min.x;
-            e.position.z = step/2 + bbox.min.z + i * step;
-            e.lookAt(new THREE.Vector3(-1, 0, 0).add(e.position));
-            scene.add(e);
-
-            // Add labels
-            const flowDiv = document.createElement("div");
-            flowDiv.className = "label";
-            flowDiv.textContent = flows[i];
-            flowDiv.style.backgroundColor = "transparent";
-            flowDiv.style.textAlign = "center";
-            const flowLabel = new CSS2DObject(flowDiv);
-            e.add(flowLabel);
-        }
-
     });
+
+    for (const annotation of annotations) {
+        annotation.DOM.addEventListener("click", () => {
+            annotation.flyTo(camera, controls);
+        });
+    }
 
     // water
     const water = new WaterMesh(new THREE.BoxGeometry(50, .001, 50));
     water.position.set(0, 0, 0);
     scene.add(water);
+
 
     // smoke
     //const smoke = new SmokeMesh();
@@ -136,23 +120,13 @@ function init() {
     renderer.setAnimationLoop(animate);
     threeContainer.appendChild(renderer.domElement);
 
-    // 2D renderer (used for labels)
-    labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(
-        threeContainer.offsetWidth,
-        threeContainer.offsetHeight
-    );
-    labelRenderer.domElement.style.position = "absolute";
-    labelRenderer.domElement.style.top = "0px";
-    document.body.appendChild(labelRenderer.domElement);
-
     // FPS stats shown in upper-left corner
     // Only relevant for debugging, can remove later
     stats = new Stats();
     document.body.appendChild(stats.dom);
 
     // Camera controls
-    controls = new OrbitControls(camera, labelRenderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
     controls.minDistance = 1;
     controls.maxDistance = 20;
     controls.maxPolarAngle = Math.PI * 0.9;
@@ -191,7 +165,6 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize(threeContainer.offsetWidth, threeContainer.offsetHeight);
-    labelRenderer.setSize(threeContainer.offsetWidth, threeContainer.offsetHeight);
 }
 
 Resizable.resizingEnded = function() {
@@ -206,13 +179,19 @@ function animate() {
     if (model) {
         const t = performance.now() / 1000;
         model.position.y = - 0.3 + Math.sin(t) * 0.05;
+        //console.log(model.position.y);
         const e = new THREE.Euler(
             Math.sin(t)* .015,
             0,
             Math.cos(t)* .01
         );
         model.quaternion.setFromEuler(e);
+
+        for (const annotation of annotations) {
+            annotation.update(renderer.domElement, camera, model);
+        }
+
+        postProcessing.render();
     }
-    postProcessing.render();
-    labelRenderer.render(scene, camera);
+
 }
