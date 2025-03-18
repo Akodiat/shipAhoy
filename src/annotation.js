@@ -7,16 +7,20 @@ class Annotation {
      * @param {number | string} id
      * @param {string} heading
      * @param {string} content
+     * @param {string} dataKey
      */
-    constructor(labelPosition, cameraPosition, id, heading, content) {
+    constructor(labelPosition, cameraPosition, id, heading, content, dataKey) {
         this.labelPosition = labelPosition;
         this.cameraPosition = cameraPosition;
+        this.dataKey = dataKey;
         this.DOM = document.createElement("div");
         this.DOM.classList.add("annotation");
         this.DOM.innerHTML = `<p><strong>${heading}</strong></p><p>${content}</p></div>`;
         document.getElementById("main").appendChild(this.DOM);
 
         this.DOM.style.setProperty("--content", `"${id}"`);
+
+        this.onSelect = ()=>{};
     }
     update(canvas, camera, shipModel) {
         const p = this.labelPosition.clone().project(camera);
@@ -73,14 +77,24 @@ const annotations = [
         new Vector3(1, -0.5, -6),
         1,
         "Stern tube oil",
-        "The propeller shaft connects the main engine and the propeller through the stern tube which goes through the ship hull. The stern tube contains bearings, sealing and a lubrication system. Although there are water-lubricated propeller shafts on the market, the most commonly used (∼ 90 % of the market, Sengottuvel et al., 2017) lubrication is still oil-based and usually contains a large number of additives (Habereder et al., 2009) and seal-improving agents like teflon and bentonite."
+        "The propeller shaft connects the main engine and the propeller through the stern tube which goes through the ship hull. The stern tube contains bearings, sealing and a lubrication system. Although there are water-lubricated propeller shafts on the market, the most commonly used (∼ 90 % of the market, Sengottuvel et al., 2017) lubrication is still oil-based and usually contains a large number of additives (Habereder et al., 2009) and seal-improving agents like teflon and bentonite.",
+        "STERN_TUBE"
     ),
     new Annotation(
         new Vector3(0.6, 3, -3.5),
         new Vector3(4, 3, -3.5),
         2,
         "Exhausts",
-        "Lorem ipsum"
+        "Lorem ipsum",
+        undefined
+    ),
+    new Annotation(
+        new Vector3(0.6, 0.1, 3),
+        new Vector3(4, 1, 3),
+        2,
+        "Antifouling paint",
+        "Submerged structures offer substrate for various organisms that attach and grow on the surfaces, thereby increasing the roughness of the hull surface. Such increased roughness in turn increases drag and significantly affects the fuel consumption and may also affect the manoeuvring capability of a ship. To reduce this fuel penalty, secure manoeuvring capability and prevent spreading of NISs, the hull is coated with antifouling coatings that contain and release toxic compounds (biocides)",
+        "AFP_CuO"
     )
 ];
 

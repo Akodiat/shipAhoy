@@ -120,11 +120,12 @@ function init() {
 
     for (const annotation of annotations) {
         annotation.DOM.addEventListener("click", () => {
-            //annotation.flyTo(camera, controls);
             controls.setLookAt(
                 ...annotation.cameraPosition.toArray(),
                 ...annotation.labelPosition.toArray(),
-                true);
+                true
+            );
+            annotation.onSelect();
         });
     }
 

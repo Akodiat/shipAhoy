@@ -2,6 +2,8 @@ import * as leaflet from "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leafle
 import shp from "https://unpkg.com/shpjs@6.1.0/dist/shp.esm.js";
 import avsc from "https://cdn.jsdelivr.net/npm/avsc@5.7.7/+esm";
 
+import {annotations} from "./annotation.js";
+
 class MapView {
     constructor(element) {
         // Use https://github.com/uber/h3-js to make grid and heatmap?
@@ -9,7 +11,7 @@ class MapView {
             renderer: leaflet.canvas(),
             minZoom: 5
         });
-        this.map.setView([57.5, 11.16], 10);
+        this.map.setView([59.0, 17.0], 5);
 
         const baseMap = leaflet.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
             maxZoom: 19,
@@ -85,10 +87,20 @@ class MapView {
                         }
                     }
                 }
-                // Show first property by default (remove to select nothing)
-                this.layerGroups[this.propertyNames[0]].addTo(this.map);
             });
         });
+
+        for (const annotation of annotations) {
+            annotation.onSelect = () => {
+                for (const key of this.propertyNames) {
+                    if (annotation.dataKey === key) {
+                        this.layerGroups[key].addTo(this.map);
+                    } else {
+                        this.layerGroups[key].removeFrom(this.map);
+                    }
+                }
+            };
+        }
     }
 }
 
