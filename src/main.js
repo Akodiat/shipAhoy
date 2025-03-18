@@ -4,16 +4,12 @@ import {
 } from "three/tsl";
 import {gaussianBlur} from "three/addons/tsl/display/GaussianBlurNode.js";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
-import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 import Stats from "three/addons/libs/stats.module.js";
-//import {OutputFlow} from "./outputFlow.js";
 import {WaterMesh} from "./water.js";
-
-import {Resizable} from "../lib/resizable.js";
-//import {SmokeMesh} from "./smoke.js";
 import {MapView} from "./map.js";
-
 import {annotations} from "./annotation.js";
+import CameraControls from "../lib/camera-controls.module.min.js";
+CameraControls.install({THREE: THREE});
 
 let camera, scene, renderer;
 let model;
@@ -23,13 +19,9 @@ let stats;
 
 const threeContainer = document.getElementById("threeContainer");
 
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("main").style.width = window.innerWidth + "px";
-    document.getElementById("main").style.height = window.innerHeight + "px";
-    Resizable.initialise("main", {"threeContainer": 0.75});
-    init();
-});
+const clock = new THREE.Clock();
 
+init();
 
 function init() {
 
@@ -90,11 +82,6 @@ function init() {
         scene.add(model);
     });
 
-    for (const annotation of annotations) {
-        annotation.DOM.addEventListener("click", () => {
-            annotation.flyTo(camera, controls);
-        });
-    }
 
     // water
     const water = new WaterMesh(new THREE.BoxGeometry(50, .001, 50));
@@ -126,12 +113,20 @@ function init() {
     document.body.appendChild(stats.dom);
 
     // Camera controls
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.minDistance = 1;
-    controls.maxDistance = 20;
-    controls.maxPolarAngle = Math.PI * 0.9;
-    controls.target.set(0, .2, 0);
-    controls.update();
+    controls = new CameraControls(camera, renderer.domElement);
+
+    // Set initial camera view
+    controls.setLookAt(-5,3.5,-10, 1, 0, -3);
+
+    for (const annotation of annotations) {
+        annotation.DOM.addEventListener("click", () => {
+            //annotation.flyTo(camera, controls);
+            controls.setLookAt(
+                ...annotation.cameraPosition.toArray(),
+                ...annotation.labelPosition.toArray(),
+                true);
+        });
+    }
 
     // Post processing (underwater effect)
 
@@ -155,31 +150,29 @@ function init() {
 }
 
 function onWindowResize() {
-    Resizable.activeContentWindows[0].changeSize(
-        window.innerWidth,
-        window.innerHeight
-    );
-    Resizable.activeContentWindows[0].childrenResize();
-
     camera.aspect = threeContainer.offsetWidth / threeContainer.offsetHeight;
     camera.updateProjectionMatrix();
 
     renderer.setSize(threeContainer.offsetWidth, threeContainer.offsetHeight);
 }
 
-Resizable.resizingEnded = function() {
-    // Just sending a resize event works makes sure things work for Leaflet as well.
-    window.dispatchEvent(new Event("resize"));
-};
-
 function animate() {
     stats.update();
-    controls.update();
+
+    const delta = clock.getDelta();
+    const controlsUpdated = controls.update(delta);
+
+    if (controlsUpdated) {
+        // Keep camera pivot slightly to the left
+        // of the screen center.
+        controls.setFocalOffset(
+            0.25 * controls.distance, 0, 0
+        );
+    }
 
     if (model) {
-        const t = performance.now() / 1000;
+        const t = clock.getElapsedTime();
         model.position.y = - 0.3 + Math.sin(t) * 0.05;
-        //console.log(model.position.y);
         const e = new THREE.Euler(
             Math.sin(t)* .015,
             0,
