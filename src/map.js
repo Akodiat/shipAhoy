@@ -6,7 +6,8 @@ class MapView {
     constructor(element) {
         // Use https://github.com/uber/h3-js to make grid and heatmap?
         this.map = leaflet.map(element, {
-            renderer: leaflet.canvas()
+            renderer: leaflet.canvas(),
+            minZoom: 5
         });
         this.map.setView([57.5, 11.16], 10);
 
@@ -77,7 +78,7 @@ class MapView {
                             const circle = leaflet.circle([val.latitude, val.longitude], {
                                 color: "red",
                                 stroke: false,
-                                fillOpacity: Math.sqrt(val[prop]/max),
+                                fillOpacity: Math.min(1, Math.sqrt(val[prop] / max) * 5),
                                 radius: 1100
                             });
                             this.layerGroups[prop].addLayer(circle);
