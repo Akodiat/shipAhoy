@@ -3,6 +3,7 @@ import shp from "https://unpkg.com/shpjs@6.1.0/dist/shp.esm.js";
 import avsc from "https://cdn.jsdelivr.net/npm/avsc@5.7.7/+esm";
 
 import {annotations} from "./annotation.js";
+import {Lut} from "../lib/Lut.js";
 
 class MapView {
     constructor(element) {
@@ -23,9 +24,10 @@ class MapView {
         }).addTo(this.map);
 
         this.data = [];
+        this.min = {};
         this.max = {};
-        this.layerGroups = {};
-        this.propertyNames = [];
+        this.heatmaps = {};
+        this.propertyNames = new Set();
 
         this.layerControl = leaflet.control.layers(
             {"OpenStreetMap": baseMap},
@@ -35,7 +37,9 @@ class MapView {
         // From https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033
         // then converted with py/toLatLong.py and zipped
         shp("./resources/HELCOM_marine_area.latlng.zip").then(geojson => {
-            const helcomLayer = leaflet.geoJSON(geojson).addTo(this.map);
+            const helcomLayer = leaflet.geoJSON(geojson, {
+                attribution: "&copy; <a href=\"https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033\">EEA</a>"
+            });
             this.layerControl.addOverlay(helcomLayer, "HELCOM marine areas");
         });
 
@@ -59,33 +63,83 @@ class MapView {
                     if (val[prop] !== undefined) {
                         this.max[prop] = Math.max(val[prop], this.max[prop] || 0);
                     }
-                    // Initialise layers (since we avoid a hard-coded list of property names)
-                    if (this.layerGroups[prop] === undefined) {
-                        this.layerGroups[prop] = leaflet.layerGroup([], {
-                            attribution: "Data: &copy; Jalkanen, J.-P. (2020) ”Modeling of discharges from Baltic Sea shipping”, Ocean Science, 27, s. 699–728. doi: <a href=\"https://zenodo.org/records/4063643\">10.5281/zenodo.4063643</a>."
-                        });
-                        this.layerControl.addOverlay(this.layerGroups[prop], prop);
-                        this.propertyNames.push(prop);
-                    }
+
+                    // Avoid a hard-coded list of property names)
+                    this.propertyNames.add(prop);
                 }
             }).on("end", ()=>{
                 console.log("Finished loading");
 
+                const luts = new Map();
+                for(const prop of this.propertyNames.values()) {
+                    const lut = new Lut("OrRd", 32);
+                    lut.minV = 0;
+                    lut.maxV = Math.log(this.max[prop]);
+                    luts.set(prop, lut);
+                }
+
+                const latSet = new Set();
+                const lngSet = new Set();
+
                 // Draw circles for each value
                 for (const val of this.data) {
-                    for (const prop of this.propertyNames) {
-                        if (val[prop] !== undefined) {
-                            const max = this.max[prop];
-                            // Use https://stackoverflow.com/questions/79241104/gradient-overlay-based-on-interpolated-values-from-nearest-points-heatmap instead?
-                            const circle = leaflet.circle([val.latitude, val.longitude], {
-                                color: "red",
-                                stroke: false,
-                                fillOpacity: Math.min(1, Math.sqrt(val[prop] / max) * 5),
-                                radius: 1100
-                            });
-                            this.layerGroups[prop].addLayer(circle);
+                    latSet.add(val.latitude);
+                    lngSet.add(val.longitude);
+                }
+
+                // Sorted list of all lats and longs (to find neigbours)
+                const latitudes = [...latSet.values()].sort();
+                const longitudes = [...lngSet.values()].sort();
+
+                const scaleFactor = 4; // Number of pixels per grid cell
+                for (const prop of this.propertyNames.values()) {
+                    // Create and paint a canvas with a heatmap
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    const size = this.map.getSize();
+                    canvas.width = size.x * scaleFactor;
+                    canvas.height = size.y * scaleFactor;
+                    for (const val of this.data) {
+                        if (val[prop] !== null) {
+                            // Get colour from lookuptable
+                            const color = luts.get(prop).getColor(Math.log(val[prop]));
+                            ctx.fillStyle = `rgba(${color.r*255}, ${color.g*255}, ${color.b*255}, 0.8)`;
+
+                            // Convert latlng to pixel coordinates
+                            let localXY = this.map.latLngToLayerPoint([val.latitude, val.longitude]);
+                            localXY = this.map.layerPointToContainerPoint(localXY);
+
+                            // Calculate the size of the rectangle (always setting it to 1) creates
+                            // odd artifacts of overlapping rectangles, so we check how far it is
+                            // to the next rectangle.
+                            const nextLat = latitudes[latitudes.findIndex(v=>v==val.latitude) + 1];
+                            const nextLng = longitudes[longitudes.findIndex(v=>v==val.longitude) + 1];
+                            let distXY = {x: 1, y: 1};
+                            if (nextLat !== undefined && nextLng !== undefined) {
+                                let localXY2 = this.map.latLngToLayerPoint([nextLat, nextLng]);
+                                localXY2 = this.map.layerPointToContainerPoint(localXY2);
+                                distXY = {
+                                    x: Math.min(10, Math.abs(localXY2.x - localXY.x)),
+                                    y: Math.min(10, Math.abs(localXY2.y - localXY.y))
+                                };
+                            }
+                            // Draw rectangle on canvas
+                            ctx.fillRect(
+                                localXY.x * scaleFactor,
+                                localXY.y * scaleFactor,
+                                distXY.x * scaleFactor,
+                                distXY.y * scaleFactor
+                            );
                         }
                     }
+                    const heatmap = leaflet.imageOverlay(
+                        canvas.toDataURL(),
+                        this.map.getBounds(), {
+                            attribution: "&copy; Jalkanen et al <a href=\"https://zenodo.org/records/4063643\">10.5281/zenodo.4063643</a>."
+                        }
+                    );
+                    this.heatmaps[prop] = heatmap;
+                    this.layerControl.addOverlay(heatmap, prop);
                 }
             });
         });
@@ -94,9 +148,9 @@ class MapView {
             annotation.onSelect = () => {
                 for (const key of this.propertyNames) {
                     if (annotation.dataKey === key) {
-                        this.layerGroups[key].addTo(this.map);
+                        this.heatmaps[key].addTo(this.map);
                     } else {
-                        this.layerGroups[key].removeFrom(this.map);
+                        this.heatmaps[key].removeFrom(this.map);
                     }
                 }
             };
