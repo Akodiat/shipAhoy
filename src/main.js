@@ -116,8 +116,15 @@ function init() {
     controls = new CameraControls(camera, renderer.domElement);
 
     // Set initial camera view
-    controls.setLookAt(-5,3.5,-10, 1, 0, -3);
+    controls.setLookAt(-5,3.5,-10, 0, 0, -1);
 
+    // Setup overview button
+    document.getElementById("overviewReturnButton").addEventListener("click", ()=>{
+        controls.setLookAt(-5,3.5,-10, 0, 0, -1, true);
+        document.getElementById("infobox").style.visibility = "hidden";
+    });
+
+    // Setup annotations
     for (const annotation of annotations) {
         annotation.DOM.addEventListener("click", () => {
             controls.setLookAt(
@@ -125,6 +132,8 @@ function init() {
                 ...annotation.labelPosition.toArray(),
                 true
             );
+            document.getElementById("textbox").innerHTML = `<h2>${annotation.heading}</h2>` + annotation.content;
+            document.getElementById("infobox").style.visibility = "visible";
             annotation.onSelect();
         });
     }
@@ -164,11 +173,17 @@ function animate() {
     const controlsUpdated = controls.update(delta);
 
     if (controlsUpdated) {
-        // Keep camera pivot slightly to the left
-        // of the screen center.
-        controls.setFocalOffset(
-            0.25 * controls.distance, 0, 0
-        );
+        if (document.getElementById("infobox").style.visibility === "visible") {
+            // Keep camera pivot slightly to the left
+            // of the screen center.
+            controls.setFocalOffset(
+                0.25 * controls.distance, 0, 0
+            );
+        } else {
+            controls.setFocalOffset(
+                0, 0, 0
+            );
+        }
     }
 
     if (model) {
