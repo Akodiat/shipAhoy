@@ -27,6 +27,10 @@ body {
     visibility: hidden;
 }
 
+#textbox {
+    font-size: initial;
+}
+
 .annotation {
     position: absolute;
     top: 0;
