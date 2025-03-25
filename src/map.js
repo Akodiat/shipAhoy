@@ -5,6 +5,8 @@ import {annotations} from "./annotation.js";
 
 class MapView {
     constructor(element) {
+        this.fullyLoaded = false;
+
         // Use https://github.com/uber/h3-js to make grid and heatmap?
         this.map = leaflet.map(element, {
             renderer: leaflet.canvas(),
@@ -21,30 +23,54 @@ class MapView {
             attribution: "&copy; <a href=\"http://www.openseamap.org\">OpenSeaMap</a> contributors"
         }).addTo(this.map);
 
-        this.data = [];
-        this.min = {};
-        this.max = {};
-        this.heatmaps = {};
-        this.propertyNames = new Set();
-
         this.layerControl = leaflet.control.layers(
             {"OpenStreetMap": baseMap},
             {"Sea map": seaMap}
         ).addTo(this.map);
 
+        this.loadMarineAreas("./resources/HELCOM_marine_area.latlng.zip");
+
+        this.loadHeatmaps("../resources/data.avro");
+
+        // Setup annotations to toggle corresponding heatmaps
+        for (const annotation of annotations) {
+            annotation.onSelect = () => {
+                for (const key of this.propertyNames) {
+                    if (annotation.dataKey === key) {
+                        this.heatmaps[key].addTo(this.map);
+                    } else {
+                        this.heatmaps[key].removeFrom(this.map);
+                    }
+                }
+            };
+        }
+    }
+
+    /**
+     * Load marine area geojson to map
+     * @param {string} path Path to a geoJSON zip file
+     */
+    loadMarineAreas(path) {
         // From https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033
         // then converted with py/toLatLong.py and zipped
-        shp("./resources/HELCOM_marine_area.latlng.zip").then(geojson => {
+        shp(path).then(geojson => {
             const helcomLayer = leaflet.geoJSON(geojson, {
                 attribution: "&copy; <a href=\"https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033\">EEA</a>"
             });
             this.layerControl.addOverlay(helcomLayer, "HELCOM marine areas");
         });
+    }
 
-        // Load data and create heatmaps. This is done through workers to not
-        // keep the main thread waiting.
-        const scaleFactor = 4; // Number of pixels per grid cell
-        const heatmapDataPath = "../resources/data.avro";
+    /**
+     * Load data and create heatmaps. This is done through workers to not
+     * keep the main thread waiting.
+     * @param {string} heatmapDataPath path to AVRO file with heatmap data
+     * @param {number} scaleFactor // Number of pixels per grid cell
+     */
+    loadHeatmaps(heatmapDataPath, scaleFactor = 4) {
+
+        this.heatmaps = {};
+
         const avscWorkerPath = "src/avscWorker.js";
         const heatmapWorkerPath = "src/heatmapWorker.js";
         const avscWorker = new Worker(avscWorkerPath, {type: "module"});
@@ -100,21 +126,10 @@ class MapView {
                     this.heatmaps[prop] = heatmap;
                     this.layerControl.addOverlay(heatmap, prop);
                 }
+                this.fullyLoaded = true;
             });
         });
         avscWorker.postMessage(heatmapDataPath);
-
-        for (const annotation of annotations) {
-            annotation.onSelect = () => {
-                for (const key of this.propertyNames) {
-                    if (annotation.dataKey === key) {
-                        this.heatmaps[key].addTo(this.map);
-                    } else {
-                        this.heatmaps[key].removeFrom(this.map);
-                    }
-                }
-            };
-        }
     }
 }
 

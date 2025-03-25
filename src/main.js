@@ -13,6 +13,7 @@ let model;
 let controls;
 let stats;
 let water, sun;
+let mapView;
 
 const threeContainer = document.getElementById("threeContainer");
 
@@ -23,7 +24,7 @@ init();
 function init() {
 
     // Setup map
-    new MapView("map");
+    mapView = new MapView("map");
 
     // renderer
 
@@ -146,6 +147,10 @@ function init() {
     // Setup annotations
     for (const annotation of annotations) {
         annotation.DOM.addEventListener("click", () => {
+            if (!mapView.fullyLoaded) {
+                // Don't do anyting until map data is loaded
+                return;
+            }
             controls.setLookAt(
                 ...annotation.cameraPosition.toArray(),
                 ...annotation.labelPosition.toArray(),
