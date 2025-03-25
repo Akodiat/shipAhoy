@@ -114,14 +114,14 @@ function init() {
     gltfLoader.load("resources/cargoship.glb", function(gltf) {
 
         model = gltf.scene;
-        /*
+
         model.traverse(child => {
             if(child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-                }
-                });
-        */
+            }
+        });
+
         model.scale.multiplyScalar(4);
 
         scene.add(model);

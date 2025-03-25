@@ -44,6 +44,8 @@ body {
     font-size: 15px;
     line-height: 1.2;
     transition: opacity .5s;
+    transition: top 0.1s ease 0s;
+    transition: left 0.1s ease 0s;
     cursor: pointer;
 }
 
