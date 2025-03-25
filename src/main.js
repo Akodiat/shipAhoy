@@ -1,11 +1,9 @@
 import * as THREE from "three";
-import {
-    color, pass, normalWorld, objectPosition, screenUV
-} from "three/tsl";
-import {gaussianBlur} from "three/addons/tsl/display/GaussianBlurNode.js";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
+import {WaterMesh} from "three/addons/objects/WaterMesh.js";
+import {SkyMesh} from "three/addons/objects/SkyMesh.js";
 import Stats from "three/addons/libs/stats.module.js";
-import {WaterMesh} from "./water.js";
+import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import {MapView} from "./map.js";
 import {annotations} from "./annotation.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
@@ -13,9 +11,9 @@ CameraControls.install({THREE: THREE});
 
 let camera, scene, renderer;
 let model;
-let postProcessing;
 let controls;
 let stats;
+let water, sun;
 
 const threeContainer = document.getElementById("threeContainer");
 
@@ -28,45 +26,92 @@ function init() {
     // Setup map
     new MapView("map");
 
+    // renderer
+
+    renderer = new THREE.WebGPURenderer();
+    renderer.shadowMap.enabled = true;
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(
+        threeContainer.offsetWidth,
+        threeContainer.offsetHeight
+    );
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1;
+    renderer.setAnimationLoop(animate);
+    threeContainer.appendChild(renderer.domElement);
 
     // Setup scene
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 30);
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 300);
     camera.position.set(3, 2, 4);
 
     scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x88A7BD, 7, 25);
-    scene.backgroundNode = normalWorld.y.mix(color(0x83ACC9), color(0xD4DFEE));
     camera.lookAt(0, 1, 0);
 
-    const sunLight = new THREE.DirectionalLight(0xFFE499, 5);
-    sunLight.castShadow = true;
-    sunLight.shadow.camera.near = .1;
-    sunLight.shadow.camera.far = 5;
-    sunLight.shadow.camera.right = 4;
-    sunLight.shadow.camera.left = -4;
-    sunLight.shadow.camera.top = 4;
-    sunLight.shadow.camera.bottom = -4;
-    sunLight.shadow.mapSize.width = 2048;
-    sunLight.shadow.mapSize.height = 2048;
-    sunLight.shadow.bias = -0.001;
-    sunLight.shadow.radius = 4;
-    sunLight.position.set(.5, 3, .5);
+    sun = new THREE.Vector3();
 
-    // Uncomment to debug shadows
-    //const cameraHelper = new THREE.CameraHelper(sunLight.shadow.camera);
-    //scene.add(cameraHelper);
+    const waterGeometry = new THREE.PlaneGeometry(1000, 1000);
+    const textureLoader = new THREE.TextureLoader();
+    const waterNormals = textureLoader.load("resources/waternormals.jpg");
+    waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 
-    const waterAmbientLight = new THREE.HemisphereLight(0x515172, 0x8BB9CE, 5);
-    const skyAmbientLight = new THREE.HemisphereLight(0x94C7DF, 0, 1);
+    water = new WaterMesh(
+        waterGeometry,
+        {
+            waterNormals: waterNormals,
+            sunDirection: new THREE.Vector3(),
+            sunColor: 0xffffff,
+            waterColor: 0x001e0f,
+            distortionScale: 3,
+            size: 5
+        }
+    );
+    water.rotation.x = - Math.PI / 2;
+    water.rotation.z = - Math.PI;
+    scene.add(water);
 
-    scene.add(sunLight);
-    scene.add(skyAmbientLight);
-    scene.add(waterAmbientLight);
+    const sky = new SkyMesh();
+    sky.scale.setScalar(10000);
+    scene.add(sky);
+
+    sky.turbidity.value = 10;
+    sky.rayleigh.value = 2;
+    sky.mieCoefficient.value = 0.005;
+    sky.mieDirectionalG.value = 0.8;
+
+    const parameters = {
+        elevation: 2,
+        azimuth: 180
+    };
+
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    const sceneEnv = new THREE.Scene();
+
+    let renderTarget;
+
+    function updateSun() {
+        const phi = THREE.MathUtils.degToRad(90 - parameters.elevation);
+        const theta = THREE.MathUtils.degToRad(parameters.azimuth);
+
+        sun.setFromSphericalCoords(1, phi, theta);
+
+        sky.sunPosition.value.copy(sun);
+        water.sunDirection.value.copy(sun).normalize();
+
+        if (renderTarget !== undefined) renderTarget.dispose();
+
+        sceneEnv.add(sky);
+        renderTarget = pmremGenerator.fromScene(sceneEnv);
+        scene.add(sky);
+
+        scene.environment = renderTarget.texture;
+    }
+    renderer.init().then(updateSun);
+
 
     // model
 
-    const loader = new GLTFLoader();
-    loader.load("resources/cargoship.glb", function(gltf) {
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load("resources/cargoship.glb", function(gltf) {
 
         model = gltf.scene;
         /*
@@ -81,31 +126,6 @@ function init() {
 
         scene.add(model);
     });
-
-
-    // water
-    const water = new WaterMesh(new THREE.BoxGeometry(50, .001, 50));
-    water.position.set(0, 0, 0);
-    scene.add(water);
-
-
-    // smoke
-    //const smoke = new SmokeMesh();
-    //smoke.position.y = 1.83;
-    //smoke.position.z = 1;
-    //scene.add(smoke);
-
-    // renderer
-
-    renderer = new THREE.WebGPURenderer();
-    renderer.shadowMap.enabled = true;
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(
-        threeContainer.offsetWidth,
-        threeContainer.offsetHeight
-    );
-    renderer.setAnimationLoop(animate);
-    threeContainer.appendChild(renderer.domElement);
 
     // FPS stats shown in upper-left corner
     // Only relevant for debugging, can remove later
@@ -138,21 +158,6 @@ function init() {
         });
     }
 
-    // Post processing (underwater effect)
-
-    const scenePass = pass(scene, camera);
-    const scenePassColor = scenePass.getTextureNode();
-    const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(.3, .5);
-
-    const waterMask = objectPosition(camera).y.greaterThan(screenUV.y.sub(.5).mul(camera.near));
-
-    const scenePassColorBlurred = gaussianBlur(scenePassColor);
-    scenePassColorBlurred.directionNode = waterMask.select(scenePassDepth, scenePass.getLinearDepthNode().mul(5));
-
-    const vignette = screenUV.distance(.5).mul(1.35).clamp().oneMinus();
-
-    postProcessing = new THREE.PostProcessing(renderer);
-    postProcessing.outputNode = waterMask.select(scenePassColorBlurred, scenePassColorBlurred.mul(color(0x8FB3C4)).mul(vignette));
 
     // Handle resizing
 
@@ -188,7 +193,7 @@ function animate() {
 
     if (model) {
         const t = clock.getElapsedTime();
-        model.position.y = - 0.3 + Math.sin(t) * 0.05;
+        model.position.y = - 0.4 + Math.sin(t) * 0.05;
         const e = new THREE.Euler(
             Math.sin(t)* .015,
             0,
@@ -200,7 +205,7 @@ function animate() {
             annotation.update(renderer.domElement, camera, model);
         }
 
-        postProcessing.render();
+        renderer.render(scene, camera);
     }
 
 }
