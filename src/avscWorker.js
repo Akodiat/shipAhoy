@@ -9,13 +9,9 @@ addEventListener("message", e => {
 
     // Load and return data
     fetch(new Request(path)).then(response => {
-        console.log("1");
         return response.blob();
     }).then(response => {
-        console.log("2");
-        avsc.createBlobDecoder(response).on("metadata", type => {
-            console.log(type);
-        }).on("data", val => {
+        avsc.createBlobDecoder(response).on("data", val => {
             data.push(val);
 
             // Loop through data properties
