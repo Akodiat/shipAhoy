@@ -1,9 +1,7 @@
 import * as leaflet from "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet-src.esm.js";
 import shp from "https://unpkg.com/shpjs@6.1.0/dist/shp.esm.js";
-import avsc from "https://cdn.jsdelivr.net/npm/avsc@5.7.7/+esm";
 
 import {annotations} from "./annotation.js";
-import {Lut} from "../lib/Lut.js";
 
 class MapView {
     constructor(element) {
@@ -43,97 +41,58 @@ class MapView {
             this.layerControl.addOverlay(helcomLayer, "HELCOM marine areas");
         });
 
-        window.fetch(new Request("./resources/data.avro")).then(response => {
-            return response.blob();
-        }).then(response => {
-            avsc.createBlobDecoder(response).on("metadata", type => {
-                /* `type` is the writer's type. */
-                console.log(type);
-            }).on("data", val => {
-                this.data.push(val);
+        // Load data and create heatmaps. This is done through workers to not
+        // keep the main thread waiting.
+        const scaleFactor = 4; // Number of pixels per grid cell
+        const heatmapDataPath = "../resources/data.avro";
+        const avscWorkerPath = "src/avscWorker.js";
+        const heatmapWorkerPath = "src/heatmapWorker.js";
+        const avscWorker = new Worker(avscWorkerPath, {type: "module"});
+        avscWorker.addEventListener("message", e => {
+            avscWorker.terminate();
 
-                // Loop through data properties
-                for (var prop in val) {
-                    // Ignore irrellevant properties
-                    if (!Object.prototype.hasOwnProperty.call(val, prop) ||
-                        ["longitude", "latitude"].includes(prop)) {
-                        continue;
-                    }
-                    // Calculate max values
-                    if (val[prop] !== undefined) {
-                        this.max[prop] = Math.max(val[prop], this.max[prop] || 0);
-                    }
+            this.propertyNames = e.data.propertyNames;
 
-                    // Avoid a hard-coded list of property names)
-                    this.propertyNames.add(prop);
+            // Convert latlngs to pixel coordinates (needed in heatmapWorker)
+            for (const val of e.data.data) {
+                let localXY = this.map.latLngToLayerPoint([val.latitude, val.longitude]);
+                localXY = this.map.layerPointToContainerPoint(localXY);
+                val.localXY = localXY;
+
+                val.distXY = {x: 1, y: 1};
+                if (val.nextLat !== undefined && val.nextLng !== undefined) {
+                    let localXY2 = this.map.latLngToLayerPoint([val.nextLat, val.nextLng]);
+                    localXY2 = this.map.layerPointToContainerPoint(localXY2);
+                    val.distXY = {
+                        x: Math.min(10, Math.abs(localXY2.x - localXY.x)),
+                        y: Math.min(10, Math.abs(localXY2.y - localXY.y))
+                    };
                 }
-            }).on("end", ()=>{
-                console.log("Finished loading");
+            }
 
-                const luts = new Map();
-                for(const prop of this.propertyNames.values()) {
-                    const lut = new Lut("OrRd", 32);
-                    lut.minV = 0;
-                    lut.maxV = Math.log(this.max[prop]);
-                    luts.set(prop, lut);
-                }
+            // Create offscreen canvas to draw on
+            const size = this.map.getSize();
+            const canvas = document.createElement("canvas");
+            canvas.width = size.x * scaleFactor;
+            canvas.height = size.y * scaleFactor;
+            const offscreen  = canvas.transferControlToOffscreen();
 
-                const latSet = new Set();
-                const lngSet = new Set();
+            const heatmapWorker = new Worker(heatmapWorkerPath, {
+                type: "module"
+            });
 
-                // Draw circles for each value
-                for (const val of this.data) {
-                    latSet.add(val.latitude);
-                    lngSet.add(val.longitude);
-                }
+            heatmapWorker.postMessage({
+                ...e.data,
+                scaleFactor,
+                mapSize: this.map.getSize(),
+                canvas: offscreen
+            }, [offscreen]);
 
-                // Sorted list of all lats and longs (to find neigbours)
-                const latitudes = [...latSet.values()].sort();
-                const longitudes = [...lngSet.values()].sort();
-
-                const scaleFactor = 4; // Number of pixels per grid cell
+            heatmapWorker.addEventListener("message", e=>{
+                heatmapWorker.terminate();
                 for (const prop of this.propertyNames.values()) {
-                    // Create and paint a canvas with a heatmap
-                    const canvas = document.createElement("canvas");
-                    const ctx = canvas.getContext("2d");
-                    const size = this.map.getSize();
-                    canvas.width = size.x * scaleFactor;
-                    canvas.height = size.y * scaleFactor;
-                    for (const val of this.data) {
-                        if (val[prop] !== null) {
-                            // Get colour from lookuptable
-                            const color = luts.get(prop).getColor(Math.log(val[prop]));
-                            ctx.fillStyle = `rgba(${color.r*255}, ${color.g*255}, ${color.b*255}, 0.8)`;
-
-                            // Convert latlng to pixel coordinates
-                            let localXY = this.map.latLngToLayerPoint([val.latitude, val.longitude]);
-                            localXY = this.map.layerPointToContainerPoint(localXY);
-
-                            // Calculate the size of the rectangle (always setting it to 1) creates
-                            // odd artifacts of overlapping rectangles, so we check how far it is
-                            // to the next rectangle.
-                            const nextLat = latitudes[latitudes.findIndex(v=>v==val.latitude) + 1];
-                            const nextLng = longitudes[longitudes.findIndex(v=>v==val.longitude) + 1];
-                            let distXY = {x: 1, y: 1};
-                            if (nextLat !== undefined && nextLng !== undefined) {
-                                let localXY2 = this.map.latLngToLayerPoint([nextLat, nextLng]);
-                                localXY2 = this.map.layerPointToContainerPoint(localXY2);
-                                distXY = {
-                                    x: Math.min(10, Math.abs(localXY2.x - localXY.x)),
-                                    y: Math.min(10, Math.abs(localXY2.y - localXY.y))
-                                };
-                            }
-                            // Draw rectangle on canvas
-                            ctx.fillRect(
-                                localXY.x * scaleFactor,
-                                localXY.y * scaleFactor,
-                                distXY.x * scaleFactor,
-                                distXY.y * scaleFactor
-                            );
-                        }
-                    }
                     const heatmap = leaflet.imageOverlay(
-                        canvas.toDataURL(),
+                        e.data[prop],
                         this.map.getBounds(), {
                             attribution: "&copy; Jalkanen et al <a href=\"https://zenodo.org/records/4063643\">10.5281/zenodo.4063643</a>."
                         }
@@ -143,6 +102,7 @@ class MapView {
                 }
             });
         });
+        avscWorker.postMessage(heatmapDataPath);
 
         for (const annotation of annotations) {
             annotation.onSelect = () => {

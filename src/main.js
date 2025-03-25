@@ -3,7 +3,6 @@ import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
 import {WaterMesh} from "three/addons/objects/WaterMesh.js";
 import {SkyMesh} from "three/addons/objects/SkyMesh.js";
 import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 import {MapView} from "./map.js";
 import {annotations} from "./annotation.js";
 import CameraControls from "../lib/camera-controls.module.min.js";

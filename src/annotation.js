@@ -33,9 +33,6 @@ class Annotation {
         this.DOM.style.top = `${p.y}px`;
         this.DOM.style.left = `${p.x}px`;
 
-        //this.annotationNumber.style.top = `${p.y}px`;
-        //this.annotationNumber.style.left = `${p.x}px`;
-
         const raycaster = new Raycaster(
             camera.position,
             this.labelPosition.clone().sub(camera.position).normalize()
@@ -47,7 +44,6 @@ class Annotation {
             const boxDist = closestIntersect[0].point.distanceTo(camera.position);
             const labelDist =  this.labelPosition.distanceTo(camera.position);
             const spriteBehindObject = labelDist - boxDist > 1;
-
             this.DOM.style.opacity = spriteBehindObject ? 0.125 : 1;
         } else {
             this.DOM.style.bacground = "red";
