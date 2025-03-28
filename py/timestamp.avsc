@@ -1,0 +1,23 @@
+{"namespace": "timestamp.avro",
+ "type": "record",
+ "name": "timestamp",
+ "fields": [
+     {"name": "time",  "type": "int"},
+     {"name": "date",  "type": "string"},
+     {"name": "AFP_CuO", "type":  ["float", "null"]},
+     {"name": "AFP_CuPyr", "type":  ["float", "null"]},
+     {"name": "AFP_DCOIT", "type":  ["float", "null"]},
+     {"name": "AFP_Zineb", "type":  ["float", "null"]},
+     {"name": "AFP_ZnO", "type":  ["float", "null"]},
+     {"name": "AFP_ZnPyr", "type":  ["float", "null"]},
+     {"name": "BILGE_W", "type":  ["float", "null"]},
+     {"name": "BalW", "type":  ["float", "null"]},
+     {"name": "GREY_W", "type":  ["float", "null"]},
+     {"name": "N_foodWaste", "type":  ["float", "null"]},
+     {"name": "N_sewage", "type":  ["float", "null"]},
+     {"name": "SCRUB_W_CLOSED", "type":  ["float", "null"]},
+     {"name": "SCRUB_W_OPEN", "type":  ["float", "null"]},
+     {"name": "SEWAGE", "type":  ["float", "null"]},
+     {"name": "STERN_TUBE", "type":  ["float", "null"]}
+ ]
+}

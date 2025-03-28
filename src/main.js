@@ -4,6 +4,7 @@ import {WaterMesh} from "three/addons/objects/WaterMesh.js";
 import {SkyMesh} from "three/addons/objects/SkyMesh.js";
 import Stats from "three/addons/libs/stats.module.js";
 import {MapView} from "./map.js";
+import {PlotView} from "./plot.js";
 import {annotations} from "./annotation.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
 CameraControls.install({THREE: THREE});
@@ -13,7 +14,7 @@ let model;
 let controls;
 let stats;
 let water, sun;
-let mapView;
+let mapView, plotView;
 
 const threeContainer = document.getElementById("threeContainer");
 
@@ -25,6 +26,9 @@ function init() {
 
     // Setup map
     mapView = new MapView("map");
+
+    // Setup plot
+    plotView = new PlotView("plot");
 
     // renderer
 
@@ -159,6 +163,8 @@ function init() {
             document.getElementById("textbox").innerHTML = `<h2>${annotation.heading}</h2>` + annotation.content;
             document.getElementById("infobox").style.visibility = "visible";
             annotation.onSelect();
+
+            plotView.plot(annotation);
         });
     }
 

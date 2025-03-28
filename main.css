@@ -9,11 +9,14 @@ body {
     position: absolute;
 }
 
+#plot {
+    width: 500px;
+    height: 200px;
+}
+
 #map {
-    position: absolute;
     width: 500px;
     height: 500px;
-    bottom: 10px;
 }
 
 #infobox {

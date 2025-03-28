@@ -9,12 +9,13 @@ class Annotation {
      * @param {string} content
      * @param {string} dataKey
      */
-    constructor(labelPosition, cameraPosition, id, heading, content, dataKey) {
+    constructor(labelPosition, cameraPosition, id, heading, content, dataKey, plotSpec) {
         this.heading = heading;
         this.content = content;
         this.labelPosition = labelPosition;
         this.cameraPosition = cameraPosition;
         this.dataKey = dataKey;
+        this.plotSpec = plotSpec;
         this.DOM = document.createElement("div");
         this.DOM.classList.add("annotation");
         this.DOM.innerHTML = `<p><strong>${heading}</strong></p>`;
@@ -76,7 +77,18 @@ const annotations = [
         1,
         "Stern tube oil",
         "The propeller shaft connects the main engine and the propeller through the stern tube which goes through the ship hull. The stern tube contains bearings, sealing and a lubrication system. Although there are water-lubricated propeller shafts on the market, the most commonly used (∼ 90 % of the market, Sengottuvel et al., 2017) lubrication is still oil-based and usually contains a large number of additives (Habereder et al., 2009) and seal-improving agents like teflon and bentonite.",
-        "STERN_TUBE"
+        "STERN_TUBE",
+        {
+            $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+            description: "Stern tube oil emission over time",
+            height: 200,
+            width: "container",
+            mark: "area",
+            encoding: {
+                x: {field: "date", type: "temporal", title: ""},
+                y: {field: "STERN_TUBE", type: "quantitative", title: "Daily stern tube oil leakage (L)"}
+            }
+        }
     ),
     new Annotation(
         new Vector3(0.6, 3, -3.5),
@@ -92,7 +104,22 @@ const annotations = [
         2,
         "Antifouling paint",
         "Submerged structures offer substrate for various organisms that attach and grow on the surfaces, thereby increasing the roughness of the hull surface. Such increased roughness in turn increases drag and significantly affects the fuel consumption and may also affect the manoeuvring capability of a ship. To reduce this fuel penalty, secure manoeuvring capability and prevent spreading of NISs, the hull is coated with antifouling coatings that contain and release toxic compounds (biocides)",
-        "AFP_CuO"
+        "AFP_CuO",
+        {
+            $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+            description: "Antifouling paint emission over time",
+            height: 200,
+            width: "container",
+            mark: "line",
+            transform: [{fold: [
+                "AFP_CuO", "AFP_CuPyr", "AFP_DCOIT", "AFP_Zineb", "AFP_ZnO", "AFP_ZnPyr"
+            ]}],
+            encoding: {
+                x: {field: "date", type: "temporal",  title: ""},
+                y: {field: "value", type: "quantitative", scale: {type: "log"}},
+                color: {field: "key", type: "nominal", title: "Paint type"}
+            }
+        }
     )
 ];
 
