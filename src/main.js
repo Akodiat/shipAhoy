@@ -160,7 +160,7 @@ function init() {
                 ...annotation.labelPosition.toArray(),
                 true
             );
-            document.getElementById("textbox").innerHTML = `<h2>${annotation.heading}</h2>` + annotation.content;
+            document.getElementById("textbox").innerHTML = `<h2>${annotation.heading}</h2>` + `<div id="body-text">${annotation.content}</div>`;
             document.getElementById("infobox").style.visibility = "visible";
             annotation.onSelect();
 
