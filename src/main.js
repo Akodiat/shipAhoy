@@ -145,12 +145,16 @@ function init() {
     // Setup overview button
     document.getElementById("overviewReturnButton").addEventListener("click", ()=>{
         controls.setLookAt(-5,3.5,-10, 0, 0, -1, true);
-        document.getElementById("infobox").style.visibility = "hidden";
+        document.getElementById("infobox").style.display = "none";
     });
+
+    // Hide infobox until an annotation is clicked
+    document.getElementById("infobox").style.display = "none";
 
     // Setup annotations
     for (const annotation of annotations) {
         annotation.DOM.addEventListener("click", () => {
+            onWindowResize();
             if (!mapView.fullyLoaded) {
                 // Don't do anyting until map data is loaded
                 return;
@@ -161,7 +165,7 @@ function init() {
                 true
             );
             document.getElementById("textbox").innerHTML = `<h2>${annotation.heading}</h2>` + `<div id="body-text">${annotation.content}</div>`;
-            document.getElementById("infobox").style.visibility = "visible";
+            document.getElementById("infobox").style.display = "flex";
             annotation.onSelect();
 
             plotView.plot(annotation);
@@ -188,16 +192,24 @@ function animate() {
     const controlsUpdated = controls.update(delta);
 
     if (controlsUpdated) {
-        if (document.getElementById("infobox").style.visibility === "visible") {
-            // Keep camera pivot slightly to the left
-            // of the screen center.
-            controls.setFocalOffset(
-                0.25 * controls.distance, 0, 0
-            );
-        } else {
-            controls.setFocalOffset(
-                0, 0, 0
-            );
+        const style = document.getElementById("threeContainer").style;
+        const smallScreen = window.matchMedia("(max-width: 768px)").matches;
+        const infoboxVisible = document.getElementById("infobox").style.display !== "none";
+        onWindowResize();
+        style.height = "100%";
+        style.position = "absolute";
+        controls.setFocalOffset(0, 0, 0);
+        if (infoboxVisible) {
+            if (smallScreen) {
+                style.height = "60vh";
+                style.position = "static";
+            } else {
+                // Keep camera pivot slightly to the left
+                // of the screen center.
+                controls.setFocalOffset(
+                    0.25 * controls.distance, 0, 0
+                );
+            }
         }
     }
 

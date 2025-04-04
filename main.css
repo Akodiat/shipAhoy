@@ -6,7 +6,7 @@ body {
   #body-text {
     font-size: 15px;
   }
-  
+
   #threeContainer {
     position: absolute;
     top: 0;
@@ -14,7 +14,7 @@ body {
     width: 100%;
     height: 100%;
   }
-  
+
   #infobox {
     position: absolute;
     top: 10px;
@@ -24,13 +24,11 @@ body {
     padding: 10px;
     background: #fffc;
     border-radius: 5px;
-    visibility: hidden;
-    display: flex;         
     flex-direction: column;
-    gap: 10px;           
-    overflow-y: auto;     
-    scrollbar-width: none; 
-    -ms-overflow-style: none; 
+    gap: 10px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   #infobox::-webkit-scrollbar {
@@ -41,7 +39,7 @@ body {
   flex-shrink: 0;
   display: block;
 }
-  
+
 #plot {
   width: auto;
   height: 250px;
@@ -49,7 +47,7 @@ body {
 
 #map {
     height: 500px;
-    width:auto; 
+    width:auto;
 }
 
 #overviewReturnButton {
@@ -65,7 +63,7 @@ body {
     text-indent: -9999px;
     overflow: hidden;
   }
-  
+
   .annotation {
     position: absolute;
     top: 0;
@@ -78,13 +76,13 @@ body {
     border-radius: .5em;
     font-size: 15px;
     line-height: 1.2;
-    transition: 
+    transition:
       opacity 2s,
       top 0.1s ease 0s,
       left 0.1s ease 0s;
     cursor: pointer;
   }
-  
+
   .annotation::before {
     content: var(--content);
     position: absolute;
@@ -100,40 +98,34 @@ body {
     cursor: pointer;
     align-content: center;
   }
-  
+
   .annotation:hover {
     background: rgba(71, 71, 71, 0.9);
   }
-  
+
   @media (max-width: 768px) {
-    body { 
-      overflow: auto; 
+    body {
+      overflow: auto;
     }
-  
+
     #infobox {
       position: static;
       width: auto;
       max-height: none;
       margin-top: 1rem;
     }
-  
-    #threeContainer {
-      position: static;
-      width: 100%;
-      height: 60vh;
-    }
-    
+
     #plot {
       width: 100%;
       max-width: 500px;
-      height: auto; 
+      height: auto;
     }
 
     #map {
-        width: 100%;    
+        width: 100%;
         height: 300px;
       }
-  
+
     #overviewReturnButton {
       position: relative;
       top: auto;
@@ -141,4 +133,3 @@ body {
       margin: 0 0 1rem auto;
     }
   }
-  
