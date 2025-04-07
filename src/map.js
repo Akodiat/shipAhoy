@@ -32,6 +32,8 @@ class MapView {
 
         this.loadHeatmaps("../resources/data.avro");
 
+        this.addLegend();
+
         // Setup annotations to toggle corresponding heatmaps
         for (const annotation of annotations) {
             annotation.onSelect = () => {
@@ -130,6 +132,35 @@ class MapView {
             });
         });
         avscWorker.postMessage(heatmapDataPath);
+    }
+
+    addLegend() {
+        const legend = leaflet.control({ position: "bottomright" });
+    
+        legend.onAdd = () => {
+            const div = leaflet.DomUtil.create("div", "info legend");
+    
+            // Create a color gradient for heatmap scale
+            const grades = [0, 0.2, 0.4, 0.6, 0.8, 1.0];
+            //TODO : Add color gradient from heatmapWorker
+            const colors = [
+                "#fef0d9",
+                "#fdcc8a",
+                "#fc8d59",
+                "#e34a33",
+                "#b30000"
+            ];
+            div.innerHTML += "<h4>Intensity</h4>";
+            for (let i = 0; i < grades.length; i++) {
+                div.innerHTML +=
+                    `<i style="background:${colors[i]}; width: 30px; height: 20px; float: left; margin-right: 8px; opacity: 0.7;"></i>` +
+                    `${grades[i]}${grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : "+"}`;
+            }
+    
+            return div;
+        };
+    
+        legend.addTo(this.map);
     }
 }
 
