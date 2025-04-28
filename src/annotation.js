@@ -18,7 +18,7 @@ class Annotation {
         this.plotSpec = plotSpec;
         this.DOM = document.createElement("div");
         this.DOM.classList.add("annotation");
-        this.DOM.innerHTML = `<p><strong>${heading}</strong></p>`;
+        this.DOM.innerHTML = `<p>${heading}</p>`;
         document.getElementById("main").appendChild(this.DOM);
 
         this.DOM.style.setProperty("--content", `"${id}"`);

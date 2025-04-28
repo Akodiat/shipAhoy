@@ -1,3 +1,21 @@
+@font-face {
+  font-family: 'OpenSans';
+  src: url('resources/OpenSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OpenSans';
+  src: url('resources/OpenSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}  
+
+:root {
+  --font-main: 'OpenSans', sans-serif;
+}
+
 body {
     margin: 0;
     overflow: hidden;
@@ -66,6 +84,21 @@ body {
     cursor: pointer;
     text-indent: -9999px;
     overflow: hidden;
+  }
+
+  #textbox h2 {
+    font-family: var(--font-main);
+    font-weight: 700;
+  }
+
+  #textbox #body-text {
+    font-family: var(--font-main);
+    font-weight: 400;
+  }
+
+  .annotation p {
+    font-family: var(--font-main);
+    font-weight: 700;
   }
 
   #overviewReturnButton:hover {
