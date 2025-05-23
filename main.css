@@ -21,6 +21,12 @@ body {
     overflow: hidden;
   }
 
+  #acknowledgementButton {
+    position: absolute;
+    margin: 10px;
+    bottom: 0;
+  }
+
   #body-text {
     font-size: 15px;
   }

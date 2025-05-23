@@ -25,6 +25,7 @@
 		</script>
 
 		<div id="main">
+
 			<div id="threeContainer"></div>
 			<div id="infobox">
 				<div class="pico">
@@ -34,7 +35,30 @@
 				<div id="plot"></div>
 				<div id="map"></div>
 			</div>
-			</div>
+		</div>
+
+		<div class="pico">
+			<button id="acknowledgementButton" class="pico secondary" onclick="document.getElementById('acknowledgementModal').open = true">Acknowledgements</button>
+
+			<dialog id="acknowledgementModal">
+				<article>
+					<header>
+						<button aria-label="Close" rel="prev" onclick="document.getElementById('acknowledgementModal').open = false"></button>
+						<p><strong>Acknowledgements</strong></p>
+					</header>
+					<p>
+						This application was developed as part of an <a target="_blank" href="https://infravis.se/">InfraVis</a> visualisation support project. <a target="_blank" href="https://github.com/Akodiat/shipAhoy/">Source code</a>
+
+						<p>
+							Discharge data &copy; Jalkanen et al: <a target="_blank" href="https://zenodo.org/records/4063643">10.5281/zenodo.4063643</a>.
+						</p>
+
+						<p>
+							Map data &copy; <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> and <a href="http://www.openseamap.org">OpenSeaMap</a> contributors. Marine areas &copy; <a href="https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033">EEA</a>.
+						</p>
+					</p>
+				</article>
+			</dialog>
 		</div>
 
 		<script type="module" src="src/main.js"></script>
