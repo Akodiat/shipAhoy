@@ -4,11 +4,12 @@ import shp from "https://unpkg.com/shpjs@6.1.0/dist/shp.esm.js";
 import {annotations} from "./annotation.js";
 
 class MapView {
-    constructor(element) {
+    constructor(elementId) {
+        const element = document.getElementById(elementId);
         this.fullyLoaded = false;
 
         // Use https://github.com/uber/h3-js to make grid and heatmap?
-        this.map = leaflet.map(element, {
+        this.map = leaflet.map(elementId, {
             renderer: leaflet.canvas(),
             minZoom: 5
         });
@@ -38,11 +39,16 @@ class MapView {
         for (const annotation of annotations) {
             annotation.onSelect = () => {
                 for (const key of this.propertyNames) {
-                    if (annotation.dataKey === key) {
+                    if (annotation.spec.mapLayer === key) {
                         this.heatmaps[key].addTo(this.map);
                     } else {
                         this.heatmaps[key].removeFrom(this.map);
                     }
+                }
+                if (annotation.spec.mapLayer === undefined) {
+                    element.style.display = "none";
+                } else {
+                    element.style.display = "block";
                 }
             };
         }
@@ -136,10 +142,10 @@ class MapView {
 
     addLegend() {
         const legend = leaflet.control({ position: "bottomright" });
-    
+
         legend.onAdd = () => {
             const div = leaflet.DomUtil.create("div", "info legend");
-    
+
             // Create a color gradient for heatmap scale
             const grades = [0, 0.2, 0.4, 0.6, 0.8, 1.0];
             //TODO : Add color gradient from heatmapWorker
@@ -156,10 +162,10 @@ class MapView {
                     `<i style="background:${colors[i]}; width: 30px; height: 20px; float: left; margin-right: 8px; opacity: 0.7;"></i>` +
                     `${grades[i]}${grades[i + 1] ? `&ndash;${grades[i + 1]}<br>` : "+"}`;
             }
-    
+
             return div;
         };
-    
+
         legend.addTo(this.map);
     }
 }

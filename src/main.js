@@ -117,6 +117,7 @@ function init() {
     gltfLoader.load("resources/cargoship.glb", function(gltf) {
 
         model = gltf.scene;
+        model.name = "container";
 
         model.traverse(child => {
             if(child.isMesh) {
@@ -164,11 +165,11 @@ function init() {
                 return;
             }
             controls.setLookAt(
-                ...annotation.cameraPosition.toArray(),
-                ...annotation.labelPosition.toArray(),
+                ...annotation.spec.shipTypes[model.name].cameraPos.toArray(),
+                ...annotation.spec.shipTypes[model.name].labelPos.toArray(),
                 true
             );
-            document.getElementById("textbox").innerHTML = `<h2>${annotation.heading}</h2>` + `<div id="body-text">${annotation.content}</div>`;
+            document.getElementById("textbox").innerHTML = `<h2>${annotation.spec.name}</h2>` + `<div id="body-text">${annotation.content}</div>`;
             document.getElementById("infobox").style.display = "flex";
             annotation.onSelect();
 

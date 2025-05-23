@@ -23,7 +23,7 @@ class PlotView {
 
     plot(annotation) {
         const spec = {
-            ...annotation.plotSpec,
+            ...annotation.spec.plotSpec,
             // Append data to specification
             data: {values: this.data}
         };
