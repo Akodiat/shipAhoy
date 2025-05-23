@@ -10,7 +10,7 @@
   src: url('resources/OpenSans-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
-}  
+}
 
 :root {
   --font-main: 'OpenSans', sans-serif;
@@ -106,6 +106,7 @@ body {
   }
 
   .annotation {
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
