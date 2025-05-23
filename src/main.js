@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import {color, pass, objectPosition, screenUV} from "three/tsl";
+import {gaussianBlur} from "three/addons/tsl/display/GaussianBlurNode.js";
 import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
 import {WaterMesh} from "three/addons/objects/WaterMesh.js";
 import {SkyMesh} from "three/addons/objects/SkyMesh.js";
@@ -15,6 +17,7 @@ let controls;
 let stats;
 let water, sun;
 let mapView, plotView;
+let postProcessing;
 
 const threeContainer = document.getElementById("threeContainer");
 
@@ -23,6 +26,7 @@ const clock = new THREE.Clock();
 init();
 
 function init() {
+    const waterLevel = 8;
 
     // Setup map
     mapView = new MapView("map");
@@ -51,7 +55,7 @@ function init() {
 
     sun = new THREE.Vector3();
 
-    const waterGeometry =  new THREE.CircleGeometry( 5000, 32 );
+    const waterGeometry =  new THREE.CircleGeometry( 5000, 3 );
     const textureLoader = new THREE.TextureLoader();
     const waterNormals = textureLoader.load("resources/waternormals.jpg");
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
@@ -64,13 +68,30 @@ function init() {
             sunColor: 0xffffff,
             waterColor: 0x001e0f,
             distortionScale: 3,
-            size: 1
+            size: 1,
         }
     );
     water.rotation.x = - Math.PI / 2;
-    water.rotation.z = - Math.PI;
-    water.position.y = 8;
+    water.position.y = waterLevel;
     scene.add(water);
+
+    const waterUnderside = new THREE.Mesh(
+        waterGeometry,
+        new THREE.MeshPhysicalMaterial({
+            color: 0xFFFFFF,
+            normalMap: waterNormals,
+            transmission: 1,
+            opacity: 1,
+            thickness: 1,
+            metalness: 0,
+            roughness: 0,
+            ior: 1.3,
+            transparent: true
+        })
+    );
+    waterUnderside.rotation.x = Math.PI / 2;
+    waterUnderside.position.y = waterLevel - 0.001;
+    scene.add(waterUnderside);
 
     const sky = new SkyMesh();
     sky.scale.setScalar(10000);
@@ -134,6 +155,22 @@ function init() {
 
         scene.add(model);
     });
+
+    // post processing
+
+    const scenePass = pass( scene, camera );
+    const scenePassColor = scenePass.getTextureNode();
+    const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(.3, .5);
+
+    const waterMask = objectPosition(camera).y.greaterThan(screenUV.y.mul(camera.near).add(waterLevel));
+
+    const scenePassColorBlurred = gaussianBlur( scenePassColor );
+    scenePassColorBlurred.directionNode = waterMask.select( scenePassDepth, scenePass.getLinearDepthNode().mul(5));
+
+    const vignette = screenUV.distance( .5 ).mul( 1.35 ).oneMinus();
+
+    postProcessing = new THREE.PostProcessing(renderer);
+    postProcessing.outputNode = waterMask.select( scenePassColorBlurred, scenePassColorBlurred.mul(color(0x7E95A5)).mul(vignette));
 
     // FPS stats shown in upper-left corner
     // Only relevant for debugging, can remove later
@@ -242,7 +279,7 @@ function animate() {
             mixer.update(clock.getDelta());
         }
 
-        renderer.render(scene, camera);
+        postProcessing.render();
     }
 
 }
