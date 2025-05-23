@@ -111,10 +111,10 @@ body {
     top: 0;
     left: 0;
     z-index: 1;
-    margin-left: 15px;
-    padding: 1em;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.8);
+    margin-left: 20px;
+    padding: 0.5em;
+    color: rgba(247, 247, 247, 0.1);
+    background: rgba(0, 0, 0, 0);
     border-radius: .5em;
     font-size: 15px;
     line-height: 1.2;
@@ -128,21 +128,24 @@ body {
   .annotation::before {
     content: var(--content);
     position: absolute;
-    top: -30px;
-    left: -30px;
-    width: 30px;
-    height: 30px;
-    border: 2px solid #fff;
+    top: -40px;
+    left: -40px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border: 3px solid #fff;
+    color: rgba(247, 247, 247, 0.9);
     border-radius: 50%;
     line-height: 15px;
     text-align: center;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(153 48 48 / 0.8);
     cursor: pointer;
     align-content: center;
   }
 
   .annotation:hover {
     background: rgba(71, 71, 71, 0.9);
+    color: rgba(247, 247, 247, 0.9);
   }
 
   .info.legend {
