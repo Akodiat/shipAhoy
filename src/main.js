@@ -9,7 +9,7 @@ import {annotations} from "./annotation.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
 CameraControls.install({THREE: THREE});
 
-let camera, scene, renderer;
+let camera, scene, renderer, mixer;
 let model;
 let controls;
 let stats;
@@ -126,6 +126,12 @@ function init() {
             }
         });
 
+        if (gltf.animations.length > 0) {
+            mixer = new THREE.AnimationMixer(gltf.scene);
+            const action = mixer.clipAction(gltf.animations[0]);
+            action.play();
+        }
+
         scene.add(model);
     });
 
@@ -230,6 +236,10 @@ function animate() {
 
         for (const annotation of annotations) {
             annotation.update(renderer.domElement, camera, model);
+        }
+
+        if (mixer) {
+            mixer.update(clock.getDelta());
         }
 
         renderer.render(scene, camera);
