@@ -72,8 +72,8 @@ class Annotation {
 
 const annotations = [
     new Annotation(
-        new Vector3(0, -0.2, -5),
-        new Vector3(1, -0.5, -6),
+        new Vector3(0, 2, -58),
+        new Vector3(10, 2, -65),
         1,
         "Stern tube oil",
         "The propeller shaft connects the main engine and the propeller through the stern tube which goes through the ship hull. The stern tube contains bearings, sealing and a lubrication system. Although there are water-lubricated propeller shafts on the market, the most commonly used (∼ 90 % of the market, Sengottuvel et al., 2017) lubrication is still oil-based and usually contains a large number of additives (Habereder et al., 2009) and seal-improving agents like teflon and bentonite.",
@@ -91,16 +91,16 @@ const annotations = [
         }
     ),
     new Annotation(
-        new Vector3(0.6, 3, -3.5),
-        new Vector3(4, 3, -3.5),
+        new Vector3(0.5, 40, -58),
+        new Vector3(25, 40, -58),
         2,
         "Exhausts",
         "Lorem ipsum",
         undefined
     ),
     new Annotation(
-        new Vector3(0.6, 0.1, 3),
-        new Vector3(4, 1, 3),
+        new Vector3(9, 3, 75),
+        new Vector3(20, 3, 75),
         2,
         "Antifouling paint",
         "Submerged structures offer substrate for various organisms that attach and grow on the surfaces, thereby increasing the roughness of the hull surface. Such increased roughness in turn increases drag and significantly affects the fuel consumption and may also affect the manoeuvring capability of a ship. To reduce this fuel penalty, secure manoeuvring capability and prevent spreading of NISs, the hull is coated with antifouling coatings that contain and release toxic compounds (biocides)",

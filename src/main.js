@@ -45,15 +45,13 @@ function init() {
     threeContainer.appendChild(renderer.domElement);
 
     // Setup scene
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 300);
-    camera.position.set(3, 2, 4);
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 5000);
 
     scene = new THREE.Scene();
-    camera.lookAt(0, 1, 0);
 
     sun = new THREE.Vector3();
 
-    const waterGeometry = new THREE.PlaneGeometry(1000, 1000);
+    const waterGeometry =  new THREE.CircleGeometry( 5000, 32 );
     const textureLoader = new THREE.TextureLoader();
     const waterNormals = textureLoader.load("resources/waternormals.jpg");
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
@@ -66,11 +64,12 @@ function init() {
             sunColor: 0xffffff,
             waterColor: 0x001e0f,
             distortionScale: 3,
-            size: 5
+            size: 1
         }
     );
     water.rotation.x = - Math.PI / 2;
     water.rotation.z = - Math.PI;
+    water.position.y = 8;
     scene.add(water);
 
     const sky = new SkyMesh();
@@ -126,8 +125,6 @@ function init() {
             }
         });
 
-        model.scale.multiplyScalar(4);
-
         scene.add(model);
     });
 
@@ -139,12 +136,19 @@ function init() {
     // Camera controls
     controls = new CameraControls(camera, renderer.domElement);
 
+    const defaultLookat = [
+        75, 50, 150, // Position
+        -20, 5, 20   // Target
+    ];
+
     // Set initial camera view
-    controls.setLookAt(-5,3.5,-10, 0, 0, -1);
+    controls.setLookAt(...defaultLookat);
+
+    window.controls = controls;
 
     // Setup overview button
     document.getElementById("overviewReturnButton").addEventListener("click", ()=>{
-        controls.setLookAt(-5,3.5,-10, 0, 0, -1, true);
+        controls.setLookAt(...defaultLookat, true);
         document.getElementById("infobox").style.display = "none";
     });
 
@@ -215,7 +219,7 @@ function animate() {
 
     if (model) {
         const t = clock.getElapsedTime();
-        model.position.y = - 0.4 + Math.sin(t) * 0.05;
+        model.position.y = Math.sin(t) * 0.05;
         const e = new THREE.Euler(
             Math.sin(t)* .015,
             0,
