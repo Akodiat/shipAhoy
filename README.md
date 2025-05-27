@@ -1,5 +1,6 @@
 # Ship Ahoy
-(proof of concept, work in progress)
+
+Web visualisation available at: [akodiat.github.io/shipAhoy/](https://akodiat.github.io/shipAhoy/).
 
 # Contribute
 To run locally, start a static webserver in this directory. If you have python 3, you can type:
