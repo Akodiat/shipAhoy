@@ -73,6 +73,7 @@ body {
     padding: 25px;
     padding-top:30px;
     border-radius: 0px;
+        border-width:0px 0 0 0;
 
     }
   }
@@ -140,6 +141,8 @@ body {
   .annotation p {
     font-family: var(--font-main);
     font-weight: 700;
+      user-select: none!important;
+      -webkit-user-select: none; /* Safari */
   }
 
   #overviewReturnButton:hover {
@@ -164,7 +167,7 @@ body {
       top 0.1s ease 0s,
       left 0.1s ease 0s;
     cursor: pointer;
-    user-select: none;
+  
   }
 
   .annotation::before {
@@ -183,13 +186,11 @@ body {
     background: rgba(153 48 48 / 0.8);
     cursor: pointer;
     align-content: center;
-    user-select: none;
   }
 
   .annotation:hover {
     background: rgba(71, 71, 71, 0.9);
     color: rgba(247, 247, 247, 0.9);
-      user-select: none;
   }
 
   .info.legend {
