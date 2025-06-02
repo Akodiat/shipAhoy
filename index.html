@@ -59,6 +59,23 @@
 					</p>
 				</article>
 			</dialog>
+
+			<dialog id="imageModal">
+				<article>
+					<header>
+						<button aria-label="Close" rel="prev" onclick="document.getElementById('imageModal').open = false"></button>
+						<p><strong id="imageModalHeader"></strong></p>
+					</header>
+					<p>
+						<img id="imageModalImage"><br>
+						<small id="imageModalDescription">
+						</small>
+					</p>
+					<small>
+						&copy; <span id="imageModalAttribution"></span>.
+					</small>
+				</article>
+			</dialog>
 		</div>
 
 		<script type="module" src="src/main.js"></script>

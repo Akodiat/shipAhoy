@@ -32,6 +32,23 @@ class Annotation {
             this.content += `<h3>Human impact</h3>${spec.humanImpact}`;
         }
 
+        if (spec.images) {
+            this.content += "<h3>Images</h3>";
+            for (const i of spec.images) {
+                this.content += `
+                <article>
+                    <img
+                        src="${i.path}"
+                        title="${i.description}"
+                        onclick="populateImageModal('${i.header}','${i.path}','${i.description}','${i.attribution}'); document.getElementById('imageModal').open = true"
+                        style="cursor: pointer"
+                    >
+                    <footer>${i.header}</footer>
+                </article>
+                `;
+            }
+        }
+
         this.onSelect = ()=>{};
     }
     update(canvas, camera, shipModel) {
@@ -68,6 +85,13 @@ class Annotation {
         }
     }
 }
+
+window.populateImageModal = (header, path, description, attribution) => {
+    document.getElementById("imageModalHeader").innerHTML = header;
+    document.getElementById("imageModalImage").src = path;
+    document.getElementById("imageModalDescription").innerHTML = description;
+    document.getElementById("imageModalAttribution").innerHTML = attribution;
+};
 
 const annotations = [
     {
@@ -125,6 +149,32 @@ const annotations = [
             "Harmful",
             "Harmful to the environment"
         ],
+        images: [
+            {
+                header: "Inert coating",
+                path: "resources/images/antifouling_1_inertcoating.jpg",
+                description: "Fouling on static idle panels. Panel painted with inert coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
+                attribution: "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, <a href='http://dx.doi.org/10.1016/j.jclepro.2022.131882'>A novel tool for cost and emission reduction related to ship underwater hull maintenance</a>, J. Clean. Prod. 356 (2022), 131882."
+            },
+            {
+                header: "Biocidal copper coating",
+                path: "resources/images/antifouling_2_biocidal_copper_coating.jpg",
+                description: "Fouling on static idle panels. Panel painted with biocidal copper coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
+                attribution: "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, <a href='http://dx.doi.org/10.1016/j.jclepro.2022.131882'>A novel tool for cost and emission reduction related to ship underwater hull maintenance</a>, J. Clean. Prod. 356 (2022), 131882."
+            },
+            {
+                header: "Biocidefree silicon coating",
+                path: "resources/images/antifouling_3_foulrelease_biocidefree_silicon_coating.jpg",
+                description: "Illustration showing the HullMASTER tool, D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882.",
+                attribution: "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, <a href='http://dx.doi.org/10.1016/j.jclepro.2022.131882'>A novel tool for cost and emission reduction related to ship underwater hull maintenance</a>, J. Clean. Prod. 356 (2022), 131882."
+            },
+            {
+                header: "HullMASTER",
+                path: "resources/images/antifouling_hullmaster.png",
+                description: "Fouling on static idle panels. Panel painted with foul-release biocide-free silicone coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
+                attribution: "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, <a href='http://dx.doi.org/10.1016/j.jclepro.2022.131882'>A novel tool for cost and emission reduction related to ship underwater hull maintenance</a>, J. Clean. Prod. 356 (2022), 131882."
+            }
+        ],
         // Somewhere on the immersed part of the hull
         shipTypes: {
             tanker: {
@@ -171,6 +221,27 @@ const annotations = [
         `,
         environmentalImpact: "Spread of invasive species, increased emissions to air (and impact on human health, climate change, and euthropication (from NOX) can be monitized), because of higher fuel consumption, drag, friction, and limited manouverability",
         humanImpact: "Increased air emissions",
+
+        images: [
+            {
+                header: "Biofouling 1 - Australian tubeworm",
+                path: "resources/images/biofouling_1.jpg",
+                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+                attribution: "Photo: Magnus Dahlström"
+            },
+            {
+                header: "Biofouling 2 - Australian tubeworm",
+                path: "resources/images/biofouling_2.jpg",
+                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+                attribution: "Photo: Magnus Dahlström"
+            },
+            {
+                header: "Biofouling 3 - Australian tubeworm",
+                path: "resources/images/biofouling_3.jpg",
+                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+                attribution: "Photo: Magnus Dahlström"
+            }
+        ],
         // Somewhere on the immersed part of the hull
         shipTypes: {
             tanker: {
@@ -281,6 +352,14 @@ const annotations = [
             "Harmful",
             "Harmful to the environment",
             "Corrosive"
+        ],
+        images: [
+            {
+                header: "Open vs closed loop scrubber system",
+                path: "resources/images/scrubber_system.svg",
+                description: "Illustration of two different scrubber system, open and closed loop, where the open loop (A) continuously pump in and discharge seawater while the closed loop (B) recirculates most water with addition of an alkaline solution. Hybrid systems can run in open and closed loop mode., EMERGE-project",
+                attribution: "Illustration: Anna Lunde Hermansson"
+            }
         ],
         mapLayer: "SCRUB_W_CLOSED",
         plotSpec: {

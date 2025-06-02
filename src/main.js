@@ -216,7 +216,9 @@ function init() {
             document.getElementById("infobox").style.display = "flex";
             annotation.onSelect();
 
-            plotView.plot(annotation);
+            if (annotation.spec.plotSpec !== undefined) {
+                plotView.plot(annotation);
+            }
         });
     }
 
