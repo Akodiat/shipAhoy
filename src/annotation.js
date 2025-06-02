@@ -35,7 +35,7 @@ class Annotation {
         if (spec.images) {
             this.content += "<h3>Images</h3>";
             for (const i of spec.images) {
-                this.content += `
+                const imageDom = `
                 <article>
                     <img
                         src="${i.path}"
@@ -46,6 +46,7 @@ class Annotation {
                     <footer>${i.header}</footer>
                 </article>
                 `;
+                this.content += imageDom;
             }
         }
 
@@ -154,25 +155,25 @@ const annotations = [
                 header: "Inert coating",
                 path: "resources/images/antifouling_1_inertcoating.jpg",
                 description: "Fouling on static idle panels. Panel painted with inert coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
-                attribution: "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, <a href='http://dx.doi.org/10.1016/j.jclepro.2022.131882'>A novel tool for cost and emission reduction related to ship underwater hull maintenance</a>, J. Clean. Prod. 356 (2022), 131882."
+                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
             },
             {
                 header: "Biocidal copper coating",
                 path: "resources/images/antifouling_2_biocidal_copper_coating.jpg",
                 description: "Fouling on static idle panels. Panel painted with biocidal copper coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
-                attribution: "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, <a href='http://dx.doi.org/10.1016/j.jclepro.2022.131882'>A novel tool for cost and emission reduction related to ship underwater hull maintenance</a>, J. Clean. Prod. 356 (2022), 131882."
+                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
             },
             {
                 header: "Biocidefree silicon coating",
                 path: "resources/images/antifouling_3_foulrelease_biocidefree_silicon_coating.jpg",
                 description: "Illustration showing the HullMASTER tool, D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882.",
-                attribution: "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, <a href='http://dx.doi.org/10.1016/j.jclepro.2022.131882'>A novel tool for cost and emission reduction related to ship underwater hull maintenance</a>, J. Clean. Prod. 356 (2022), 131882."
+                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
             },
             {
                 header: "HullMASTER",
                 path: "resources/images/antifouling_hullmaster.png",
                 description: "Fouling on static idle panels. Panel painted with foul-release biocide-free silicone coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
-                attribution: "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, <a href='http://dx.doi.org/10.1016/j.jclepro.2022.131882'>A novel tool for cost and emission reduction related to ship underwater hull maintenance</a>, J. Clean. Prod. 356 (2022), 131882."
+                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
             }
         ],
         // Somewhere on the immersed part of the hull
