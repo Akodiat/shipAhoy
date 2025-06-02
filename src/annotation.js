@@ -110,8 +110,8 @@ const annotations = [
                 cameraPos: undefined
             },
             container: {
-                labelPos: new Vector3(12, 19, 90),
-                cameraPos: new Vector3(20, 20, 90)
+                labelPos: new Vector3(12, 19, 110),
+                cameraPos: new Vector3(20, 20, 110)
             }
         }
     },
@@ -129,8 +129,8 @@ const annotations = [
                 cameraPos: undefined
             },
             container: {
-                labelPos: new Vector3(0, 5, 99),
-                cameraPos: new Vector3(10, 7, 120)
+                labelPos: new Vector3(0, 5, 119),
+                cameraPos: new Vector3(10, 7, 140)
             }
         }
     },
@@ -154,13 +154,13 @@ const annotations = [
             {
                 header: "Inert coating",
                 path: "resources/images/antifouling_1_inertcoating.jpg",
-                description: "Fouling on static idle panels. Panel painted with inert coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
+                description: "Fouling on static idle panels. Panel painted with inert coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
                 attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
             },
             {
                 header: "Biocidal copper coating",
                 path: "resources/images/antifouling_2_biocidal_copper_coating.jpg",
-                description: "Fouling on static idle panels. Panel painted with biocidal copper coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
+                description: "Fouling on static idle panels. Panel painted with biocidal copper coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
                 attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
             },
             {
@@ -172,7 +172,7 @@ const annotations = [
             {
                 header: "HullMASTER",
                 path: "resources/images/antifouling_hullmaster.png",
-                description: "Fouling on static idle panels. Panel painted with foul-release biocide-free silicone coating. Submerged 250 days in Tjärnö, Skagerakk on the Swedish Westcoast. Salinity 26 psu.",
+                description: "Fouling on static idle panels. Panel painted with foul-release biocide-free silicone coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
                 attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
             }
         ],
