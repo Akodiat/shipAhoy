@@ -22,11 +22,11 @@ class PlotView {
     }
 
     plot(annotation) {
-        const spec = {
-            ...annotation.spec.plotSpec,
+        const spec = annotation.spec.plotSpec;
+        if (spec.data === undefined) {
             // Append data to specification
-            data: {values: this.data}
-        };
+            spec.data = {values: this.data};
+        }
         // Embed the visualization in the container with id `vis`
         vegaEmbed("#"+this.elementId, spec).then(res => {
             this.view = res.view;

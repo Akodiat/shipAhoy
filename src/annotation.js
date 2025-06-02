@@ -111,6 +111,13 @@ const annotations = [
     },
     {
         name: "Antifouling",
+        description: `
+        <p>
+            Antifouling coatings are applied to the ship hull to avoid attachment and growth of sessile species (see Biofouling) and reduce the fuel penalty, of increased surface roughness, to secure manoeuvring capabilities and also to prevent spreading of invasive species. Antifouling coatings are often biocide based, releasing toxic compounds (often copper) to the marine environment. Today, biocide free alternatives are also available on the market.
+        </p>
+        <p>
+            Inefficient antifouling performance, where the ship hull gets covered by a thin layer of slime, can increase the fuel consumption by 30% and contribute to the spreading of invasive species. However, anti-fouling coatings that leak biocides will contribute to an increased contaminant load of copper and other biocides with potential toxic effects in the marine environment.
+        </p>`,
         environmentalImpact: "Chemicals and paint particals, inluding (micro)plastic from antifouling coatings: ecotoxicology, health of marine life, Hullcleaning: plus realease of fouling organisms,  plus monetary cost of envionmental impact",
         humanImpact: "antifouling paints: trophic transfere of chemicals, risk for workers (chemical exposure (solvant), risk of accidents) Hullcleaning (without capture) trophic transfere of chemicals, risk for workers (risk of accidents), plus monetary cost of human health impact",
         hazardIcons: [
@@ -152,6 +159,16 @@ const annotations = [
     },
     {
         name: "Biofouling",
+        description: `
+        <p>
+            All structures in the marine environment are exposed to fouling pressure, where the ship hull, piping, and sea chests are subject to biological growth. The usual ecological succession order starts with microbial films, followed by algal mats and subsequent growth of barnacles, worms, and mussels that in turn can act as shelters for other species.
+        <p>
+            Biofouling results in the spread of invasive species and also a higher climate footprint due to the fuel penalty from increased roughness of the hull.
+        </p>
+        <p>
+            Measures against biofouling involves antifouling paints (see Antifouling), ballast water treatment systems (see Ballast water), and antifouling agents in sea chests (see Cooling water).
+        </p>
+        `,
         environmentalImpact: "Spread of invasive species, increased emissions to air (and impact on human health, climate change, and euthropication (from NOX) can be monitized), because of higher fuel consumption, drag, friction, and limited manouverability",
         humanImpact: "Increased air emissions",
         // Somewhere on the immersed part of the hull
@@ -174,7 +191,19 @@ const annotations = [
         name: "Echo"
     },
     {
-        name: "Ballast water", shipTypes: {
+        name: "Ballast water",
+        description: `
+        <p>
+            Ballast water is used to ensure vessels stability and optimal vessel trim. Ballast water is pumped into ballast tanks when a ship has delivered cargo to a port and is departing with less cargo or no cargo. Ballast water is then transported and released at the next port-of-call where the ship picks up more cargo. When a ship is receiving or delivering cargo to a number of ports, it may release or take on a portion of ballast water at each port and the ship’s ballast water can contain a mix of waters from multiple ports.
+        </p>
+        <p>
+            Ballast water discharge has been identified as a main vector in spreading of invasive species, examples.
+        </p>
+        <p>
+            The recent global requirements to treat the water at ballasting and/or de-ballasting can contribute to contaminant load of (often halogenated) disinfection by-products.
+        </p>
+        `,
+        shipTypes: {
             tanker: {
                 labelPos: undefined,
                 cameraPos: undefined
@@ -208,6 +237,17 @@ const annotations = [
     },
     {
         name: "Cooling water",
+        description: `
+        <p>
+            Most vessels are dependent on water for cooling when the propulsion of ship generates excess heat in for example the engines, generators and compressors that must be diverted. Seawater is mostly used as cooling agent, being relatively low-tempered and constantly available.
+        </p>
+        <p>
+            To prevent biological growth in sea chest and piping, most cooling systems are connected to a marine growth protection system, where the most common systems release copper ions as a result of electrolysis.
+        </p>
+        <p>
+            There is limited data on how much copper that is being consumed and discharged to the marine environment but preliminary findings suggest…
+        </p>
+        `,
         // Seachest inlet
         shipTypes: {
             tanker: {
@@ -226,6 +266,14 @@ const annotations = [
     },
     {
         name: "Scrubber water",
+        description: `
+        <p>
+            Scrubbers are installed on ships to enable the vessel to continue to run on conventional high sulfur fuels while still being compliant to stricter regulations limiting the sulfur oxide content in shipss exhaust. In a scrubber, water is sprayed over the exhaust, reducing the concentration of SOx in the exhaust to compliant levels. The scrubber water is not only taking upp SOx, forming sulfuric acid and becoming highly acidic, but also scavenges other contaminants (e.g. metals and organic substances) that are instead discharged directly to the marine environment.
+        </p>
+        <p>
+            The use of scrubbers introduces a new contamination source to the marine environment with substantial adverse effects on marine organisms at very low concentrations (Figur D.2.3?). The use of a scrubber also implies a fuel penalty with 2-3%, with higher climate footprint compared to a ship without a scrubber.
+        </p>
+        `,
         environmentalImpact: "Marine pollution, air pollution, climate change. Media coverage: Marco Polo.",
         humanImpact: "Respiratory health issues",
         hazardIcons: [
@@ -235,6 +283,44 @@ const annotations = [
             "Corrosive"
         ],
         mapLayer: "SCRUB_W_CLOSED",
+        plotSpec: {
+            $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+            description: "Scrubber installed DNV AFI",
+            data: {values: [
+                {year: new Date("2007"), nShips: 2},
+                {year: new Date("2008"), nShips: 0},
+                {year: new Date("2009"), nShips: 5},
+                {year: new Date("2011"), nShips: 11},
+                {year: new Date("2012"), nShips: 24},
+                {year: new Date("2013"), nShips: 46},
+                {year: new Date("2014"), nShips: 122},
+                {year: new Date("2015"), nShips: 250},
+                {year: new Date("2016"), nShips: 321},
+                {year: new Date("2017"), nShips: 388},
+                {year: new Date("2018"), nShips: 693},
+                {year: new Date("2019"), nShips: 3139},
+                {year: new Date("2020"), nShips: 4337},
+                {year: new Date("2021"), nShips: 4564},
+                {year: new Date("2022"), nShips: 4859},
+                {year: new Date("2023"), nShips: 5353},
+                {year: new Date("2024"), nShips: 5998},
+                {year: new Date("2025"), nShips: 6456},
+                {year: new Date("2026"), nShips: 6585},
+                {year: new Date("2027"), nShips: 6633},
+                {year: new Date("2028"), nShips: 6634},
+            ]},
+            height: 200,
+            width: "container",
+            mark: "bar",
+            encoding: {
+                x: {field: "year", type: "temporal", title: "Year", timeUnit: "year"},
+                y: {field: "nShips", type: "quantitative", title: "Nr of ships (Data collected May 2025)"},
+                tooltip: [
+                    {field: "nShips", type: "quantitative", title: "Number of ships"},
+                    {field: "year", type: "temporal", title: "Year", timeUnit: "year"}
+                ]
+            }
+        },
         // Smokestack (end engine)
         shipTypes: {
             tanker: {
@@ -253,6 +339,11 @@ const annotations = [
     },
     {
         name: "Bilge water",
+        description: `
+        <p>
+            Bilge water is a mixture of water, oily fluids, lubricants and grease, cleaning fluids and other waste that accumulate in the lowest part of the vessel. The different onboard sources include engines, piping and other constructions throughout the machinery space. The discharge of bilge water is generally allowed as long as the oily content has been reduced to compliant levels in accordance with MARPOL Annex I.
+        </p>
+        `,
         // discharge point/aft
         shipTypes: {
             tanker: {
@@ -270,7 +361,13 @@ const annotations = [
         }
     },
     {
-        name: "Propeller shaft lubricants", shipTypes: {
+        name: "Propeller shaft lubricants",
+        description: `
+        <p>
+            The propeller shaft connects the main engine and the propeller through the stern tube. The stern tube goes through the ship hull and contains bearings, sealing and a lubrication system that may leak due to imperfect sealing and/or damage.
+        </p>
+        `,
+        shipTypes: {
             tanker: {
                 labelPos: undefined,
                 cameraPos: undefined
@@ -302,6 +399,20 @@ const annotations = [
     },
     {
         name: "Exhaust gas",
+        description: `
+        <p>
+            The majority of today's commercial fleet are still running on conventional fossil bunker fuels where heavy fuel oil (HFO), marine gas oil (MGO) and hybrid fuels (very low sulpfur fuel oils (VLSFO) and ultra-low sulfur fuel oils (ULSFO) holds ##% of the bunker fuel market share.
+        </p>
+        <p>
+            The exhaust gas from conventional combustion constitutes of greenhouse gases (e.g. carboon dioxide, nitrous oxide and water), nitrogen oxides (NOx), sulfur oxides (SOx), volatile organic compounds (VOCs) and particles (PM) consisting of soot/black carbon (including non-volatile organic substances) and ash (containing metals).
+        </p>
+        <p>
+            In addition of emitting greenhouse gases, where the commercial shipping fleet are estimated to account for ## % of the global CO2 emissions, the combustion products can contribute to acidification (CO2 and SOx), premature deaths from respiratory diseases (e.g. PM) and long- and short-range spreading of hazardous substances (e.g. metals and organic substances).
+        </p>
+        <p>
+            Some measures have been taken to reduce the negative impact of exhaust gases on air quality and human health, including the introduction of alternative fuels (e.g. methanol and LNG), selective catalytic reduction to reduce NOx and scrubbers to reduce SOx. However, the use of scrubbers has resulted in increased pressure on the marine environment and higher climate footprint (see Scrubber water).
+        </p>
+        `,
         environmentalImpact: "Atmospheric deposition",
         // Exhaust
         shipTypes: {
@@ -375,8 +486,8 @@ const annotations = [
                 cameraPos: undefined
             },
             container: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 3, -62),
+                cameraPos: new Vector3(10, 2, -65),
             }
         }
     },
