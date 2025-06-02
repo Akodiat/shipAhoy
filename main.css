@@ -184,6 +184,8 @@ body {
       top 0.1s ease 0s,
       left 0.1s ease 0s;
     cursor: pointer;
+      user-select: none!important;
+      -webkit-user-select: none; /* Safari */
   
   }
 
