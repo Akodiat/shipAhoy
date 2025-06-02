@@ -23,12 +23,31 @@ body {
 
   #acknowledgementButton {
     position: absolute;
-    margin: 10px;
+    margin: 20px;
     bottom: 0;
+        background: rgba(255,255,255,0.6)!important;
+        padding:10px 15px!important;
+        color:black!important;
+        font-size: 75%!important;
+        border-width: 0px!important;
+          border-radius:10px!important;
+       box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
+    0 0px 20px 0 rgba(0, 0, 0, 0.1)!important;
+  backdrop-filter: blur(10px);
+  z-index:10000;
   }
+
+    #acknowledgementButton:hover {
+
+        background: rgba(200,200,200,0.8)!important;
+  
+  }
+
+
 
   #body-text {
     font-size: 13px;
+
   }
 
   #threeContainer {
@@ -91,7 +110,7 @@ body {
   margin-top:20px!important;
     border-radius:10px!important;
        box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
-    0 0px 20px 0 rgba(0, 0, 0, 0.1)!important;;
+    0 0px 20px 0 rgba(0, 0, 0, 0.1)!important;
 }
 
 #plot {
@@ -148,11 +167,13 @@ body {
      line-height:1.0;
 
     margin-bottom:10px;
+     margin-top: 20px;
   }
 
   #textbox #body-text {
     font-family: var(--font-main);
     font-weight: 400;
+       
   }
 
   .annotation p {
@@ -254,4 +275,10 @@ body {
       right: auto;
       margin: 0 0 1rem auto;
     }
+
+      #acknowledgementButton {
+    position: absolute;
+top:10px!important;
+height:40px;
+  }
   }
