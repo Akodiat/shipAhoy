@@ -1,259 +1,220 @@
 @font-face {
-  font-family: 'OpenSans';
-  src: url('resources/OpenSans-Regular.ttf') format('truetype');
+  font-family: "OpenSans";
+  src: url("resources/OpenSans-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'OpenSans';
-  src: url('resources/OpenSans-Bold.ttf') format('truetype');
+  font-family: "OpenSans";
+  src: url("resources/OpenSans-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
-
 :root {
-  --font-main: 'OpenSans', sans-serif;
+  --font-main: "OpenSans", sans-serif;
 }
-
 body {
-    margin: 0;
-    overflow: hidden;
-  }
-
-  #acknowledgementButton {
-    position: absolute;
-    margin: 20px;
-    bottom: 0;
-        background: rgba(255,255,255,0.6)!important;
-        padding:10px 15px!important;
-        color:black!important;
-        font-size: 75%!important;
-        border-width: 0px!important;
-          border-radius:10px!important;
-       box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
-    0 0px 20px 0 rgba(0, 0, 0, 0.1)!important;
+  margin: 0;
+  overflow: hidden;
+}
+#acknowledgementButton {
+  position: absolute;
+  margin: 20px;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.6) !important;
+  padding: 10px 15px !important;
+  color: black !important;
+  font-size: 75% !important;
+  border-width: 0px !important;
+  border-radius: 10px !important;
+  box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
+    0 0px 20px 0 rgba(0, 0, 0, 0.1) !important;
   backdrop-filter: blur(10px);
-  z-index:10000;
-  }
-
-    #acknowledgementButton:hover {
-
-        background: rgba(200,200,200,0.8)!important;
-
-  }
-
-
-
-  #body-text {
-    font-size: 13px;
-
-  }
-
-  #threeContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
+  z-index: 10000;
+}
+#acknowledgementButton:hover {
+  background: rgba(200, 200, 200, 0.8) !important;
+}
+#body-text {
+  font-size: 13px;
+}
+#threeContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+#infobox {
+  position: absolute;
+  top: 5vh;
+  right: 20px;
+  width: 30vw;
+  max-height: 90vh;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  border-width: 1px 0 0 0;
+  border-color: white;
+  border-style: solid;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+@media (max-width: 1300px) {
   #infobox {
-    position: absolute;
-    top: 5vh;
-    right: 20px;
-    width: 30vw;
-    max-height: 90vh;
-    padding: 25px;
-    background: rgba(255,255,255,0.6);
-    border-radius: 20px;
-    border-width:1px 0 0 0;
-    border-color:white;
-    border-style:solid;
-    flex-direction: column;
-    gap: 10px;
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    backdrop-filter: blur(10px);
-    z-index:100;
-    /*   transition: all 0.1s ease-in-out; */
-
-  }
-
-    @media (max-width: 1300px) {
-        #infobox {
     position: absolute;
     top: 0px;
     right: 0px;
     width: 35vw;
     max-height: 100vh;
-      min-height: 100vh;
+    min-height: 100vh;
     padding: 25px;
-    padding-top:30px;
+    padding-top: 30px;
     border-radius: 0px;
-        border-width:0px 0 0 0;
-
-    }
+    border-width: 0px 0 0 0;
   }
-
-  #infobox::-webkit-scrollbar {
-    display: none;
-  }
-
-  #infobox > * {
+}
+#infobox::-webkit-scrollbar {
+  display: none;
+}
+#infobox > * {
   flex-shrink: 0;
   display: block;
 }
-
-.pico article{
-  margin-top:20px!important;
-    border-radius:10px!important;
-       box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
-    0 0px 20px 0 rgba(0, 0, 0, 0.1)!important;
+.pico article {
+  margin-top: 20px !important;
+  border-radius: 10px !important;
+  box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
+    0 0px 20px 0 rgba(0, 0, 0, 0.1) !important;
 }
-
 #plot {
   width: auto;
   height: 250px;
-      border-radius:10px;
-    overflow:hidden;
-     box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
     0 0px 20px 0 rgba(0, 0, 0, 0.1);
-    background-color:white;
+  background-color: white;
 }
-
 #map {
-  margin-top:20px;
-    height: 500px;
-    width:auto;
-    border-radius:10px;
-    overflow:hidden;
-     box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
+  margin-top: 20px;
+  height: 500px;
+  width: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
     0 0px 20px 0 rgba(0, 0, 0, 0.1);
 }
-
 #map .leaflet-control-attribution {
   font-size: 10px;
 }
-
 #overviewReturnButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent url("resources/close.svg") no-repeat center;
+  background-size: 24px 24px;
+  border: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+#textbox h2 {
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+#textbox h3 {
+  font-family: var(--font-main);
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+#textbox #body-text {
+  font-family: var(--font-main);
+  font-weight: 400;
+}
+.annotation p {
+  font-family: var(--font-main);
+  font-weight: 700;
+  user-select: none !important;
+  -webkit-user-select: none;
+  /* Safari */
+}
+#overviewReturnButton:hover {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08), 0 0 6px rgba(0, 0, 0, 0.15);
+}
+.annotation {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  margin-left: 20px;
+  padding: 15px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.5) -30%,
+    rgba(0, 0, 0, 0.2)
+  );
+  color: white;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  font-size: 20px;
+  line-height: 1;
+  transition: opacity 2s, top 0.1s ease 0s, left 0.1s ease 0s;
+}
+.info.legend {
+  padding: 6px 8px;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  line-height: 24px;
+  color: #333;
+}
+.info.legend i {
+  display: inline-block;
+}
+@media (max-width: 768px) {
+  body {
+    overflow: auto;
+  }
+  #infobox {
+    position: static;
+    width: auto;
+    max-height: none;
+    margin-top: 1rem;
+  }
+  #plot {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+  }
+  #map {
+    width: 100%;
+    height: 300px;
+  }
+  #overviewReturnButton {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 0 0 1rem auto;
+  }
+  #acknowledgementButton {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent url('resources/close.svg') no-repeat center;
-    background-size: 24px 24px;
-    border: none;
-    width: 40px;
+    top: 10px !important;
     height: 40px;
-    cursor: pointer;
-    text-indent: -9999px;
-    overflow: hidden;
   }
-
-  #textbox h2 {
-    font-family: var(--font-main);
-    font-weight: 700;
-    font-size:25px;
-    line-height:1.0;
-
-    margin-bottom:10px;
-  }
-
-    #textbox h3 {
-    font-family: var(--font-main);
-    font-weight: 300;
-    font-size:22px;
-     line-height:1.0;
-
-    margin-bottom:10px;
-     margin-top: 20px;
-  }
-
-  #textbox #body-text {
-    font-family: var(--font-main);
-    font-weight: 400;
-
-  }
-
-  .annotation p {
-    font-family: var(--font-main);
-    font-weight: 700;
-      user-select: none!important;
-      -webkit-user-select: none; /* Safari */
-  }
-
-  #overviewReturnButton:hover {
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08), 0 0 6px rgba(0, 0, 0, 0.15);
-  }
-
-  .annotation {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    margin-left: 20px;
-    padding: 15px;
-    background: linear-gradient(180deg, rgba(0,0,0,0.5) -30%, rgba(0,0,0,0.2));
-    color: white;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
-    font-size: 20px;
-    line-height: 1.0;
-    transition:
-      opacity 2s,
-      top 0.1s ease 0s,
-      left 0.1s ease 0s;
-
-  }
-
-  .info.legend {
-    padding: 6px 8px;
-    background: white;
-    background: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    line-height: 24px;
-    color: #333;
-  }
-  .info.legend i {
-      display: inline-block;
-  }
-
-  @media (max-width: 768px) {
-    body {
-      overflow: auto;
-    }
-
-    #infobox {
-      position: static;
-      width: auto;
-      max-height: none;
-      margin-top: 1rem;
-    }
-
-    #plot {
-      width: 100%;
-      max-width: 500px;
-      height: auto;
-    }
-
-    #map {
-        width: 100%;
-        height: 300px;
-      }
-
-    #overviewReturnButton {
-      position: relative;
-      top: auto;
-      right: auto;
-      margin: 0 0 1rem auto;
-    }
-
-      #acknowledgementButton {
-    position: absolute;
-top:10px!important;
-height:40px;
-  }
-  }
+}
