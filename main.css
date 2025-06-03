@@ -45,6 +45,15 @@ body {
   width: 100%;
   height: 100%;
 }
+#titlebox {
+  position: absolute;
+  max-width: 300px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  border-width: 1px 0 0 0;
+  border-color: white;
+  backdrop-filter: blur(10px);
+}
 #infobox {
   position: absolute;
   top: 5vh;
