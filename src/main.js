@@ -9,13 +9,14 @@ import {MapView} from "./map.js";
 import {PlotView} from "./plot.js";
 import {annotations} from "./annotation.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
+import {ParticleSystem} from "./particles.js";
 CameraControls.install({THREE: THREE});
 
 let camera, scene, labelScene, renderer, mixer;
 let model;
 let controls;
 let stats;
-let water, sun;
+let water, sun, smoke;
 let mapView, plotView;
 let postProcessing;
 
@@ -63,8 +64,12 @@ function init() {
 
     sun = new THREE.Vector3();
 
-    const waterGeometry =  new THREE.CircleGeometry( 5000, 3 );
     const textureLoader = new THREE.TextureLoader();
+
+    smoke = new ParticleSystem(10, 25, undefined, new THREE.Vector3(0,1,-0.5), textureLoader);
+    scene.add(smoke);
+
+    const waterGeometry =  new THREE.CircleGeometry( 5000, 3 );
     const waterNormals = textureLoader.load("resources/waternormals.jpg");
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 
@@ -152,6 +157,8 @@ function init() {
             if(child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
+
+                console.log(child.name)
             }
         });
 
@@ -168,6 +175,9 @@ function init() {
             "resources/label.png",
             texture => texture.colorSpace = THREE.SRGBColorSpace
         );
+
+        // Position at container ship smokestack
+        smoke.position.set(0.5, 45, -57);
 
         for (const annotation of annotations) {
             if (annotation.spec.shipTypes === undefined ||
@@ -328,8 +338,11 @@ function animate() {
         stats.update();
     }
 
+
     const delta = clock.getDelta();
     const controlsUpdated = controls.update(delta);
+
+    smoke.update(delta);
 
     if (controlsUpdated) {
         const style = document.getElementById("threeContainer").style;
@@ -364,7 +377,7 @@ function animate() {
         model.quaternion.setFromEuler(e);
 
         if (mixer) {
-            mixer.update(clock.getDelta());
+            mixer.update(delta);
         }
 
         //Render scene
