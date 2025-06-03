@@ -236,6 +236,14 @@ const annotations = [
             The recent global requirements to treat the water at ballasting and/or de-ballasting can contribute to contaminant load of (often halogenated) disinfection by-products.
         </p>
         `,
+        images: [
+            {
+                header: "Ballast water discharge hotspots in the EU 2018",
+                path: "resources/images/BalW_discharge_hotspot_EU_2018.png",
+                description: "Ballast water discharge in European seas in 2018. Bar height indicate the magnitude of discharge. Bars are calculated for 0.5×0.5 deg grid cells. Dataset metadata is available at: https://metadata.helcom.fi/geonetwork/srv/eng/catalog.search#/metadata/df0b81ff-824a-4550-8948-fb71221baacd.",
+                attribution: ""
+            }
+        ],
         shipTypes: {
             tanker: {
                 labelPos: undefined,
