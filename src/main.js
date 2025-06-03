@@ -263,7 +263,16 @@ function init() {
             document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
             document.getElementById("infobox").style.display = "flex";
             a.onSelect();
+
             plotView.plot(a);
+
+            const legend = document.getElementById("plotCaption");
+            if (a.spec.plotCaption) {
+                legend.style.display = "block";
+                legend.innerHTML = a.spec.plotCaption;
+            } else {
+                legend.style.display = "none";
+            }
 
             // Neccesary in case we have a touch device
             // where pointer is never moved.

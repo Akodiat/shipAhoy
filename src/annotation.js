@@ -332,6 +332,7 @@ const annotations = [
             }
         ],
         mapLayer: "SCRUB_W_CLOSED",
+        plotCaption: "Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from Alternative Fuels Insights - DNV (Accessed May 20259. https://afi.dnvgl.com/Statistics.",
         plotSpec: {
             $schema: "https://vega.github.io/schema/vega-lite/v5.json",
             description: "Scrubber installed DNV AFI",
