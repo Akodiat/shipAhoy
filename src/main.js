@@ -11,7 +11,7 @@ import {annotations} from "./annotation.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
 CameraControls.install({THREE: THREE});
 
-let camera, scene, renderer, mixer;
+let camera, scene, labelScene, renderer, mixer;
 let model;
 let controls;
 let stats;
@@ -21,7 +21,14 @@ let postProcessing;
 
 const threeContainer = document.getElementById("threeContainer");
 
+const annotationLabel = document.getElementById("annotationLabel");
+let highlightedAnnotation;
+const annotationSizeDefault = 0.03;
+const annotationSizeHighlight = 0.035;
+const annotationSprites = new THREE.Group();
 const clock = new THREE.Clock();
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
 
 init();
 
@@ -52,6 +59,7 @@ function init() {
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 5000);
 
     scene = new THREE.Scene();
+    labelScene = new THREE.Scene();
 
     sun = new THREE.Vector3();
 
@@ -154,11 +162,41 @@ function init() {
         }
 
         scene.add(model);
+
+        // Setup annotations
+        const spriteTexture = textureLoader.load(
+            "resources/label.png",
+            texture => texture.colorSpace = THREE.SRGBColorSpace
+        );
+
+        for (const annotation of annotations) {
+            if (annotation.spec.shipTypes === undefined ||
+                annotation.spec.shipTypes[model.name] === undefined ||
+                annotation.spec.shipTypes[model.name].labelPos === undefined
+            ) {
+                continue;
+            }
+            annotation.sprite = new THREE.Sprite(
+                new THREE.SpriteMaterial({
+                    map: spriteTexture,
+                    color: 0xFFFFFF,
+                    transparent: true,
+                    sizeAttenuation: false,
+                    alphaTest: 0.5
+                }
+            ));
+            annotation.sprite.annotation = annotation;
+            annotation.sprite.position.copy(annotation.spec.shipTypes[model.name].labelPos);
+            annotation.sprite.scale.setScalar(annotationSizeDefault);
+            annotationSprites.add(annotation.sprite);
+        }
+        labelScene.add(annotationSprites);
     });
 
     // post processing
 
-    const scenePass = pass( scene, camera );
+    const labelPass = pass(labelScene, camera);
+    const scenePass = pass(scene, camera);
     const scenePassColor = scenePass.getTextureNode();
     const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(.3, .5);
 
@@ -170,7 +208,7 @@ function init() {
     const vignette = screenUV.distance( .5 ).mul( 1.35 ).oneMinus();
 
     postProcessing = new THREE.PostProcessing(renderer);
-    postProcessing.outputNode = waterMask.select( scenePassColorBlurred, scenePassColorBlurred.mul(color(0x7E95A5)).mul(vignette));
+    postProcessing.outputNode = waterMask.select(scenePassColorBlurred, scenePassColorBlurred.mul(color(0x7E95A5)).mul(vignette)).add(labelPass);
 
     // FPS stats shown in upper-left corner
     // Only relevant for debugging, can remove later
@@ -199,33 +237,76 @@ function init() {
     // Hide infobox until an annotation is clicked
     document.getElementById("infobox").style.display = "none";
 
-    // Setup annotations
-    for (const annotation of annotations) {
-        annotation.DOM.addEventListener("click", () => {
-            onWindowResize();
+
+    // Handle resizing
+
+    window.addEventListener("resize", onWindowResize);
+
+    document.addEventListener('pointermove', onPointerMove);
+    renderer.domElement.addEventListener('click', ()=>{
+        if (highlightedAnnotation) {
+            const a = highlightedAnnotation.annotation;
             if (!mapView.fullyLoaded) {
                 // Don't do anyting until map data is loaded
                 return;
             }
             controls.setLookAt(
-                ...annotation.spec.shipTypes[model.name].cameraPos.toArray(),
-                ...annotation.spec.shipTypes[model.name].labelPos.toArray(),
+                ...a.spec.shipTypes[model.name].cameraPos.toArray(),
+                ...a.spec.shipTypes[model.name].labelPos.toArray(),
                 true
             );
-            document.getElementById("textbox").innerHTML = `<h2>${annotation.spec.name}</h2>` + `<div id="body-text">${annotation.content}</div>`;
+            document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
             document.getElementById("infobox").style.display = "flex";
-            annotation.onSelect();
+            a.onSelect();
 
-            if (annotation.spec.plotSpec !== undefined) {
-                plotView.plot(annotation);
+            if (a.spec.plotSpec !== undefined) {
+                plotView.plot(a);
             }
-        });
+        }
+    })
+}
+
+function onPointerMove(event) {
+    if (highlightedAnnotation) {
+        highlightedAnnotation.material.color.set('#ffffff');
+        highlightedAnnotation.scale.setScalar(annotationSizeDefault);
+        renderer.domElement.style.cursor = "";
+        annotationLabel.style.display = "none";
+        highlightedAnnotation = undefined;
     }
 
+    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
-    // Handle resizing
+    raycaster.setFromCamera(pointer, camera);
 
-    window.addEventListener("resize", onWindowResize);
+    const intersects = raycaster.intersectObject(annotationSprites, true);
+
+    if (intersects.length > 0) {
+        const res = intersects.filter(res => res && res.object)[0];
+
+        if (res && res.object) {
+            renderer.domElement.style.cursor = "pointer"
+            highlightedAnnotation = res.object;
+            highlightedAnnotation.scale.setScalar(annotationSizeHighlight);
+            highlightedAnnotation.material.color.set('#f00');
+
+            annotationLabel.innerHTML = highlightedAnnotation.annotation.spec.name;
+            annotationLabel.style.display = "block";
+
+            const p = highlightedAnnotation.position.clone().project(camera);
+
+            p.x = Math.round((0.5 + p.x / 2) * (
+                renderer.domElement.width / window.devicePixelRatio
+            ));
+            p.y = Math.round((0.5 - p.y / 2) * (
+                renderer.domElement.height / window.devicePixelRatio
+            ));
+
+            annotationLabel.style.top = `${p.y}px`;
+            annotationLabel.style.left = `${p.x}px`;
+        }
+    }
 }
 
 function onWindowResize() {
@@ -273,15 +354,12 @@ function animate() {
         );
         model.quaternion.setFromEuler(e);
 
-        for (const annotation of annotations) {
-            annotation.update(renderer.domElement, camera, model);
-        }
-
         if (mixer) {
             mixer.update(clock.getDelta());
         }
 
+        //Render scene
         postProcessing.render();
+        //renderer.render(scene, camera);
     }
-
 }

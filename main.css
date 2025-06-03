@@ -40,7 +40,7 @@ body {
     #acknowledgementButton:hover {
 
         background: rgba(200,200,200,0.8)!important;
-  
+
   }
 
 
@@ -76,7 +76,7 @@ body {
     scrollbar-width: none;
     -ms-overflow-style: none;
     backdrop-filter: blur(10px);
-    z-index:100000;
+    z-index:100;
     /*   transition: all 0.1s ease-in-out; */
 
   }
@@ -173,7 +173,7 @@ body {
   #textbox #body-text {
     font-family: var(--font-main);
     font-weight: 400;
-       
+
   }
 
   .annotation p {
@@ -194,47 +194,18 @@ body {
     left: 0;
     z-index: 1;
     margin-left: 20px;
-    padding: 0px 15px;
-    color: rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0);
-    border-radius: .5em;
-    font-size: 14px;
+    padding: 15px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.5) -30%, rgba(0,0,0,0.2));
+    color: white;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    font-size: 20px;
     line-height: 1.0;
     transition:
       opacity 2s,
       top 0.1s ease 0s,
       left 0.1s ease 0s;
-    cursor: pointer;
-      user-select: none!important;
-      -webkit-user-select: none; /* Safari */
-  
-  }
 
-  .annotation::before {
-    content: var(--content);
-    position: absolute;
-    top: 0px;
-    left: -50px;
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    border: 3px solid #fff;
-    color: rgba(247, 247, 247, 0.9);
-    border-radius: 50%;
-    line-height: 15px;
-    text-align: center;
-    background: rgba(153 48 48 / 0.8);
-    cursor: pointer;
-    align-content: center;
-         user-select: none!important;
-      -webkit-user-select: none; /* Safari */
-  }
-
-  .annotation:hover {
-    background: linear-gradient(180deg, rgba(0,0,0,0.5) -30%, rgba(0,0,0,0.2));
-    color: white;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
   }
 
   .info.legend {

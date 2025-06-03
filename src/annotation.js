@@ -11,12 +11,6 @@ class Annotation {
      */
     constructor(spec) {
         this.spec = spec;
-        this.DOM = document.createElement("div");
-        this.DOM.classList.add("annotation");
-        this.DOM.innerHTML = `<p>${spec.name}</p>`;
-        document.getElementById("main").appendChild(this.DOM);
-
-        this.DOM.style.setProperty("--content", "\"!\"");
 
         this.content = "";
 
@@ -51,39 +45,6 @@ class Annotation {
         }
 
         this.onSelect = ()=>{};
-    }
-    update(canvas, camera, shipModel) {
-        if (this.spec.shipTypes === undefined) {
-            this.DOM.style.display = "none";
-            return;
-        }
-        const modelSpecs = this.spec.shipTypes[shipModel.name];
-        if (modelSpecs === undefined || modelSpecs.labelPos === undefined) {
-            this.DOM.style.display = "none";
-            return;
-        }
-        this.DOM.style.display = "block";
-        const p = modelSpecs.labelPos.clone().project(camera);
-
-        p.x = Math.round((0.5 + p.x / 2) * (canvas.width / window.devicePixelRatio));
-        p.y = Math.round((0.5 - p.y / 2) * (canvas.height / window.devicePixelRatio));
-
-        this.DOM.style.top = `${p.y}px`;
-        this.DOM.style.left = `${p.x}px`;
-
-        const raycaster = new Raycaster(
-            camera.position,
-            modelSpecs.labelPos.clone().sub(camera.position).normalize()
-        );
-
-        const closestIntersect = raycaster.intersectObject(shipModel);
-
-        if (closestIntersect.length > 0) {
-            const boxDist = closestIntersect[0].point.distanceTo(camera.position);
-            const labelDist =  modelSpecs.labelPos.distanceTo(camera.position);
-            const spriteBehindObject = labelDist - boxDist > 5;
-            this.DOM.style.opacity = spriteBehindObject ? 0.125 : 1;
-        }
     }
 }
 
