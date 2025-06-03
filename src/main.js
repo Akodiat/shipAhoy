@@ -210,11 +210,6 @@ function init() {
     postProcessing = new THREE.PostProcessing(renderer);
     postProcessing.outputNode = waterMask.select(scenePassColorBlurred, scenePassColorBlurred.mul(color(0x7E95A5)).mul(vignette)).add(labelPass);
 
-    // FPS stats shown in upper-left corner
-    // Only relevant for debugging, can remove later
-    stats = new Stats();
-    document.body.appendChild(stats.dom);
-
     // Camera controls
     controls = new CameraControls(camera, renderer.domElement);
 
@@ -263,7 +258,21 @@ function init() {
                 plotView.plot(a);
             }
         }
-    })
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "q") {
+            // FPS stats shown in upper-left corner
+            // Only relevant for debugging
+            if (stats) {
+                document.body.removeChild(stats.dom);
+                stats = undefined;
+            } else {
+                stats = new Stats();
+                document.body.appendChild(stats.dom);
+            }
+        }
+    });
 }
 
 function onPointerMove(event) {
@@ -317,7 +326,9 @@ function onWindowResize() {
 }
 
 function animate() {
-    stats.update();
+    if (stats) {
+        stats.update();
+    }
 
     const delta = clock.getDelta();
     const controlsUpdated = controls.update(delta);
