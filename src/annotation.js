@@ -230,7 +230,7 @@ const annotations = [
             Ballast water is used to ensure vessels stability and optimal vessel trim. Ballast water is pumped into ballast tanks when a ship has delivered cargo to a port and is departing with less cargo or no cargo. Ballast water is then transported and released at the next port-of-call where the ship picks up more cargo. When a ship is receiving or delivering cargo to a number of ports, it may release or take on a portion of ballast water at each port and the ship’s ballast water can contain a mix of waters from multiple ports.
         </p>
         <p>
-            Ballast water discharge has been identified as a main vector in spreading of invasive species, examples.
+            Ballast water discharge has been identified as a main vector in spreading of invasive species.
         </p>
         <p>
             The recent global requirements to treat the water at ballasting and/or de-ballasting can contribute to contaminant load of (often halogenated) disinfection by-products.
@@ -246,8 +246,8 @@ const annotations = [
                 cameraPos: undefined
             },
             container: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(13, 14, 92),
+                cameraPos: new Vector3(20, 14, 92)
             }
         }
     },
@@ -292,8 +292,8 @@ const annotations = [
                 cameraPos: undefined
             },
             container: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(13.3245, 4.58666, -26.1653),
+                cameraPos: new Vector3(15, 7, -26.1653)
             }
         }
     },

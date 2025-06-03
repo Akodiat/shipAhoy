@@ -368,11 +368,11 @@ function animate() {
 
     if (model) {
         const t = clock.getElapsedTime();
-        model.position.y = Math.sin(t) * 0.05;
+        model.position.y = Math.sin(t) * 0.01;
         const e = new THREE.Euler(
-            Math.sin(t)* .015,
+            Math.sin(t)* .001,
             0,
-            Math.cos(t)* .01
+            Math.cos(t)* .001
         );
         model.quaternion.setFromEuler(e);
 
