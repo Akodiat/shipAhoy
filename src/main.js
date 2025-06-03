@@ -223,6 +223,9 @@ function init() {
     // Camera controls
     controls = new CameraControls(camera, renderer.domElement);
 
+    // Don't move the camera further than 500 m away
+    controls.maxDistance = 500;
+
     const defaultLookat = [
         75, 50, 150, // Position
         -20, 5, 20   // Target
