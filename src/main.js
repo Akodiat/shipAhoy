@@ -247,8 +247,8 @@ function init() {
 
     window.addEventListener("resize", onWindowResize);
 
-    document.addEventListener('pointermove', onPointerMove);
-    renderer.domElement.addEventListener('click', ()=>{
+    document.addEventListener("pointermove", onPointerMove);
+    renderer.domElement.addEventListener("click", event=>{
         if (highlightedAnnotation) {
             const a = highlightedAnnotation.annotation;
             if (!mapView.fullyLoaded) {
@@ -263,8 +263,19 @@ function init() {
             document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
             document.getElementById("infobox").style.display = "flex";
             a.onSelect();
-
             plotView.plot(a);
+
+            // Neccesary in case we have a touch device
+            // where pointer is never moved.
+            highlightedAnnotation.material.color.set('#ffffff');
+            highlightedAnnotation.scale.setScalar(annotationSizeDefault);
+            renderer.domElement.style.cursor = "";
+            annotationLabel.style.display = "none";
+            highlightedAnnotation = undefined;
+        } else {
+            // Neccesary in case we have a touch device
+            // where pointer is never moved.
+            onPointerMove(event);
         }
     });
 
