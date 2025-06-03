@@ -23,6 +23,13 @@ class PlotView {
 
     plot(annotation) {
         const spec = annotation.spec.plotSpec;
+        const element = document.getElementById(this.elementId);
+        if (spec === undefined) {
+            // Hide plot element if no plot is specified
+            element.style.display = "none";
+            return;
+        }
+        element.style.display = "block";
         if (spec.data === undefined) {
             // Append data to specification
             spec.data = {values: this.data};

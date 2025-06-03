@@ -254,9 +254,7 @@ function init() {
             document.getElementById("infobox").style.display = "flex";
             a.onSelect();
 
-            if (a.spec.plotSpec !== undefined) {
-                plotView.plot(a);
-            }
+            plotView.plot(a);
         }
     });
 

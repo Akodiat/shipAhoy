@@ -1,4 +1,4 @@
-import {Vector3, Raycaster} from "three";
+import {Vector3} from "three";
 
 class Annotation {
     /**
