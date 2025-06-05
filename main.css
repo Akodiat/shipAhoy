@@ -46,14 +46,32 @@ body {
   height: 100%;
 }
 #titlebox {
+  Color:white!important;
   position: absolute;
-  max-width: 300px;
-  background: rgba(255, 255, 255, 0.6);
+  max-width: 350px;
+  background:transparent;
+/*   background: rgba(255, 255, 255, 0.6);
   border-radius: 20px;
   border-width: 1px 0 0 0;
   border-color: white;
-  backdrop-filter: blur(10px);
+  border-style:solid;
+  backdrop-filter: blur(10px); */
+  left:20px;
+  box-shadow: none!important;
 }
+
+#titlebox h1{
+  color:white;
+font-size:60px;
+}
+
+#titlebox p{
+  color:white;
+font-size: 16px;
+line-height:1.1;
+font-weight:600;
+}
+
 #infobox {
   position: absolute;
   top: 5vh;
