@@ -59,6 +59,10 @@ body {
   left:20px;
   box-shadow: none!important;
   top:-20px;
+    user-select: none !important;
+  -webkit-user-select: none;
+  pointer-events:none;
+
 }
 
 #titlebox h1{
