@@ -58,6 +58,7 @@ body {
   backdrop-filter: blur(10px); */
   left:20px;
   box-shadow: none!important;
+  top:-20px;
 }
 
 #titlebox h1{
@@ -68,7 +69,7 @@ font-size:60px;
 #titlebox p{
   color:white;
 font-size: 16px;
-line-height:1.1;
+line-height:1.2;
 font-weight:600;
 }
 
