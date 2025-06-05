@@ -5,7 +5,7 @@ Web visualisation available at: [akodiat.github.io/shipAhoy/](https://akodiat.gi
 # Contribute
 To run locally, start a static webserver in this directory. If you have python 3, you can type:
 ```bash
-python -m http.server 8000
+python3 -m http.server 8000
 ```
 
 A full list of oneliners is available here:
