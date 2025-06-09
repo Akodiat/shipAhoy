@@ -435,18 +435,7 @@ const annotations = [
                 cameraPos: new Vector3(10, 2, -65),
             }
         },
-        mapLayer: "STERN_TUBE",
-        plotSpec: {
-            $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-            description: "Stern tube oil emission over time",
-            height: 200,
-            width: "container",
-            mark: "area",
-            encoding: {
-                x: {field: "date", type: "temporal", title: ""},
-                y: {field: "STERN_TUBE", type: "quantitative", title: "Daily stern tube oil leakage (L)"}
-            }
-        }
+        mapLayer: "STERN_TUBE"
     },
     {
         name: "Solid waste (food waste)"
