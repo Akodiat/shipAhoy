@@ -78,6 +78,7 @@ const annotations = [
     },
     {
         name: "Propoulsion momentum",
+        description: "In 2023, the north-western Mediterranean Sea was designated a Particularly Sensitive Sea Area by the International Maritime Organization (IMO) with associated protective measures to reduce the number of ship strikes of whales (MEPC 380(80)).",
         environmentalImpact: "Ship strikes of marine mammals, groundings",
         // At the (bulbous) bow:
         shipTypes: {
