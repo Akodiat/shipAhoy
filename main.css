@@ -59,7 +59,7 @@ body {
   left:20px;
   box-shadow: none!important;
   top:-20px;
-    user-select: none !important;
+  user-select: none !important;
   -webkit-user-select: none;
   pointer-events:none;
 
@@ -67,14 +67,26 @@ body {
 
 #titlebox h1{
   color:white;
-font-size:60px;
+  font-size:60px;
 }
 
 #titlebox p{
   color:white;
-font-size: 16px;
-line-height:1.2;
-font-weight:600;
+  font-size: 16px;
+  line-height:1.2;
+  font-weight:600;
+}
+
+#titlebox small{
+  color:white;
+  font-size: 14px;
+  line-height:1.2;
+  font-weight:400;
+  display: block;
+}
+
+#titlebox a{
+  pointer-events: all;
 }
 
 #infobox {
