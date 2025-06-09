@@ -272,7 +272,7 @@ const annotations = [
             To prevent biological growth in sea chest and piping, most cooling systems are connected to a marine growth protection system, where the most common systems release copper ions as a result of electrolysis.
         </p>
         <p>
-            There is limited data on how much copper that is being consumed and discharged to the marine environment but preliminary findings suggest…
+            There is limited data on how much copper that is being consumed and discharged to the marine environment, but recent findings suggest that effective dosages need to be 2–3 orders of magnitude higher than manufacturer recommendations. Effective dosages have been reported to be in the range 156–1740 μg L−1, compared to the 2gL-1 recommended by the manufacturers”. https://www.sciencedirect.com/science/article/abs/pii/S0025326X25002462
         </p>
         `,
         // Seachest inlet
