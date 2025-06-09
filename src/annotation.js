@@ -444,19 +444,18 @@ const annotations = [
         name: "Exhaust gas",
         description: `
         <p>
-            The majority of today's commercial fleet are still running on conventional fossil bunker fuels where heavy fuel oil (HFO), marine gas oil (MGO) and hybrid fuels (very low sulpfur fuel oils (VLSFO) and ultra-low sulfur fuel oils (ULSFO) holds ##% of the bunker fuel market share.
+            The majority of today's commercial fleet are still running on conventional fossil bunker fuels where heavy fuel oil (HFO), marine gas oil (MGO) and hybrid fuels (very low sulpfur fuel oils (VLSFO) and ultra-low sulfur fuel oils (ULSFO) holds >99% of the fuel market share of the operating fleet (see bar chart below, and note the non-linear scale).
         </p>
         <p>
             The exhaust gas from conventional combustion constitutes of greenhouse gases (e.g. carboon dioxide, nitrous oxide and water), nitrogen oxides (NOx), sulfur oxides (SOx), volatile organic compounds (VOCs) and particles (PM) consisting of soot/black carbon (including non-volatile organic substances) and ash (containing metals).
         </p>
         <p>
-            In addition of emitting greenhouse gases, where the commercial shipping fleet are estimated to account for ## % of the global CO2 emissions, the combustion products can contribute to acidification (CO2 and SOx), premature deaths from respiratory diseases (e.g. PM) and long- and short-range spreading of hazardous substances (e.g. metals and organic substances).
+            In addition of emitting greenhouse gases, where the commercial shipping fleet are estimated to account for almost 3% of the global CO2 emissions, the combustion products can contribute to acidification (CO2 and SOx), premature deaths from respiratory diseases (e.g. PM) and long- and short-range spreading of hazardous substances (e.g. metals and organic substances).
         </p>
         <p>
             Some measures have been taken to reduce the negative impact of exhaust gases on air quality and human health, including the introduction of alternative fuels (e.g. methanol and LNG), selective catalytic reduction to reduce NOx and scrubbers to reduce SOx. However, the use of scrubbers has resulted in increased pressure on the marine environment and higher climate footprint (see Scrubber water).
         </p>
         `,
-        environmentalImpact: "Atmospheric deposition",
         // Exhaust
         shipTypes: {
             tanker: {
@@ -471,7 +470,44 @@ const annotations = [
                 labelPos: new Vector3(0.5, 40, -58),
                 cameraPos: new Vector3(25, 40, -58)
             }
-        }
+        },
+        plotSpec: {
+            $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+            data: {values: [
+                {fuel: "Conventional fuel", percentage: 99.12},
+                {fuel: "LNG", percentage: 0.67},
+                {fuel: "LPG", percentage: 0.14},
+                {fuel: "Methanol", percentage: 0.06},
+                {fuel: "Hydrogen", percentage: 0.01},
+                {fuel: "Ammonia", percentage: 0}
+            ]},
+            height: 200,
+            width: "container",
+            encoding: {
+                x: {field: "percentage", type: "quantitative", title: "Fuel market share (%)", scale: {type: "symlog"}},
+                y: {field: "fuel", type: "ordinal", title: "Fuel type", sort: {field: "percentage", order: "descending"}},
+                tooltip: [
+                    {field: "fuel", type: "ordinal", title: "Fuel type"},
+                    {field: "percentage", title: "Fuel market share (%)"}
+                ]
+            },
+            layer: [
+                {
+                    mark: "bar"
+                },
+                {
+                    mark: {
+                        type: "text",
+                        align: {expr: "datum.percentage < 10 ? 'left' : 'right'"},
+                        dx: {expr: "datum.percentage < 10 ? 4 : -4"}
+                    },
+                    encoding: {
+                        text: {field: "percentage", type: "quantitative"}
+                    }
+                }
+            ]
+        },
+        plotCaption: "Fuel market shares of the operating fleet"
     },
     {
         name: "Illumination"
