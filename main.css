@@ -89,6 +89,10 @@ body {
   pointer-events: all;
 }
 
+a {
+  cursor: pointer;
+}
+
 #infobox {
   position: absolute;
   top: 5vh;

@@ -292,10 +292,20 @@ function init() {
     });
 }
 
+/**
+ * Mathematically correct modulus function
+ * @param {number} n
+ * @param {number} m
+ * @returns {number} n % m
+ */
 function mod(n, m) {
   return ((n % m) + m) % m;
 }
 
+/**
+ * Step (either forward or backward) through the annotations
+ * @param {number} step
+ */
 function advanceAnnotation(step) {
     if (!mapView.fullyLoaded) {
         // Don't do anyting until map data is loaded
@@ -309,6 +319,13 @@ function advanceAnnotation(step) {
         selectedAnnotation = as[mod(currentIdx+step, as.length)];
     }
     selectAnnotation(selectedAnnotation.annotation);
+}
+
+window.selectAnnotationByName = (annotationName) => {
+    const sprite = annotationSprites.children.find(
+        a=>a.annotation.spec.name === annotationName
+    );
+    selectAnnotation(sprite.annotation);
 }
 
 function selectAnnotation(a) {
@@ -330,12 +347,6 @@ function selectAnnotation(a) {
     } else {
         legend.style.display = "none";
     }
-
-    /*
-    const params = new URLSearchParams(window.location.search);
-    params.set("focus", a.spec.name);
-    window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
-    */
 }
 
 function clearAnnotationSelection() {

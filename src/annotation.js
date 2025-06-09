@@ -135,12 +135,12 @@ const annotations = [
         name: "Antifouling",
         description: `
         <p>
-            Antifouling coatings are applied to the ship hull to avoid attachment and growth of sessile species (see Biofouling) and reduce the fuel penalty, of increased surface roughness, to secure manoeuvring capabilities and also to prevent spreading of invasive species. Antifouling coatings are often biocide based, releasing toxic compounds (often copper) to the marine environment. Today, biocide free alternatives are also available on the market.
+            Antifouling coatings are applied to the ship hull to avoid attachment and growth of sessile species (see <a onclick="selectAnnotationByName('Biofouling')">Biofouling</a>) and reduce the fuel penalty, of increased surface roughness, to secure manoeuvring capabilities and also to prevent spreading of invasive species. Antifouling coatings are often biocide based, releasing toxic compounds (often copper) to the marine environment. Today, biocide free alternatives are also available on the market.
         </p>
         <p>
             Inefficient antifouling performance, where the ship hull gets covered by a thin layer of slime, can increase the fuel consumption by 30% and contribute to the spreading of invasive species. However, anti-fouling coatings that leak biocides will contribute to an increased contaminant load of copper and other biocides with potential toxic effects in the marine environment.
         </p>`,
-        environmentalImpact: "Release of chemicals and paint particles (including (micro)plastics) from antifouling coating may adversely impact marine life. In-water hull cleaning can also result in release of fouling organisms (see Biofouling) and contribute to the spreading of invasive species.",
+        environmentalImpact: `Release of chemicals and paint particles (including (micro)plastics) from antifouling coating may adversely impact marine life. In-water hull cleaning can also result in release of fouling organisms (see <a onclick="selectAnnotationByName('Biofouling')">Biofouling</a>) and contribute to the spreading of invasive species.`,
         humanImpact: "Trophic transfer by the bioaccumulation of chemicals risk to adversely affect human health. The application and maintenance of antifouling coatings involves a potential risk of chemical exposure to workers.",
         hazardIcons: [
             "Health hazard",
@@ -200,7 +200,7 @@ const annotations = [
             Biofouling results in the spread of invasive species and also a higher climate footprint due to the fuel penalty from increased roughness of the hull.
         </p>
         <p>
-            Measures against biofouling involves antifouling paints (see Antifouling), ballast water treatment systems (see Ballast water), and antifouling agents in sea chests (see Cooling water).
+            Measures against biofouling involves antifouling paints (see <a onclick="selectAnnotationByName('Antifouling')">Biofouling</a>), ballast water treatment systems (see <a onclick="selectAnnotationByName('Ballast water')">Ballast water</a>), and antifouling agents in sea chests (see <a onclick="selectAnnotationByName('Cooling water')">Cooling water</a>).
         </p>
         `,
         environmentalImpact: "Spreading of invasive species and increased emissions of e.g. green house gases, particles and NOx due to higher fuel consumption resulting from increased drag, friction and manouverability. Increased air emissions impact air quality and global warming.",
@@ -308,7 +308,7 @@ const annotations = [
             To prevent biological growth in sea chest and piping, most cooling systems are connected to a marine growth protection system, where the most common systems release copper ions as a result of electrolysis.
         </p>
         <p>
-            There is limited data on how much copper that is being consumed and discharged to the marine environment, but recent findings suggest that effective dosages need to be 2–3 orders of magnitude higher than manufacturer recommendations. Effective dosages have been reported to be in the range 156–1740 μg L−1, compared to the 2gL-1 recommended by the manufacturers”. https://www.sciencedirect.com/science/article/abs/pii/S0025326X25002462
+            There is limited data on how much copper that is being consumed and discharged to the marine environment, but recent findings suggest that effective dosages need to be 2-3 orders of magnitude higher than manufacturer recommendations. Effective dosages have been reported to be in the range 156-1740 μg L-1, compared to the 2gL-1 recommended by the manufacturers” <a href="https://www.sciencedirect.com/science/article/abs/pii/S0025326X25002462">[1]</a>.
         </p>
         `,
         // Seachest inlet
@@ -372,7 +372,7 @@ const annotations = [
             }
         ],
         mapLayer: "SCRUB_W_CLOSED",
-        plotCaption: "Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from Alternative Fuels Insights - DNV (Accessed May 20259. https://afi.dnvgl.com/Statistics.",
+        plotCaption: `Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from <a href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 20259.`,
         plotSpec: {
             $schema: "https://vega.github.io/schema/vega-lite/v5.json",
             description: "Scrubber installed DNV AFI",
@@ -481,7 +481,7 @@ const annotations = [
         name: "Exhaust gas",
         description: `
         <p>
-            The majority of today's commercial fleet are still running on conventional fossil bunker fuels where heavy fuel oil (HFO), marine gas oil (MGO) and hybrid fuels (very low sulpfur fuel oils (VLSFO) and ultra-low sulfur fuel oils (ULSFO) holds >99% of the fuel market share of the operating fleet (see bar chart below, and note the non-linear scale).
+            The majority of today's commercial fleet are still running on conventional fossil bunker fuels where heavy fuel oil (HFO), marine gas oil (MGO) and hybrid fuels (very low sulpfur fuel oils (VLSFO) and ultra-low sulfur fuel oils (ULSFO) holds >99% of the fuel market share of the operating fleet (see bar chart below, noting the non-linear scale).
         </p>
         <p>
             The exhaust gas from conventional combustion constitutes of greenhouse gases (e.g. carboon dioxide, nitrous oxide and water), nitrogen oxides (NOx), sulfur oxides (SOx), volatile organic compounds (VOCs) and particles (PM) consisting of soot/black carbon (including non-volatile organic substances) and ash (containing metals).
@@ -490,7 +490,7 @@ const annotations = [
             In addition of emitting greenhouse gases, where the commercial shipping fleet are estimated to account for almost 3% of the global CO2 emissions, the combustion products can contribute to acidification (CO2 and SOx), premature deaths from respiratory diseases (e.g. PM) and long- and short-range spreading of hazardous substances (e.g. metals and organic substances).
         </p>
         <p>
-            Some measures have been taken to reduce the negative impact of exhaust gases on air quality and human health, including the introduction of alternative fuels (e.g. methanol and LNG), selective catalytic reduction to reduce NOx and scrubbers to reduce SOx. However, the use of scrubbers has resulted in increased pressure on the marine environment and higher climate footprint (see Scrubber water).
+            Some measures have been taken to reduce the negative impact of exhaust gases on air quality and human health, including the introduction of alternative fuels (e.g. methanol and LNG), selective catalytic reduction to reduce NOx and scrubbers to reduce SOx. However, the use of scrubbers has resulted in increased pressure on the marine environment and higher climate footprint (see <a onclick="selectAnnotationByName('Scrubber water')">Scrubber water</a>).
         </p>
         `,
         // Exhaust
@@ -544,7 +544,7 @@ const annotations = [
                 }
             ]
         },
-        plotCaption: "Fuel market shares of the operating fleet"
+        plotCaption: `Bar chart showing the percent of fleet using conventional vs alternative fuels (LNG, LPG, methanol, hydrogen and ammonia). Data is collected from <a href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 2025).`
     },
     {
         name: "Illumination"
@@ -595,13 +595,13 @@ const annotations = [
         name: "Underwater radiated noise",
         description: `
         <p>
-            Underwater noise is considered a type of energy pollution. An overview of ship generated underwater noise, and the resulting environmental impacts was published by EMSA in 2022: https://www.emsa.europa.eu/protecting-the-marine-environment/underwater-noise/download/6881/4503/23.html
+            Underwater noise is considered a type of energy pollution. An overview of ship generated underwater noise, and the resulting environmental impacts was published by EMSA in 2022 <a href="https://www.emsa.europa.eu/protecting-the-marine-environment/underwater-noise/download/6881/4503/23.html">[1]</a>.
         </p>
         <p>
-            From: https://www.science.org/doi/10.1126/science.aba4658 “In 2014, the International Maritime Organization approved voluntary guidelines for reducing underwater noise from commercial ships (www.imo.org/en/MediaCentre/HotTopics/Pages/Noise.aspx). These guidelines focused on design features that could reduce the primary sources of underwater noise, namely the propellers, hull form, and on-board machinery. Following these guidelines, in 2015, Maersk underwent a retrofit of five large container ships and found that reducing propeller cavitation decreased low-frequency sound pressure levels by 6 to 8 dB while improving fuel efficiency (121).”
+            “In 2014, the International Maritime Organization approved voluntary guidelines for reducing underwater noise from commercial ships <a> href="www.imo.org/en/MediaCentre/HotTopics/Pages/Noise.aspx">[2]</a>. These guidelines focused on design features that could reduce the primary sources of underwater noise, namely the propellers, hull form, and on-board machinery. Following these guidelines, in 2015, Maersk underwent a retrofit of five large container ships and found that reducing propeller cavitation decreased low-frequency sound pressure levels by 6 to 8 dB while improving fuel efficiency.” <a href="https://www.science.org/doi/10.1126/science.aba4658">[3]</a>
         </p>
         <p>
-            EU has taken the initiative to regulate underwater noise: https://environment.ec.europa.eu/news/zero-pollution-and-biodiversity-first-ever-eu-wide-limits-underwater-noise-2022-11-29_en This is great but still challenging to monitor.
+            EU has taken the initiative to regulate underwater noise <a href="https://environment.ec.europa.eu/news/zero-pollution-and-biodiversity-first-ever-eu-wide-limits-underwater-noise-2022-11-29_en">[4]</a>. This is great but still challenging to monitor.
         </p>
         `,
         // Propeller
