@@ -19,6 +19,7 @@ class Annotation {
         }
 
         if (spec.sdgIcons) {
+            this.content += "<h3>SDGs at risk</h3>";
             this.content += "<div>";
             for (const idx of spec.sdgIcons) {
                 this.content += `
