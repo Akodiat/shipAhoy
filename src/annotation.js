@@ -105,8 +105,8 @@ const annotations = [
         <p>
             Inefficient antifouling performance, where the ship hull gets covered by a thin layer of slime, can increase the fuel consumption by 30% and contribute to the spreading of invasive species. However, anti-fouling coatings that leak biocides will contribute to an increased contaminant load of copper and other biocides with potential toxic effects in the marine environment.
         </p>`,
-        environmentalImpact: "Chemicals and paint particals, inluding (micro)plastic from antifouling coatings: ecotoxicology, health of marine life, Hullcleaning: plus realease of fouling organisms,  plus monetary cost of envionmental impact",
-        humanImpact: "antifouling paints: trophic transfere of chemicals, risk for workers (chemical exposure (solvant), risk of accidents) Hullcleaning (without capture) trophic transfere of chemicals, risk for workers (risk of accidents), plus monetary cost of human health impact",
+        environmentalImpact: "Release of chemicals and paint particles (including (micro)plastics) from antifouling coating may adversely impact marine life. In-water hull cleaning can also result in release of fouling organisms (see Biofouling) and contribute to the spreading of invasive species.",
+        humanImpact: "Trophic transfer by the bioaccumulation of chemicals risk to adversely affect human health. The application and maintenance of antifouling coatings involves a potential risk of chemical exposure to workers.",
         hazardIcons: [
             "Health hazard",
             "Harmful",
@@ -153,22 +153,7 @@ const annotations = [
                 cameraPos: new Vector3(40, 15, 40)
             }
         },
-        mapLayer: "AFP_CuO",
-        plotSpec: {
-            $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-            description: "Antifouling paint emission over time",
-            height: 200,
-            width: "container",
-            mark: "line",
-            transform: [{fold: [
-                "AFP_CuO", "AFP_CuPyr", "AFP_DCOIT", "AFP_Zineb", "AFP_ZnO", "AFP_ZnPyr"
-            ]}],
-            encoding: {
-                x: {field: "date", type: "temporal",  title: ""},
-                y: {field: "value", type: "quantitative", scale: {type: "log"}},
-                color: {field: "key", type: "nominal", title: "Paint type"}
-            }
-        }
+        mapLayer: "AFP_CuO"
     },
     {
         name: "Biofouling",
