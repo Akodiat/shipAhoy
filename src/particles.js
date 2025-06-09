@@ -9,7 +9,7 @@ class ParticleSystem extends THREE.Group {
         this.origin = origin;
         this.direction = direction;
         this.height = 100;
-        this.size = size;
+        this.minSize = size;
         this.maxSize = size*4;
 
         const sprite = textureLoader.load(
@@ -22,7 +22,7 @@ class ParticleSystem extends THREE.Group {
             color: 0xFFFFFF,
             //blending: THREE.AdditiveBlending,
             transparent: true,
-            alphaTest: 0.3
+            alphaTest: 0.01
         });
 
 
@@ -30,7 +30,7 @@ class ParticleSystem extends THREE.Group {
             const particle = new THREE.Sprite(material);
             particle.progress = i / count;
             particle.position.copy(origin).add(direction.clone().multiplyScalar(this.height * particle.progress));
-            particle.scale.setScalar(this.size + (this.maxSize-this.size)*Math.sqrt(particle.progress));
+            particle.scale.setScalar(this.minSize + (this.maxSize-this.minSize)*Math.sqrt(particle.progress));
             this.add(particle);
         }
     }
@@ -40,7 +40,7 @@ class ParticleSystem extends THREE.Group {
             const particle = this.children[i];
             particle.progress = (particle.progress + dt * 0.02) % 1;
             particle.position.copy(this.origin).add(this.direction.clone().multiplyScalar(this.height * particle.progress));
-            particle.scale.setScalar(this.size + (this.maxSize-this.size)*Math.sqrt(particle.progress));
+            particle.scale.setScalar(this.minSize + (this.maxSize-this.minSize)*Math.sqrt(particle.progress));
         }
     }
 }
