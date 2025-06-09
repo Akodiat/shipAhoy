@@ -518,6 +518,17 @@ const annotations = [
     },
     {
         name: "Underwater radiated noise",
+        description: `
+        <p>
+            Underwater noise is considered a type of energy pollution. An overview of ship generated underwater noise, and the resulting environmental impacts was published by EMSA in 2022: https://www.emsa.europa.eu/protecting-the-marine-environment/underwater-noise/download/6881/4503/23.html
+        </p>
+        <p>
+            From: https://www.science.org/doi/10.1126/science.aba4658 “In 2014, the International Maritime Organization approved voluntary guidelines for reducing underwater noise from commercial ships (www.imo.org/en/MediaCentre/HotTopics/Pages/Noise.aspx). These guidelines focused on design features that could reduce the primary sources of underwater noise, namely the propellers, hull form, and on-board machinery. Following these guidelines, in 2015, Maersk underwent a retrofit of five large container ships and found that reducing propeller cavitation decreased low-frequency sound pressure levels by 6 to 8 dB while improving fuel efficiency (121).”
+        </p>
+        <p>
+            EU has taken the initiative to regulate underwater noise: https://environment.ec.europa.eu/news/zero-pollution-and-biodiversity-first-ever-eu-wide-limits-underwater-noise-2022-11-29_en This is great but still challenging to monitor.
+        </p>
+        `,
         // Propeller
         shipTypes: {
             tanker: {
