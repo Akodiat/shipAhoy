@@ -298,11 +298,11 @@ const annotations = [
             Scrubbers are installed on ships to enable the vessel to continue to run on conventional high sulfur fuels while still being compliant to stricter regulations limiting the sulfur oxide content in shipss exhaust. In a scrubber, water is sprayed over the exhaust, reducing the concentration of SOx in the exhaust to compliant levels. The scrubber water is not only taking upp SOx, forming sulfuric acid and becoming highly acidic, but also scavenges other contaminants (e.g. metals and organic substances) that are instead discharged directly to the marine environment.
         </p>
         <p>
-            The use of scrubbers introduces a new contamination source to the marine environment with substantial adverse effects on marine organisms at very low concentrations (Figur D.2.3?). The use of a scrubber also implies a fuel penalty with 2-3%, with higher climate footprint compared to a ship without a scrubber.
+            The use of scrubbers introduces a new contamination source to the marine environment with substantial adverse effects on marine organisms at very low concentrations. The use of a scrubber also implies a fuel penalty with 2-3%, with higher climate footprint compared to a ship without a scrubber.
         </p>
         `,
-        environmentalImpact: "Marine pollution, air pollution, climate change. Media coverage: Marco Polo.",
-        humanImpact: "Respiratory health issues",
+        environmentalImpact: "The discharge of scrubber water result in increased contaminant load of metals, polycyclic aromatic hydrocarbons (PAHs) and alkylated PAHs to the marine environment. The addition of a strong acid (sulfuric acid) may contribute to reduced buffer capacity (i.e. alkalinity) of the seas that can affect the carbon cycle. Increased emissions of green house gases will contribute to global warming.",
+        humanImpact: "Reducing SOx and particles in the exhaust can be positive with respect to human health. However, recent findings suggest that the scrubber produces higher numbers of the smaller particles with the largest damaging effects on the respiratory system.",
         hazardIcons: [
             "Health hazard",
             "Harmful",
