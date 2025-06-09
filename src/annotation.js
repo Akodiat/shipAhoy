@@ -329,6 +329,18 @@ const annotations = [
                 path: "resources/images/scrubber_system.svg",
                 description: "Illustration of two different scrubber system, open and closed loop, where the open loop (A) continuously pump in and discharge seawater while the closed loop (B) recirculates most water with addition of an alkaline solution. Hybrid systems can run in open and closed loop mode., EMERGE-project",
                 attribution: "Illustration: Anna Lunde Hermansson"
+            },
+            {
+                header: "Sea urchin exposure",
+                path: "resources/images/scrubber_seaurchin_exposed.jpg",
+                description: "Some abnormalities observed in Psammechinus miliaris (sea urchin) larvae at 72 h exposure to scrubber water. The adverse effects on fertilization success and larvae development were observed even at the lowest dilutions of scrubber water, confirming that scrubber water could present adverse effects on the whole life cycle of the marine organisms.",
+                attribution: "Zapata-Restrepo,L., Williams,I., (2025) Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water, Marine Environmental Research. https://doi.org/10.1016/j.marenvres.2025.107157."
+            },
+            {
+                header: "Mussel exposure",
+                path: "resources/images/scrubber_mussel_exposure.jpg",
+                description: "Some abnormalities observed in Mytilus edulis (mussel) larvae at 72 h exposure to scrubber water. Arrows: hypertrophy of the mantle. Arrowhead: hinge abnormality. The adverse effects on fertilization success and larvae development were observed even at the lowest dilutions of scrubber water, confirming that scrubber water could present adverse effects on the whole life cycle of the marine organisms.",
+                attribution: "Zapata-Restrepo,L., Williams,I., (2025) Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water, Marine Environmental Research. https://doi.org/10.1016/j.marenvres.2025.107157."
             }
         ],
         mapLayer: "SCRUB_W_CLOSED",
