@@ -341,6 +341,12 @@ const annotations = [
                 path: "resources/images/scrubber_mussel_exposure.jpg",
                 description: "Some abnormalities observed in Mytilus edulis (mussel) larvae at 72 h exposure to scrubber water. Arrows: hypertrophy of the mantle. Arrowhead: hinge abnormality. The adverse effects on fertilization success and larvae development were observed even at the lowest dilutions of scrubber water, confirming that scrubber water could present adverse effects on the whole life cycle of the marine organisms.",
                 attribution: "Zapata-Restrepo,L., Williams,I., (2025) Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water, Marine Environmental Research. https://doi.org/10.1016/j.marenvres.2025.107157."
+            },
+            {
+                header: "Estimated vanadium input 2018",
+                path: "resources/images/ytreberg_2022_Vanadin.png",
+                description: "Estimated input of vanadium to the Swedish Exclusive Economic Zone in 2018, open loop scrubber water discharge is a significant source. In 2018, only 178 vessels had scrubbers in the Baltic Sea",
+                attribution: " Ytreberg, E., Hansson, K., Lunde Hermansson, A., Parsmo, R., Lagerström, M., Jalkanen, J.P., Hassellöv, I.M., 2022. Metal and PAH loads from ships and boats, relative other sources, in the Baltic Sea. Mar. Pollut. Bull. 182, 113904. https://doi.org/10.1016/j.marpolbul.2022.113904"
             }
         ],
         mapLayer: "SCRUB_W_CLOSED",
