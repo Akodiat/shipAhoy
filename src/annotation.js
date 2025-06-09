@@ -167,8 +167,8 @@ const annotations = [
             Measures against biofouling involves antifouling paints (see Antifouling), ballast water treatment systems (see Ballast water), and antifouling agents in sea chests (see Cooling water).
         </p>
         `,
-        environmentalImpact: "Spread of invasive species, increased emissions to air (and impact on human health, climate change, and euthropication (from NOX) can be monitized), because of higher fuel consumption, drag, friction, and limited manouverability",
-        humanImpact: "Increased air emissions",
+        environmentalImpact: "Spreading of invasive species and increased emissions of e.g. green house gases, particles and NOx due to higher fuel consumption resulting from increased drag, friction and manouverability. Increased air emissions impact air quality and global warming.",
+        humanImpact: "Higher emissions can reduce air quality and increase the risk of respiratory complications and adverse health effects.",
 
         images: [
             {
