@@ -4,19 +4,23 @@
   font-weight: 400;
   font-style: normal;
 }
+
 @font-face {
   font-family: "OpenSans";
   src: url("resources/OpenSans-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
 }
+
 :root {
   --font-main: "OpenSans", sans-serif;
 }
+
 body {
   margin: 0;
   overflow: hidden;
 }
+
 #acknowledgementButton {
   position: absolute;
   margin: 20px;
@@ -32,12 +36,15 @@ body {
   backdrop-filter: blur(10px);
   z-index: 10000;
 }
+
 #acknowledgementButton:hover {
   background: rgba(200, 200, 200, 0.8) !important;
 }
+
 #body-text {
   font-size: 13px;
 }
+
 #threeContainer {
   position: absolute;
   top: 0;
@@ -45,47 +52,47 @@ body {
   width: 100%;
   height: 100%;
 }
+
 #titlebox {
-  Color:white!important;
+  Color: white !important;
   position: absolute;
   max-width: 350px;
-  background:transparent;
-/*   background: rgba(255, 255, 255, 0.6);
+  background: transparent;
+  /*   background: rgba(255, 255, 255, 0.6);
   border-radius: 20px;
   border-width: 1px 0 0 0;
   border-color: white;
   border-style:solid;
   backdrop-filter: blur(10px); */
-  left:20px;
-  box-shadow: none!important;
-  top:-20px;
+  left: 20px;
+  box-shadow: none !important;
+  top: -20px;
   user-select: none !important;
   -webkit-user-select: none;
-  pointer-events:none;
-
+  pointer-events: none;
 }
 
-#titlebox h1{
-  color:white;
-  font-size:60px;
+#titlebox h1 {
+  color: white;
+  font-size: 60px;
 }
 
-#titlebox p{
-  color:white;
+#titlebox p {
+  color: white;
   font-size: 16px;
-  line-height:1.2;
-  font-weight:600;
+  line-height: 1.2;
+  font-weight: 600;
 }
 
-#titlebox small{
-  color:white;
+#titlebox small {
+  color: white;
   font-size: 14px;
-  line-height:1.2;
-  font-weight:400;
+  line-height: 1.2;
+  font-weight: 400;
   display: block;
 }
 
-#titlebox a{
+#titlebox a {
   pointer-events: all;
 }
 
@@ -113,6 +120,7 @@ a {
   backdrop-filter: blur(10px);
   z-index: 100;
 }
+
 @media (max-width: 1300px) {
   #infobox {
     position: absolute;
@@ -127,19 +135,23 @@ a {
     border-width: 0px 0 0 0;
   }
 }
+
 #infobox::-webkit-scrollbar {
   display: none;
 }
-#infobox > * {
+
+#infobox>* {
   flex-shrink: 0;
   display: block;
 }
+
 .pico article {
   margin-top: 20px !important;
   border-radius: 10px !important;
   box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
     0 0px 20px 0 rgba(0, 0, 0, 0.1) !important;
 }
+
 #plot {
   width: auto;
   height: 250px;
@@ -149,6 +161,7 @@ a {
     0 0px 20px 0 rgba(0, 0, 0, 0.1);
   background-color: white;
 }
+
 #map {
   margin-top: 20px;
   height: 500px;
@@ -158,9 +171,11 @@ a {
   box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
     0 0px 20px 0 rgba(0, 0, 0, 0.1);
 }
+
 #map .leaflet-control-attribution {
   font-size: 10px;
 }
+
 #overviewReturnButton {
   position: absolute;
   top: 10px;
@@ -174,6 +189,7 @@ a {
   text-indent: -9999px;
   overflow: hidden;
 }
+
 #textbox h2 {
   font-family: var(--font-main);
   font-weight: 700;
@@ -181,6 +197,7 @@ a {
   line-height: 1;
   margin-bottom: 10px;
 }
+
 #textbox h3 {
   font-family: var(--font-main);
   font-weight: 300;
@@ -189,10 +206,12 @@ a {
   margin-bottom: 10px;
   margin-top: 20px;
 }
+
 #textbox #body-text {
   font-family: var(--font-main);
   font-weight: 400;
 }
+
 .annotation p {
   font-family: var(--font-main);
   font-weight: 700;
@@ -200,9 +219,11 @@ a {
   -webkit-user-select: none;
   /* Safari */
 }
+
 #overviewReturnButton:hover {
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08), 0 0 6px rgba(0, 0, 0, 0.15);
 }
+
 .annotation {
   display: none;
   position: absolute;
@@ -211,11 +232,9 @@ a {
   z-index: 1;
   margin-left: 20px;
   padding: 15px;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.5) -30%,
-    rgba(0, 0, 0, 0.2)
-  );
+  background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.5) -30%,
+      rgba(0, 0, 0, 0.2));
   color: white;
   border-radius: 10px;
   backdrop-filter: blur(5px);
@@ -223,6 +242,7 @@ a {
   line-height: 1;
   transition: opacity 2s, top 0.1s ease 0s, left 0.1s ease 0s;
 }
+
 .info.legend {
   padding: 6px 8px;
   background: white;
@@ -232,40 +252,79 @@ a {
   line-height: 24px;
   color: #333;
 }
+
 .info.legend i {
   display: inline-block;
 }
+
 @media (max-width: 768px) {
   body {
     overflow: auto;
   }
+
   #infobox {
     position: static;
     width: auto;
     max-height: none;
     margin-top: 1rem;
   }
+
   #plot {
     width: 100%;
     max-width: 500px;
     height: auto;
   }
+
   #map {
     width: 100%;
     height: 300px;
   }
+
   #overviewReturnButton {
     position: relative;
     top: auto;
     right: auto;
     margin: 0 0 1rem auto;
   }
+
   #acknowledgementButton {
     position: absolute;
-    top: 5px !important;
+    top: 10px !important;
+    right: 10px;
+    padding: 6px 12px !important;
     height: 20px;
-    padding: 5px !important;
     border-radius: 10px !important;
-    margin: 0px;
+    margin: 0;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  #titlebox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    max-width: 90vw;
+    padding: 0.5rem 1rem;
+    pointer-events: none;
+  }
+
+  #titlebox h1 {
+    font-size: clamp(20px, 7vw, 32px);
+    margin: 0.3rem 0;
+  }
+
+  #titlebox p {
+    font-size: clamp(12px, 4vw, 15px);
+    line-height: 1.3;
+  }
+
+  #titlebox small {
+    font-size: clamp(11px, 3.5vw, 13px);
+    line-height: 1.3;
+    display: block;
   }
 }
