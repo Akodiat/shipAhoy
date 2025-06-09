@@ -18,6 +18,20 @@ class Annotation {
             this.content += spec.description;
         }
 
+        if (spec.sdgIcons) {
+            this.content += "<div>";
+            for (const idx of spec.sdgIcons) {
+                this.content += `
+                    <img
+                        width=100
+                        src="resources/sdg_icons/E_SDG_PRINT-${idx.toString().padStart(2, "0")}.jpg"
+                        title="${sdgText[idx-1]}"
+                    >
+                `;
+            }
+            this.content += "</div>";
+        }
+
         if (spec.environmentalImpact) {
             this.content += `<h3>Environmental impact</h3>${spec.environmentalImpact}`;
         }
@@ -48,6 +62,26 @@ class Annotation {
     }
 }
 
+const sdgText = [
+    "SDG 1: No poverty",
+    "SDG 2: Zero hunger",
+    "SDG 3: Good health and well-being",
+    "SDG 4: Quality education",
+    "SDG 5: Gender equality",
+    "SDG 6: Clean water and sanitation",
+    "SDG 7: Affordable and clean energy",
+    "SDG 8: Decent work and economic growth",
+    "SDG 9: Industry, innovation and infrastructure",
+    "SDG 10: Reduced inequalities",
+    "SDG 11: Sustainable cities and communities",
+    "SDG 12: Responsible consumption and production",
+    "SDG 13: Climate action",
+    "SDG 14: Life below water",
+    "SDG 15: Life on land",
+    "SDG 16: Peace, justice and strong institutions",
+    "SDG 17: Partnerships for the goals"
+]
+
 window.populateImageModal = (header, path, description, attribution) => {
     document.getElementById("imageModalHeader").innerHTML = header;
     document.getElementById("imageModalImage").src = path;
@@ -74,7 +108,8 @@ const annotations = [
                 labelPos: new Vector3(12, 19, 110),
                 cameraPos: new Vector3(20, 20, 110)
             }
-        }
+        },
+        sdgIcons: [12]
     },
     {
         name: "Propoulsion momentum",
@@ -153,7 +188,8 @@ const annotations = [
                 cameraPos: new Vector3(40, 15, 40)
             }
         },
-        mapLayer: "AFP_CuO"
+        mapLayer: "AFP_CuO",
+        sdgIcons: [3,6,9,14]
     },
     {
         name: "Biofouling",
@@ -389,7 +425,8 @@ const annotations = [
                 labelPos: new Vector3(0.5, 30, -57),
                 cameraPos: new Vector3(25, 30, -57)
             }
-        }
+        },
+        sdgIcons: [3,7,9,11,12,13,14]
     },
     {
         name: "Bilge water",
@@ -532,7 +569,8 @@ const annotations = [
                 labelPos: undefined,
                 cameraPos: undefined
             }
-        }
+        },
+        sdgIcons: [7,9,11,13,14,15]
     },
     {
         name: "Fueltank",
@@ -550,7 +588,8 @@ const annotations = [
                 labelPos: undefined,
                 cameraPos: undefined
             }
-        }
+        },
+        sdgIcons: [7,9,11,13,14,15]
     },
     {
         name: "Underwater radiated noise",
@@ -579,7 +618,8 @@ const annotations = [
                 labelPos: new Vector3(0, 3, -62),
                 cameraPos: new Vector3(10, 2, -65),
             }
-        }
+        },
+        sdgIcons: [14]
     },
     {
         name: "Container loss",
