@@ -1,0 +1,13 @@
+{
+  "name": "Ship Ahoy!",
+  "description": "Navigating away from limited visibility, to unveil the environmental pressures and impacts from maritime transport",
+  "start_url": "./",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "150x150"
+    }
+  ]
+}

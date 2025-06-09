@@ -10,6 +10,7 @@ import {PlotView} from "./plot.js";
 import {annotations} from "./annotation.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
 import {ParticleSystem} from "./particles.js";
+
 CameraControls.install({THREE: THREE});
 
 let camera, scene, labelScene, renderer, mixer;
@@ -35,6 +36,22 @@ const defaultLookat = [
     75, 50, 150, // Position
     -20, 5, 20   // Target
 ];
+
+
+// Registers a service worker (to cache content offline)
+async function registerSW() {
+    if ('serviceWorker' in navigator) {
+        try {
+            await navigator.serviceWorker.register("./src/sw.js");
+        } catch (error) {
+            showResult("Error while registering: " + error.message);
+        }
+    } else {
+        showResult("Service workers API not available");
+    }
+};
+
+registerSW();
 
 init();
 
