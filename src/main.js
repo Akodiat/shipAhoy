@@ -23,13 +23,18 @@ let postProcessing;
 const threeContainer = document.getElementById("threeContainer");
 
 const annotationLabel = document.getElementById("annotationLabel");
-let highlightedAnnotation;
+let highlightedAnnotation, selectedAnnotation;
 const annotationSizeDefault = 0.03;
 const annotationSizeHighlight = 0.035;
 const annotationSprites = new THREE.Group();
 const clock = new THREE.Clock();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
+
+const defaultLookat = [
+    75, 50, 150, // Position
+    -20, 5, 20   // Target
+];
 
 init();
 
@@ -157,8 +162,6 @@ function init() {
             if(child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-
-                console.log(child.name)
             }
         });
 
@@ -226,21 +229,13 @@ function init() {
     // Don't move the camera further than 500 m away
     controls.maxDistance = 500;
 
-    const defaultLookat = [
-        75, 50, 150, // Position
-        -20, 5, 20   // Target
-    ];
-
     // Set initial camera view
     controls.setLookAt(...defaultLookat);
 
     window.controls = controls;
 
     // Setup overview button
-    document.getElementById("overviewReturnButton").addEventListener("click", ()=>{
-        controls.setLookAt(...defaultLookat, true);
-        document.getElementById("infobox").style.display = "none";
-    });
+    document.getElementById("overviewReturnButton").addEventListener("click", clearAnnotationSelection);
 
     // Hide infobox until an annotation is clicked
     document.getElementById("infobox").style.display = "none";
@@ -258,24 +253,10 @@ function init() {
                 // Don't do anyting until map data is loaded
                 return;
             }
-            controls.setLookAt(
-                ...a.spec.shipTypes[model.name].cameraPos.toArray(),
-                ...a.spec.shipTypes[model.name].labelPos.toArray(),
-                true
-            );
-            document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
-            document.getElementById("infobox").style.display = "flex";
-            a.onSelect();
 
-            plotView.plot(a);
 
-            const legend = document.getElementById("plotCaption");
-            if (a.spec.plotCaption) {
-                legend.style.display = "block";
-                legend.innerHTML = a.spec.plotCaption;
-            } else {
-                legend.style.display = "none";
-            }
+            selectedAnnotation = highlightedAnnotation;
+            selectAnnotation(a);
 
             // Neccesary in case we have a touch device
             // where pointer is never moved.
@@ -292,23 +273,80 @@ function init() {
     });
 
     document.addEventListener("keydown", event => {
-        if (event.key === "q") {
-            // FPS stats shown in upper-left corner
-            // Only relevant for debugging
-            if (stats) {
-                document.body.removeChild(stats.dom);
-                stats = undefined;
-            } else {
-                stats = new Stats();
-                document.body.appendChild(stats.dom);
-            }
+        switch (event.key) {
+            case "q":
+                // FPS stats shown in upper-left corner
+                // Only relevant for debugging
+                if (stats) {
+                    document.body.removeChild(stats.dom);
+                    stats = undefined;
+                } else {
+                    stats = new Stats();
+                    document.body.appendChild(stats.dom);
+                }
+                break;
+            case "Backspace": clearAnnotationSelection(); break;
+            case "ArrowLeft": advanceAnnotation(-1);
+            case "ArrowRight": advanceAnnotation(1);
         }
     });
 }
 
+function mod(n, m) {
+  return ((n % m) + m) % m;
+}
+
+function advanceAnnotation(step) {
+    if (!mapView.fullyLoaded) {
+        // Don't do anyting until map data is loaded
+        return;
+    }
+    const as = annotationSprites.children;
+    if (selectedAnnotation === undefined) {
+        selectedAnnotation = as[0];
+    } else {
+        const currentIdx = as.findIndex(v=>v===selectedAnnotation);
+        selectedAnnotation = as[mod(currentIdx+step, as.length)];
+    }
+    selectAnnotation(selectedAnnotation.annotation);
+}
+
+function selectAnnotation(a) {
+    controls.setLookAt(
+        ...a.spec.shipTypes[model.name].cameraPos.toArray(),
+        ...a.spec.shipTypes[model.name].labelPos.toArray(),
+        true
+    );
+    document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
+    document.getElementById("infobox").style.display = "flex";
+    a.onSelect();
+
+    plotView.plot(a);
+
+    const legend = document.getElementById("plotCaption");
+    if (a.spec.plotCaption) {
+        legend.style.display = "block";
+        legend.innerHTML = a.spec.plotCaption;
+    } else {
+        legend.style.display = "none";
+    }
+
+    /*
+    const params = new URLSearchParams(window.location.search);
+    params.set("focus", a.spec.name);
+    window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
+    */
+}
+
+function clearAnnotationSelection() {
+    controls.setLookAt(...defaultLookat, true);
+    document.getElementById("infobox").style.display = "none";
+    selectedAnnotation = undefined;
+}
+
 function onPointerMove(event) {
     if (highlightedAnnotation) {
-        highlightedAnnotation.material.color.set('#ffffff');
+        highlightedAnnotation.material.color.set("#ffffff");
         highlightedAnnotation.scale.setScalar(annotationSizeDefault);
         renderer.domElement.style.cursor = "";
         annotationLabel.style.display = "none";
