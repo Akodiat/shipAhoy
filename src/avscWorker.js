@@ -1,4 +1,4 @@
-import avsc from "https://cdn.jsdelivr.net/npm/avsc@5.7.7/+esm";
+import avsc from "../lib/avsc.5.7.7.esm.js";
 
 addEventListener("message", e => {
     const path = e.data;

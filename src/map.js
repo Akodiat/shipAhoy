@@ -1,5 +1,5 @@
-import * as leaflet from "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet-src.esm.js";
-import shp from "https://unpkg.com/shpjs@6.1.0/dist/shp.esm.js";
+import * as leaflet from "../lib/leaflet/leaflet-src.esm.js";
+import shp from "../lib/shp.esm.js";
 
 import {annotations} from "./annotation.js";
 
