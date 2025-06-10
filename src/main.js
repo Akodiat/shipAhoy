@@ -79,7 +79,7 @@ function init() {
     threeContainer.appendChild(renderer.domElement);
 
     // Setup scene
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.25, 5000);
+    camera = new THREE.PerspectiveCamera(50, threeContainer.offsetWidth / threeContainer.offsetHeight, 0.25, 5000);
 
     scene = new THREE.Scene();
     labelScene = new THREE.Scene();
@@ -410,8 +410,8 @@ function onPointerMove(event) {
         highlightedAnnotation = undefined;
     }
 
-    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    pointer.x = (event.clientX / threeContainer.offsetWidth) * 2 - 1;
+    pointer.y = - (event.clientY / threeContainer.offsetHeight) * 2 + 1;
 
     raycaster.setFromCamera(pointer, camera);
 
