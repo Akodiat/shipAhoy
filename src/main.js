@@ -364,12 +364,41 @@ function selectAnnotation(a) {
     } else {
         legend.style.display = "none";
     }
+
+    const style = document.getElementById("threeContainer").style;
+    const smallScreen = window.matchMedia("(max-width: 768px)").matches;
+
+    if (smallScreen) {
+        style.height = "60vh";
+        style.position = "static";
+        onWindowResize();
+        controls.setFocalOffset(0, 0, 0);
+    } else {
+        style.height = "100%";
+        style.position = "absolute";
+        // Keep camera pivot slightly to the left
+        // of the screen center.
+        const p = a.spec.shipTypes[model.name];
+        const dist = p.cameraPos.distanceTo(
+            p.labelPos
+        );
+        controls.setFocalOffset(
+            //0.25 * controls.distance, 0, 0
+            0.25 * dist, 0, 0
+        );
+    }
 }
 
 function clearAnnotationSelection() {
     controls.setLookAt(...defaultLookat, true);
     document.getElementById("infobox").style.display = "none";
     selectedAnnotation = undefined;
+
+    controls.setFocalOffset(0, 0, 0);
+    const style = document.getElementById("threeContainer").style;
+    style.height = "100%";
+    style.position = "absolute";
+    onWindowResize();
 }
 
 function onPointerMove(event) {
@@ -428,31 +457,9 @@ function animate() {
     }
 
     const delta = clock.getDelta();
-    const controlsUpdated = controls.update(delta);
+    controls.update(delta);
 
     smoke.update(delta);
-
-    if (controlsUpdated) {
-        const style = document.getElementById("threeContainer").style;
-        const smallScreen = window.matchMedia("(max-width: 768px)").matches;
-        const infoboxVisible = document.getElementById("infobox").style.display !== "none";
-
-        style.height = "100%";
-        style.position = "absolute";
-        controls.setFocalOffset(0, 0, 0);
-        if (infoboxVisible) {
-            if (smallScreen) {
-                style.height = "60vh";
-                style.position = "static";
-            } else {
-                // Keep camera pivot slightly to the left
-                // of the screen center.
-                controls.setFocalOffset(
-                    0.25 * controls.distance, 0, 0
-                );
-            }
-        }
-    }
 
     if (model) {
         const t = clock.getElapsedTime();
