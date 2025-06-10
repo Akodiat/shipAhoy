@@ -431,12 +431,18 @@ function onPointerMove(event) {
 
             const p = highlightedAnnotation.position.clone().project(camera);
 
-            p.x = Math.round((0.5 + p.x / 2) * (
-                renderer.domElement.width / window.devicePixelRatio
-            ));
-            p.y = Math.round((0.5 - p.y / 2) * (
-                renderer.domElement.height / window.devicePixelRatio
-            ));
+            const w = renderer.domElement.width / window.devicePixelRatio;
+            const h = renderer.domElement.height / window.devicePixelRatio;
+            p.x = Math.round((0.5 + p.x / 2) * w);
+            p.y = Math.round((0.5 - p.y / 2) * h);
+
+            // Do not draw the label outside the canvas
+            if (p.x + annotationLabel.offsetWidth > w) {
+                p.x -= annotationLabel.offsetWidth
+            }
+            if (p.y + annotationLabel.offsetHeight > h) {
+                p.y -= annotationLabel.offsetHeight
+            }
 
             annotationLabel.style.top = `${p.y}px`;
             annotationLabel.style.left = `${p.x}px`;
