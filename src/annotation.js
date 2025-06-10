@@ -309,7 +309,7 @@ const annotations = [
             To prevent biological growth in sea chest and piping, most cooling systems are connected to a marine growth protection system, where the most common systems release copper ions as a result of electrolysis.
         </p>
         <p>
-            There is limited data on how much copper that is being consumed and discharged to the marine environment, but recent findings suggest that effective dosages need to be 2-3 orders of magnitude higher than manufacturer recommendations. Effective dosages have been reported to be in the range 156-1740 μg L-1, compared to the 2gL-1 recommended by the manufacturers” <a href="https://www.sciencedirect.com/science/article/abs/pii/S0025326X25002462">[1]</a>.
+            There is limited data on how much copper that is being consumed and discharged to the marine environment, but recent findings suggest that effective dosages need to be 2-3 orders of magnitude higher than manufacturer recommendations. Effective dosages have been reported to be in the range 156-1740 μg L-1, compared to the 2gL-1 recommended by the manufacturers” <a target="_blank" href="https://www.sciencedirect.com/science/article/abs/pii/S0025326X25002462">[1]</a>.
         </p>
         `,
         // Seachest inlet
@@ -373,7 +373,7 @@ const annotations = [
             }
         ],
         mapLayer: "SCRUB_W_CLOSED",
-        plotCaption: `Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from <a href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 20259.`,
+        plotCaption: `Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from <a target="_blank" href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 20259.`,
         plotSpec: {
             $schema: "https://vega.github.io/schema/vega-lite/v5.json",
             description: "Scrubber installed DNV AFI",
@@ -545,7 +545,7 @@ const annotations = [
                 }
             ]
         },
-        plotCaption: `Bar chart showing the percent of fleet using conventional vs alternative fuels (LNG, LPG, methanol, hydrogen and ammonia). Data is collected from <a href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 2025).`
+        plotCaption: `Bar chart showing the percent of fleet using conventional vs alternative fuels (LNG, LPG, methanol, hydrogen and ammonia). Data is collected from <a target="_blank" href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 2025).`
     },
     {
         name: "Illumination"
@@ -596,13 +596,13 @@ const annotations = [
         name: "Underwater radiated noise",
         description: `
         <p>
-            Underwater noise is considered a type of energy pollution. An overview of ship generated underwater noise, and the resulting environmental impacts was published by EMSA in 2022 <a href="https://www.emsa.europa.eu/protecting-the-marine-environment/underwater-noise/download/6881/4503/23.html">[1]</a>.
+            Underwater noise is considered a type of energy pollution. An overview of ship generated underwater noise, and the resulting environmental impacts was published by EMSA in 2022 <a target="_blank" href="https://www.emsa.europa.eu/protecting-the-marine-environment/underwater-noise/download/6881/4503/23.html">[1]</a>.
         </p>
         <p>
-            “In 2014, the International Maritime Organization approved voluntary guidelines for reducing underwater noise from commercial ships <a> href="www.imo.org/en/MediaCentre/HotTopics/Pages/Noise.aspx">[2]</a>. These guidelines focused on design features that could reduce the primary sources of underwater noise, namely the propellers, hull form, and on-board machinery. Following these guidelines, in 2015, Maersk underwent a retrofit of five large container ships and found that reducing propeller cavitation decreased low-frequency sound pressure levels by 6 to 8 dB while improving fuel efficiency.” <a href="https://www.science.org/doi/10.1126/science.aba4658">[3]</a>
+            “In 2014, the International Maritime Organization approved voluntary guidelines for reducing underwater noise from commercial ships <a target="_blank" href="www.imo.org/en/MediaCentre/HotTopics/Pages/Noise.aspx">[2]</a>. These guidelines focused on design features that could reduce the primary sources of underwater noise, namely the propellers, hull form, and on-board machinery. Following these guidelines, in 2015, Maersk underwent a retrofit of five large container ships and found that reducing propeller cavitation decreased low-frequency sound pressure levels by 6 to 8 dB while improving fuel efficiency.” <a target="_blank" href="https://www.science.org/doi/10.1126/science.aba4658">[3]</a>
         </p>
         <p>
-            EU has taken the initiative to regulate underwater noise <a href="https://environment.ec.europa.eu/news/zero-pollution-and-biodiversity-first-ever-eu-wide-limits-underwater-noise-2022-11-29_en">[4]</a>. This is great but still challenging to monitor.
+            EU has taken the initiative to regulate underwater noise <a target="_blank" href="https://environment.ec.europa.eu/news/zero-pollution-and-biodiversity-first-ever-eu-wide-limits-underwater-noise-2022-11-29_en">[4]</a>. This is great but still challenging to monitor.
         </p>
         `,
         // Propeller
