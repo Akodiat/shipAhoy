@@ -418,15 +418,14 @@ function onPointerMove(event) {
 function onWindowResize() {
     camera.aspect = threeContainer.offsetWidth / threeContainer.offsetHeight;
     camera.updateProjectionMatrix();
-
     renderer.setSize(threeContainer.offsetWidth, threeContainer.offsetHeight);
+    mapView.map.invalidateSize();
 }
 
 function animate() {
     if (stats) {
         stats.update();
     }
-
 
     const delta = clock.getDelta();
     const controlsUpdated = controls.update(delta);
@@ -437,7 +436,7 @@ function animate() {
         const style = document.getElementById("threeContainer").style;
         const smallScreen = window.matchMedia("(max-width: 768px)").matches;
         const infoboxVisible = document.getElementById("infobox").style.display !== "none";
-        onWindowResize();
+
         style.height = "100%";
         style.position = "absolute";
         controls.setFocalOffset(0, 0, 0);
