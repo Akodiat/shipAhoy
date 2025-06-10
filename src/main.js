@@ -44,10 +44,10 @@ async function registerSW() {
         try {
             await navigator.serviceWorker.register("./src/sw.js");
         } catch (error) {
-            showResult("Error while registering: " + error.message);
+            console.warn("Error while registering service worker: " + error.message);
         }
     } else {
-        showResult("Service workers API not available");
+        console.warn("Service workers API not available");
     }
 };
 

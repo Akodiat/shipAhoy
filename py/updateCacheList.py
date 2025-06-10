@@ -1,8 +1,10 @@
 import os
 
-print(os.path.dirname(os.path.realpath(__file__)))
+# Run this file from the ./src directory
+# e.g. "python ../py/updateCacheList.py"
+# This will update ./src/sw.js
 
-rootPaths = ["lib", "src", "resources"]
+rootPaths = [".", "../lib", "../resources"]
 
 allFiles = []
 for rootPath in rootPaths:
@@ -13,20 +15,22 @@ for rootPath in rootPaths:
 cacheSrc = """
 self.addEventListener("install", async event => {
     const cache = await caches.open("pwa-assets");
-    // it stores all resources on first SW install
+    // Store all resources on first SW install
     cache.addAll([
-        "/",
-        "app.js",
-        "style.css",
-"""+",\n".join('        "'+f+'"' for f in allFiles)+"""
+        "../",
+        "../manifest.json",
+        "../favicon.ico",
+        "../favicon.png",
+        "../main.css"
     ]);
+"""+"\n".join('    cache.add("'+f+'");' for f in allFiles)+"""
 });
 
 self.addEventListener("fetch", event => {
    event.respondWith(
      fetch(event.request)
      .catch(error => {
-       return caches.match(event.request) ;
+       return caches.match(event.request);
      })
    );
 });
@@ -35,5 +39,5 @@ self.addEventListener("fetch", event => {
 
 print(cacheSrc)
 
-with open("src/sw.js", "w") as f:
+with open("sw.js", "w") as f:
   f.write(cacheSrc)
