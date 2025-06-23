@@ -221,6 +221,8 @@ function init() {
             annotationSprites.add(annotation.sprite);
         }
         labelScene.add(annotationSprites);
+        const loaderEl = document.getElementById("loader");
+        if (loaderEl) loaderEl.style.display = "none";
     });
 
     // post processing
