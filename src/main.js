@@ -13,13 +13,16 @@ import {ParticleSystem} from "./particles.js";
 
 CameraControls.install({THREE: THREE});
 
-let camera, scene, labelScene, renderer, mixer;
-let model;
+let camera, scene, labelScene, renderer;
+const modelGroup = new THREE.Group();
+let detailModel;
 let controls;
 let stats;
 let water, sun, smoke;
 let mapView, plotView;
 let postProcessing;
+
+const mixers = [];
 
 const threeContainer = document.getElementById("threeContainer");
 
@@ -31,6 +34,7 @@ const annotationSprites = new THREE.Group();
 const clock = new THREE.Clock();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
+const gltfLoader = new GLTFLoader();
 
 const defaultLookat = [
     75, 50, 150, // Position
@@ -43,6 +47,7 @@ async function registerSW() {
     if ('serviceWorker' in navigator) {
         try {
             await navigator.serviceWorker.register("./src/sw.js");
+            console.log("Service worker registered")
         } catch (error) {
             console.warn("Error while registering service worker: " + error.message);
         }
@@ -84,6 +89,8 @@ function init() {
     scene = new THREE.Scene();
     labelScene = new THREE.Scene();
 
+    scene.add(modelGroup);
+
     sun = new THREE.Vector3();
 
     const textureLoader = new THREE.TextureLoader();
@@ -95,7 +102,8 @@ function init() {
     const waterNormals = textureLoader.load("resources/waternormals.jpg");
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 
-    water = new WaterMesh(
+    water = new THREE.Group();
+    const waterMesh = new WaterMesh(
         waterGeometry,
         {
             waterNormals: waterNormals,
@@ -106,9 +114,9 @@ function init() {
             size: 1,
         }
     );
-    water.rotation.x = - Math.PI / 2;
-    water.position.y = waterLevel;
-    scene.add(water);
+    waterMesh.rotation.x = - Math.PI / 2;
+    waterMesh.position.y = waterLevel;
+    water.add(waterMesh);
 
     const waterUnderside = new THREE.Mesh(
         waterGeometry,
@@ -126,7 +134,9 @@ function init() {
     );
     waterUnderside.rotation.x = Math.PI / 2;
     waterUnderside.position.y = waterLevel - 0.001;
-    scene.add(waterUnderside);
+    water.add(waterUnderside);
+
+    scene.add(water);
 
     const sky = new SkyMesh();
     sky.scale.setScalar(10000);
@@ -154,7 +164,7 @@ function init() {
         sun.setFromSphericalCoords(1, phi, theta);
 
         sky.sunPosition.value.copy(sun);
-        water.sunDirection.value.copy(sun).normalize();
+        waterMesh.sunDirection.value.copy(sun).normalize();
 
         if (renderTarget !== undefined) renderTarget.dispose();
 
@@ -169,10 +179,11 @@ function init() {
 
     // model
 
-    const gltfLoader = new GLTFLoader();
     gltfLoader.load("resources/cargoship.glb", function(gltf) {
 
-        model = gltf.scene;
+        const model = gltf.scene;
+        modelGroup.add(model);
+        modelGroup.name = "container";
         model.name = "container";
 
         model.traverse(child => {
@@ -183,12 +194,11 @@ function init() {
         });
 
         if (gltf.animations.length > 0) {
-            mixer = new THREE.AnimationMixer(gltf.scene);
+            const mixer = new THREE.AnimationMixer(gltf.scene);
             const action = mixer.clipAction(gltf.animations[0]);
             action.play();
+            mixers.push(mixer);
         }
-
-        scene.add(model);
 
         // Setup annotations
         const spriteTexture = textureLoader.load(
@@ -349,8 +359,8 @@ window.selectAnnotationByName = (annotationName) => {
 
 function selectAnnotation(a) {
     controls.setLookAt(
-        ...a.spec.shipTypes[model.name].cameraPos.toArray(),
-        ...a.spec.shipTypes[model.name].labelPos.toArray(),
+        ...a.spec.shipTypes[modelGroup.name].cameraPos.toArray(),
+        ...a.spec.shipTypes[modelGroup.name].labelPos.toArray(),
         true
     );
     document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
@@ -367,6 +377,24 @@ function selectAnnotation(a) {
         legend.style.display = "none";
     }
 
+    modelGroup.remove(detailModel);
+    if (a.spec.model !== undefined) {
+        gltfLoader.load(a.spec.model, function(gltf) {
+            detailModel = gltf.scene;
+            detailModel.scale.multiplyScalar(1);
+            modelGroup.add(detailModel);
+
+            if (gltf.animations.length > 0) {
+                const mixer = new THREE.AnimationMixer(gltf.scene);
+                const action = mixer.clipAction(gltf.animations[0]);
+                action.play();
+                mixers.push(mixer);
+            }
+        });
+    }
+
+    water.visible = !a.spec.hideWater;
+
     const style = document.getElementById("threeContainer").style;
     const smallScreen = window.matchMedia("(max-width: 768px)").matches;
 
@@ -380,7 +408,7 @@ function selectAnnotation(a) {
         style.position = "absolute";
         // Keep camera pivot slightly to the left
         // of the screen center.
-        const p = a.spec.shipTypes[model.name];
+        const p = a.spec.shipTypes[modelGroup.name];
         const dist = p.cameraPos.distanceTo(
             p.labelPos
         );
@@ -395,6 +423,9 @@ function clearAnnotationSelection() {
     controls.setLookAt(...defaultLookat, true);
     document.getElementById("infobox").style.display = "none";
     selectedAnnotation = undefined;
+
+    modelGroup.remove(detailModel);
+    water.visible = true;
 
     controls.setFocalOffset(0, 0, 0);
     const style = document.getElementById("threeContainer").style;
@@ -469,17 +500,17 @@ function animate() {
 
     smoke.update(delta);
 
-    if (model) {
+    if (modelGroup) {
         const t = clock.getElapsedTime();
-        model.position.y = Math.sin(t) * 0.01;
+        modelGroup.position.y = Math.sin(t) * 0.01;
         const e = new THREE.Euler(
             Math.sin(t)* .001,
             0,
             Math.cos(t)* .001
         );
-        model.quaternion.setFromEuler(e);
+        modelGroup.quaternion.setFromEuler(e);
 
-        if (mixer) {
+        for (const mixer of mixers) {
             mixer.update(delta);
         }
 
