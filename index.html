@@ -96,8 +96,12 @@
 		</div>
 
 		<script type="module" src="src/main.js"></script>
-		<div id="loader">
-			<div class="spinner"></div>
+		<div class="pico" id="loader" aria-busy="true">
+			<div>
+				<h1>Ship Ahoy!</h1>
+				<img id="loaderLogo" src="favicon.png"><br>
+				Loading: <progress id="loaderProgress" value="0" max="100"/>
+			</div>
 		</div>
 	</body>
 </html>

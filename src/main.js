@@ -76,6 +76,7 @@ function loadShip(name) {
     }
 
     currentShip = ship;
+    const loaderElement = document.getElementById("loader");
 
     const setModel = (model, animations) => {
         currentShip.model = model;
@@ -138,8 +139,8 @@ function loadShip(name) {
             annotationSprites.add(annotation.sprite);
         }
         labelScene.add(annotationSprites);
-        const loaderEl = document.getElementById("loader");
-        if (loaderEl) loaderEl.style.display = "none";
+
+        loaderElement.style.display = "none";
 
         if (selectedAnnotation === undefined) {
             controls.setLookAt(...currentShip.defaultLookat, true);
@@ -160,7 +161,15 @@ function loadShip(name) {
     if (ship.model !== undefined) {
         setModel(ship.model, ship.animations)
     } else {
-        gltfLoader.load(ship.path, gltf => setModel(gltf.scene, gltf.animations));
+        loaderElement.style.display = "";
+        gltfLoader.load(
+            ship.path,
+            gltf => setModel(gltf.scene, gltf.animations),
+            xhr => {
+                document.getElementById("loaderProgress").value = ( xhr.loaded / xhr.total * 100 );
+                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded');
+            }
+        );
     }
 }
 
