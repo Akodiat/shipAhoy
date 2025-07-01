@@ -16,6 +16,7 @@ CameraControls.install({THREE: THREE});
 
 let camera, scene, labelScene, renderer;
 const modelGroup = new THREE.Group();
+let currentShip;
 let detailModel;
 let controls;
 let stats;
@@ -23,6 +24,7 @@ let water, sun, smoke;
 let mapView, plotView;
 let postProcessing;
 let outputFlow;
+let annotationSprites = new THREE.Group();
 
 const mixers = [];
 
@@ -32,16 +34,135 @@ const annotationLabel = document.getElementById("annotationLabel");
 let highlightedAnnotation, selectedAnnotation;
 const annotationSizeDefault = 0.03;
 const annotationSizeHighlight = 0.035;
-const annotationSprites = new THREE.Group();
 const clock = new THREE.Clock();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
+const textureLoader = new THREE.TextureLoader();
 
-const defaultLookat = [
-    75, 50, 150, // Position
-    -20, 5, 20   // Target
+const ships = [
+    {
+        name: "container",
+        path: "resources/cargoship.glb",
+        smokeStackPos: new THREE.Vector3(0.5, 45, -57),
+        defaultLookat: [
+            75, 50, 150, // Position
+            -20, 5, 20   // Target
+        ]
+    },
+        {
+        name: "sail",
+        path: "resources/sailingship.glb",
+        defaultLookat: [
+            26, 24, 21, // Position
+            0, 7, 0   // Target
+        ]
+    }
 ];
+
+function advanceShip(step) {
+    const name = currentShip ? currentShip.name : ships[0].name;
+    const i = ships.findIndex(s=>s.name === name);
+    const iNew = mod(i+step, ships.length);
+    loadShip(ships[iNew].name);
+}
+
+function loadShip(name) {
+    const ship = ships.find(s=>s.name === name);
+
+    // Remove previous model (if any)
+    if (currentShip && currentShip.model) {
+        modelGroup.remove(currentShip.model);
+    }
+
+    currentShip = ship;
+
+    const setModel = (model, animations) => {
+        currentShip.model = model;
+        currentShip.animations = animations;
+        modelGroup.add(currentShip.model);
+        modelGroup.name = name;
+        currentShip.model.name = name;
+
+        currentShip.model.traverse(child => {
+            if(child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
+        if (animations.length > 0) {
+            const mixer = new THREE.AnimationMixer(model);
+            const action = mixer.clipAction(animations[0]);
+            action.play();
+            mixers.push(mixer);
+        }
+
+        // Setup annotations
+        const spriteTexture = textureLoader.load(
+            "resources/label.png",
+            texture => texture.colorSpace = THREE.SRGBColorSpace
+        );
+
+        // Position smoke
+        if (ship.smokeStackPos !== undefined) {
+            smoke.visible = true;
+            smoke.position.copy(ship.smokeStackPos);
+        } else {
+            smoke.visible = false;
+        }
+
+        // Clear old annotations
+        labelScene.remove(annotationSprites);
+        annotationSprites = new THREE.Group();
+
+        for (const annotation of annotations) {
+            if (annotation.spec.shipTypes === undefined ||
+                annotation.spec.shipTypes[name] === undefined ||
+                annotation.spec.shipTypes[name].labelPos === undefined
+            ) {
+                continue;
+            }
+            annotation.sprite = new THREE.Sprite(
+                new THREE.SpriteMaterial({
+                    map: spriteTexture,
+                    color: 0xFFFFFF,
+                    transparent: true,
+                    sizeAttenuation: false,
+                    alphaTest: 0.5
+                }
+            ));
+            annotation.sprite.annotation = annotation;
+            annotation.sprite.position.copy(annotation.spec.shipTypes[name].labelPos);
+            annotation.sprite.scale.setScalar(annotationSizeDefault);
+            annotationSprites.add(annotation.sprite);
+        }
+        labelScene.add(annotationSprites);
+        const loaderEl = document.getElementById("loader");
+        if (loaderEl) loaderEl.style.display = "none";
+
+        if (selectedAnnotation === undefined) {
+            controls.setLookAt(...currentShip.defaultLookat, true);
+        } else {
+            const a = selectedAnnotation.annotation;
+            if (a.spec.shipTypes[name] !== undefined) {
+                controls.setLookAt(
+                    ...a.spec.shipTypes[name].cameraPos.toArray(),
+                    ...a.spec.shipTypes[name].labelPos.toArray(),
+                    true
+                );
+            } else {
+                clearAnnotationSelection();
+            }
+        }
+    };
+
+    if (ship.model !== undefined) {
+        setModel(ship.model, ship.animations)
+    } else {
+        gltfLoader.load(ship.path, gltf => setModel(gltf.scene, gltf.animations));
+    }
+}
 
 
 // Registers a service worker (to cache content offline)
@@ -94,8 +215,6 @@ function init() {
     scene.add(modelGroup);
 
     sun = new THREE.Vector3();
-
-    const textureLoader = new THREE.TextureLoader();
 
     smoke = new ParticleSystem(10, 25, undefined, new THREE.Vector3(0,1,-0.5), textureLoader);
     scene.add(smoke);
@@ -179,64 +298,6 @@ function init() {
     renderer.init().then(updateSun);
 
 
-    // model
-
-    gltfLoader.load("resources/cargoship.glb", function(gltf) {
-
-        const model = gltf.scene;
-        modelGroup.add(model);
-        modelGroup.name = "container";
-        model.name = "container";
-
-        model.traverse(child => {
-            if(child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-
-        if (gltf.animations.length > 0) {
-            const mixer = new THREE.AnimationMixer(gltf.scene);
-            const action = mixer.clipAction(gltf.animations[0]);
-            action.play();
-            mixers.push(mixer);
-        }
-
-        // Setup annotations
-        const spriteTexture = textureLoader.load(
-            "resources/label.png",
-            texture => texture.colorSpace = THREE.SRGBColorSpace
-        );
-
-        // Position at container ship smokestack
-        smoke.position.set(0.5, 45, -57);
-
-        for (const annotation of annotations) {
-            if (annotation.spec.shipTypes === undefined ||
-                annotation.spec.shipTypes[model.name] === undefined ||
-                annotation.spec.shipTypes[model.name].labelPos === undefined
-            ) {
-                continue;
-            }
-            annotation.sprite = new THREE.Sprite(
-                new THREE.SpriteMaterial({
-                    map: spriteTexture,
-                    color: 0xFFFFFF,
-                    transparent: true,
-                    sizeAttenuation: false,
-                    alphaTest: 0.5
-                }
-            ));
-            annotation.sprite.annotation = annotation;
-            annotation.sprite.position.copy(annotation.spec.shipTypes[model.name].labelPos);
-            annotation.sprite.scale.setScalar(annotationSizeDefault);
-            annotationSprites.add(annotation.sprite);
-        }
-        labelScene.add(annotationSprites);
-        const loaderEl = document.getElementById("loader");
-        if (loaderEl) loaderEl.style.display = "none";
-    });
-
     // post processing
 
     const labelPass = pass(labelScene, camera);
@@ -260,8 +321,11 @@ function init() {
     // Don't move the camera further than 500 m away
     controls.maxDistance = 500;
 
+    // Load ship
+    loadShip("container");
+
     // Set initial camera view
-    controls.setLookAt(...defaultLookat);
+    controls.setLookAt(...currentShip.defaultLookat);
 
     window.controls = controls;
 
@@ -317,8 +381,10 @@ function init() {
                 }
                 break;
             case "Backspace": clearAnnotationSelection(); break;
-            case "ArrowLeft": advanceAnnotation(-1);
-            case "ArrowRight": advanceAnnotation(1);
+            case "ArrowLeft": advanceAnnotation(-1); break;
+            case "ArrowRight": advanceAnnotation(1); break;
+            case "ArrowUp": advanceShip(-1); break;
+            case "ArrowDown": advanceShip(1); break;
         }
     });
 }
@@ -361,8 +427,8 @@ window.selectAnnotationByName = (annotationName) => {
 
 function selectAnnotation(a) {
     controls.setLookAt(
-        ...a.spec.shipTypes[modelGroup.name].cameraPos.toArray(),
-        ...a.spec.shipTypes[modelGroup.name].labelPos.toArray(),
+        ...a.spec.shipTypes[currentShip.name].cameraPos.toArray(),
+        ...a.spec.shipTypes[currentShip.name].labelPos.toArray(),
         true
     );
     document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
@@ -399,9 +465,9 @@ function selectAnnotation(a) {
 
     modelGroup.remove(outputFlow);
 
-    if (a.spec.shipTypes[modelGroup.name].outletPos) {
+    if (a.spec.shipTypes[currentShip.name].outletPos) {
         outputFlow = new OutputFlow();
-        outputFlow.position.copy(a.spec.shipTypes[modelGroup.name].outletPos);
+        outputFlow.position.copy(a.spec.shipTypes[currentShip.name].outletPos);
         modelGroup.add(outputFlow);
     }
 
@@ -418,7 +484,7 @@ function selectAnnotation(a) {
         style.position = "absolute";
         // Keep camera pivot slightly to the left
         // of the screen center.
-        const p = a.spec.shipTypes[modelGroup.name];
+        const p = a.spec.shipTypes[currentShip.name];
         const dist = p.cameraPos.distanceTo(
             p.labelPos
         );
@@ -430,7 +496,7 @@ function selectAnnotation(a) {
 }
 
 function clearAnnotationSelection() {
-    controls.setLookAt(...defaultLookat, true);
+    controls.setLookAt(...currentShip.defaultLookat, true);
     document.getElementById("infobox").style.display = "none";
     selectedAnnotation = undefined;
 

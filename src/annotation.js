@@ -240,6 +240,10 @@ const annotations = [
             container: {
                 labelPos: new Vector3(12, 3, -20),
                 cameraPos: new Vector3(40, 15, -20)
+            },
+            sail: {
+                labelPos: new Vector3(2, 7, 4),
+                cameraPos: new Vector3(6.5, 5.7, 13)
             }
         }
     },
