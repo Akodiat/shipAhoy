@@ -10,6 +10,7 @@ import {PlotView} from "./plot.js";
 import {annotations} from "./annotation.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
 import {ParticleSystem} from "./particles.js";
+import {OutputFlow} from "./outputFlow.js";
 
 CameraControls.install({THREE: THREE});
 
@@ -21,6 +22,7 @@ let stats;
 let water, sun, smoke;
 let mapView, plotView;
 let postProcessing;
+let outputFlow;
 
 const mixers = [];
 
@@ -395,6 +397,14 @@ function selectAnnotation(a) {
 
     water.visible = !a.spec.hideWater;
 
+    modelGroup.remove(outputFlow);
+
+    if (a.spec.shipTypes[modelGroup.name].outletPos) {
+        outputFlow = new OutputFlow();
+        outputFlow.position.copy(a.spec.shipTypes[modelGroup.name].outletPos);
+        modelGroup.add(outputFlow);
+    }
+
     const style = document.getElementById("threeContainer").style;
     const smallScreen = window.matchMedia("(max-width: 768px)").matches;
 
@@ -425,6 +435,7 @@ function clearAnnotationSelection() {
     selectedAnnotation = undefined;
 
     modelGroup.remove(detailModel);
+    modelGroup.remove(outputFlow);
     water.visible = true;
 
     controls.setFocalOffset(0, 0, 0);

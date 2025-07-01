@@ -277,6 +277,7 @@ const annotations = [
                 cameraPos: undefined
             },
             container: {
+                outletPos: new Vector3(13.479, 14.411, 91.698),
                 labelPos: new Vector3(13, 14, 92),
                 cameraPos: new Vector3(20, 14, 92)
             }
@@ -323,6 +324,7 @@ const annotations = [
                 cameraPos: undefined
             },
             container: {
+                outletPos: new Vector3(13.3245, 4.58666, -26.1653),
                 labelPos: new Vector3(13.3245, 4.58666, -26.1653),
                 cameraPos: new Vector3(15, 7, -26.1653)
             }
