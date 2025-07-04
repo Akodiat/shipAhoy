@@ -78,6 +78,8 @@ function loadShip(name) {
     currentShip = ship;
     const loaderElement = document.getElementById("loader");
 
+    // This is called either when a model has been loaded,
+    // or one already found in "ship.model"
     const setModel = (model, animations) => {
         currentShip.model = model;
         currentShip.animations = animations;
@@ -142,6 +144,9 @@ function loadShip(name) {
 
         loaderElement.style.display = "none";
 
+        // If we have a selected annotation, keep it open for the
+        // new ship model if the annotation is present there too.
+        // Otherwise, clear selection.
         if (selectedAnnotation === undefined) {
             controls.setLookAt(...currentShip.defaultLookat, true);
         } else {
@@ -159,15 +164,18 @@ function loadShip(name) {
     };
 
     if (ship.model !== undefined) {
+        // Use model already loaded
         setModel(ship.model, ship.animations)
     } else {
+        // Make loader element visible
         loaderElement.style.display = "";
+        // Load model (only needs to run once)
         gltfLoader.load(
             ship.path,
             gltf => setModel(gltf.scene, gltf.animations),
             xhr => {
+                // Update progress bar
                 document.getElementById("loaderProgress").value = ( xhr.loaded / xhr.total * 100 );
-                console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded');
             }
         );
     }
