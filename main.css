@@ -251,6 +251,7 @@ a {
 }
 
 .annotation {
+  cursor: pointer;
   display: none;
   position: absolute;
   top: 0;

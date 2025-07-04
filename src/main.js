@@ -384,6 +384,14 @@ function init() {
         }
     });
 
+    // Sometimes, the user might click the label itself, rather
+    // than the sprite, so this makes sure the label is clickable
+    // too. (useful on mobile in particular)
+    annotationLabel.addEventListener("click", ()=>{
+        selectAnnotation(highlightedAnnotation.annotation);
+        annotationLabel.style.display = "none";
+    })
+
     document.addEventListener("keydown", event => {
         switch (event.key) {
             case "q":
