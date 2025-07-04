@@ -81,13 +81,18 @@ const sdgText = [
     "SDG 15: Life on land",
     "SDG 16: Peace, justice and strong institutions",
     "SDG 17: Partnerships for the goals"
-]
+];
+
+function mdToHTMLLink(markdown) {
+    const re = /\[(.+)\]\((.*)\)/;
+    return markdown.replace(re, `<a target="_blank" href="$2">$1</a>`)
+}
 
 window.populateImageModal = (header, path, description, attribution) => {
     document.getElementById("imageModalHeader").innerHTML = header;
     document.getElementById("imageModalImage").src = path;
-    document.getElementById("imageModalDescription").innerHTML = description;
-    document.getElementById("imageModalAttribution").innerHTML = attribution;
+    document.getElementById("imageModalDescription").innerHTML = mdToHTMLLink(description);
+    document.getElementById("imageModalAttribution").innerHTML = mdToHTMLLink(attribution);
 };
 
 const annotations = [
@@ -153,25 +158,25 @@ const annotations = [
                 header: "Inert coating",
                 path: "resources/images/antifouling_1_inertcoating.jpg",
                 description: "Fouling on static idle panels. Panel painted with inert coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
-                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
+                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, [A novel tool for cost and emission reduction related to ship underwater hull maintenance](http://dx.doi.org/10.1016/j.jclepro.2022.131882), J. Clean. Prod. 356 (2022), 131882.`
             },
             {
                 header: "Biocidal copper coating",
                 path: "resources/images/antifouling_2_biocidal_copper_coating.jpg",
                 description: "Fouling on static idle panels. Panel painted with biocidal copper coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
-                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
+                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, [A novel tool for cost and emission reduction related to ship underwater hull maintenance](http://dx.doi.org/10.1016/j.jclepro.2022.131882), J. Clean. Prod. 356 (2022), 131882.`
             },
             {
                 header: "Biocidefree silicon coating",
                 path: "resources/images/antifouling_3_foulrelease_biocidefree_silicon_coating.jpg",
-                description: "Illustration showing the HullMASTER tool, D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882.",
-                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
+                description: "Fouling on static idle panels. Panel painted with foul-release biocide-free silicone coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
+                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, [A novel tool for cost and emission reduction related to ship underwater hull maintenance](http://dx.doi.org/10.1016/j.jclepro.2022.131882), J. Clean. Prod. 356 (2022), 131882.`
             },
             {
                 header: "HullMASTER",
                 path: "resources/images/antifouling_hullmaster.png",
-                description: "Fouling on static idle panels. Panel painted with foul-release biocide-free silicone coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
-                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, A novel tool for cost and emission reduction related to ship underwater hull maintenance, J. Clean. Prod. 356 (2022), 131882. http://dx.doi.org/10.1016/j.jclepro.2022.131882`
+                description: "Illustration showing the HullMASTER tool.",
+                attribution: `D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, [A novel tool for cost and emission reduction related to ship underwater hull maintenance](http://dx.doi.org/10.1016/j.jclepro.2022.131882), J. Clean. Prod. 356 (2022), 131882.`
             }
         ],
         // Somewhere on the immersed part of the hull
@@ -267,7 +272,7 @@ const annotations = [
             {
                 header: "Ballast water discharge hotspots in the EU 2018",
                 path: "resources/images/BalW_discharge_hotspot_EU_2018.png",
-                description: "Ballast water discharge in European seas in 2018. Bar height indicate the magnitude of discharge. Bars are calculated for 0.5×0.5 deg grid cells. Dataset metadata is available at: https://metadata.helcom.fi/geonetwork/srv/eng/catalog.search#/metadata/df0b81ff-824a-4550-8948-fb71221baacd.",
+                description: "Ballast water discharge in European seas in 2018. Bar height indicate the magnitude of discharge. Bars are calculated for 0.5×0.5 deg grid cells. [Dataset metadata](https://metadata.helcom.fi/geonetwork/srv/eng/catalog.search#/metadata/df0b81ff-824a-4550-8948-fb71221baacd).",
                 attribution: ""
             }
         ],
@@ -363,19 +368,19 @@ const annotations = [
                 header: "Sea urchin exposure",
                 path: "resources/images/scrubber_seaurchin_exposed.jpg",
                 description: "Some abnormalities observed in Psammechinus miliaris (sea urchin) larvae at 72 h exposure to scrubber water. The adverse effects on fertilization success and larvae development were observed even at the lowest dilutions of scrubber water, confirming that scrubber water could present adverse effects on the whole life cycle of the marine organisms.",
-                attribution: "Zapata-Restrepo,L., Williams,I., (2025) Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water, Marine Environmental Research. https://doi.org/10.1016/j.marenvres.2025.107157."
+                attribution: "Zapata-Restrepo,L., Williams,I., (2025) [Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water](https://doi.org/10.1016/j.marenvres.2025.107157), Marine Environmental Research."
             },
             {
                 header: "Mussel exposure",
                 path: "resources/images/scrubber_mussel_exposure.jpg",
                 description: "Some abnormalities observed in Mytilus edulis (mussel) larvae at 72 h exposure to scrubber water. Arrows: hypertrophy of the mantle. Arrowhead: hinge abnormality. The adverse effects on fertilization success and larvae development were observed even at the lowest dilutions of scrubber water, confirming that scrubber water could present adverse effects on the whole life cycle of the marine organisms.",
-                attribution: "Zapata-Restrepo,L., Williams,I., (2025) Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water, Marine Environmental Research. https://doi.org/10.1016/j.marenvres.2025.107157."
+                attribution: "Zapata-Restrepo,L., Williams,I., (2025) [Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water](https://doi.org/10.1016/j.marenvres.2025.107157), Marine Environmental Research."
             },
             {
                 header: "Estimated vanadium input 2018",
                 path: "resources/images/ytreberg_2022_Vanadin.png",
                 description: "Estimated input of vanadium to the Swedish Exclusive Economic Zone in 2018, open loop scrubber water discharge is a significant source. In 2018, only 178 vessels had scrubbers in the Baltic Sea",
-                attribution: " Ytreberg, E., Hansson, K., Lunde Hermansson, A., Parsmo, R., Lagerström, M., Jalkanen, J.P., Hassellöv, I.M., 2022. Metal and PAH loads from ships and boats, relative other sources, in the Baltic Sea. Mar. Pollut. Bull. 182, 113904. https://doi.org/10.1016/j.marpolbul.2022.113904"
+                attribution: " Ytreberg, E., Hansson, K., Lunde Hermansson, A., Parsmo, R., Lagerström, M., Jalkanen, J.P., Hassellöv, I.M., 2022. [Metal and PAH loads from ships and boats, relative other sources, in the Baltic Sea](https://doi.org/10.1016/j.marpolbul.2022.113904). Mar. Pollut. Bull. 182, 113904."
             }
         ],
         mapLayer: "SCRUB_W_CLOSED",
