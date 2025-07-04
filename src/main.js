@@ -7,7 +7,7 @@ import {SkyMesh} from "three/addons/objects/SkyMesh.js";
 import Stats from "three/addons/libs/stats.module.js";
 import {MapView} from "./map.js";
 import {PlotView} from "./plot.js";
-import {annotations} from "./annotation.js";
+import {annotations} from "./annotations.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
 import {ParticleSystem} from "./particles.js";
 import {OutputFlow} from "./outputFlow.js";
