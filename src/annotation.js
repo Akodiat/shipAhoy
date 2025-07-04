@@ -120,7 +120,33 @@ const annotations = [
     {
         name: "Propoulsion momentum",
         description: "In 2023, the north-western Mediterranean Sea was designated a Particularly Sensitive Sea Area by the International Maritime Organization (IMO) with associated protective measures to reduce the number of ship strikes of whales (MEPC 380(80)).",
-        environmentalImpact: "Ship strikes of marine mammals, groundings",
+        environmentalImpact: `Ship strikes of marine mammals, groundings. For more information about ship strikes, see the <a target="_blank" href="https://iwc.int/management-and-conservation/ship-strikes">International Whaling Commision</a>`,
+        images: [
+            {
+                header: "A near-miss between a whale and a container vessel. Picture: CINMS/NOAA",
+                path: "resources/images/ship_strike_2.jpeg",
+                description: "A near-miss between a whale and a container vessel.",
+                attribution: `CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)`
+            },
+            {
+                header: "A struck whale can be carried unnoticed, far from the site of the collision. ",
+                path: "resources/images/ship_strikes_bow_-_kalli_de_meyer.jpeg",
+                description: "A struck whale can be carried unnoticed, far from the site of the collision.",
+                attribution: `CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)`
+            },
+            {
+                header: "A ship struck humpback. Picture: NOAA ",
+                path: "resources/images/ship_struck_humpback,_Hawaiit._Picture_from_NOAA.jpeg",
+                description: "A ship struck humpback",
+                attribution: `CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)`
+            },
+            {
+                header: "Any type of vessel and species of cetacean can be involved. Picture: Fabian Ritter, MEER e.V.",
+                path: "resources/images/ship_strike_yacht_-_fabian_meer.jpeg",
+                description: "Any type of vessel and species of cetacean can be involved",
+                attribution: `CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)`
+            }
+        ],
         // At the (bulbous) bow:
         shipTypes: {
             tanker: {
