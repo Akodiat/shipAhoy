@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
-	<head>
-		<title>Ship Ahoy!</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="main.css">
-		<link rel="stylesheet" href="lib/leaflet/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-		<link rel="stylesheet" href="lib/pico.conditional.min.css">
+<head>
+	<title>Ship Ahoy!</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link type="text/css" rel="stylesheet" href="main.css">
+	<link rel="stylesheet" href="lib/leaflet/leaflet.css"
+		integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+	<link rel="stylesheet" href="lib/pico.conditional.min.css">
 
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-		<link rel="manifest" href="manifest.json"/>
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+	<link rel="manifest" href="manifest.json" />
 
-		<script src="lib/vega.5.30.0.js"></script>
-		<script src="lib/vega-lite.5.21.0.js"></script>
-		<script src="lib/vega-embed.6.26.0.js"></script>
-	</head>
-	<body>
-		<script type="importmap">
+	<script src="lib/vega.5.30.0.js"></script>
+	<script src="lib/vega-lite.5.21.0.js"></script>
+	<script src="lib/vega-embed.6.26.0.js"></script>
+</head>
+<body>
+	<script type="importmap">
 			{
 				"imports": {
 					"three": "./lib/three.webgpu.min.js",
@@ -27,81 +28,106 @@
 			}
 		</script>
 
-		<div id="main">
+	<!-- start-screen overlay -->
+	<div id="startScreen">
+		<article class="pico">
+			<h1>Select a ship</h1>
 
-			<div id="threeContainer"></div>
-			<div id="annotationLabel" class="annotation"></div>
-			<div id="infobox">
-				<div class="pico">
-					<button id="overviewReturnButton"></button>
-					<div id="textbox"></div>
-				</div>
-				<div id="plot"></div>
-				<small id="plotCaption"></small>
-				<div id="map"></div>
+			<div id="shipChooser"></div>
+
+			<footer style="margin-top:1rem">
+				<button id="enterButton" class="primary" disabled>Enter</button>
+			</footer>
+		</article>
+	</div>
+
+	<div id="main">
+
+		<div id="threeContainer"></div>
+		<div id="annotationLabel" class="annotation"></div>
+		<div id="infobox">
+			<div class="pico">
+				<button id="overviewReturnButton"></button>
+				<div id="textbox"></div>
 			</div>
+			<div id="plot"></div>
+			<small id="plotCaption"></small>
+			<div id="map"></div>
 		</div>
+	</div>
 
-		<div class="pico">
-			<button id="acknowledgementButton" class="pico secondary" onclick="document.getElementById('acknowledgementModal').open = true">Acknowledgements</button>
-			<article id="titlebox">
-				<h1>Ship Ahoy!</h1>
+	<div class="pico">
+		<button id="acknowledgementButton" class="pico secondary"
+			onclick="document.getElementById('acknowledgementModal').open = true">Acknowledgements</button>
+		<article id="titlebox">
+			<h1>Ship Ahoy!</h1>
+			<p>
+				Navigating away from limited visibility, to unveil the environmental pressures and impacts from maritime
+				transport.
+			</p>
+			<small>
+				This is still a work in progress! If you have any questions or if you want to contribute,
+				please contact Ida-Maja Hassellöv <br>(<a href="mailto:ida-maja@chalmers.se">ida-maja@chalmers.se</a>).
+			</small>
+		</article>
+
+		<dialog id="acknowledgementModal">
+			<article>
+				<header>
+					<button aria-label="Close" rel="prev"
+						onclick="document.getElementById('acknowledgementModal').open = false"></button>
+					<p><strong>Acknowledgements</strong></p>
+				</header>
 				<p>
-					Navigating away from limited visibility, to unveil the environmental pressures and impacts from maritime transport.
+				<article>Thank you to everyone who have contributed with content for this project!</article>
+
+				This application was developed as part of an <a target="_blank" href="https://infravis.se/">InfraVis</a>
+				visualisation support project. <a target="_blank" href="https://github.com/Akodiat/shipAhoy/">Source
+					code</a>
+
+				<p>
+					Discharge data &copy; Jalkanen et al: <a target="_blank"
+						href="https://zenodo.org/records/4063643">10.5281/zenodo.4063643</a>.
+				</p>
+
+				<p>
+					Map data &copy; <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
+					and <a target="_blank" href="http://www.openseamap.org">OpenSeaMap</a> contributors. Marine areas
+					&copy; <a target="_blank"
+						href="https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033">EEA</a>.
+				</p>
+				</p>
+			</article>
+		</dialog>
+
+		<dialog id="imageModal">
+			<article>
+				<header>
+					<button aria-label="Close" rel="prev"
+						onclick="document.getElementById('imageModal').open = false"></button>
+					<p><strong id="imageModalHeader"></strong></p>
+				</header>
+				<p>
+					<img id="imageModalImage"><br>
+					<small id="imageModalDescription">
+					</small>
 				</p>
 				<small>
-					This is still a work in progress! If you have any questions or if you want to contribute,
-					please contact Ida-Maja Hassellöv <br>(<a href="mailto:ida-maja@chalmers.se">ida-maja@chalmers.se</a>).
+					&copy; <span id="imageModalAttribution"></span>.
 				</small>
 			</article>
+		</dialog>
+	</div>
 
-			<dialog id="acknowledgementModal">
-				<article>
-					<header>
-						<button aria-label="Close" rel="prev" onclick="document.getElementById('acknowledgementModal').open = false"></button>
-						<p><strong>Acknowledgements</strong></p>
-					</header>
-					<p>
-						<article>Thank you to everyone who have contributed with content for this project!</article>
-
-						This application was developed as part of an <a target="_blank" href="https://infravis.se/">InfraVis</a> visualisation support project. <a target="_blank" href="https://github.com/Akodiat/shipAhoy/">Source code</a>
-
-						<p>
-							Discharge data &copy; Jalkanen et al: <a target="_blank" href="https://zenodo.org/records/4063643">10.5281/zenodo.4063643</a>.
-						</p>
-
-						<p>
-							Map data &copy; <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> and <a target="_blank" href="http://www.openseamap.org">OpenSeaMap</a> contributors. Marine areas &copy; <a target="_blank" href="https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033">EEA</a>.
-						</p>
-					</p>
-				</article>
-			</dialog>
-
-			<dialog id="imageModal">
-				<article>
-					<header>
-						<button aria-label="Close" rel="prev" onclick="document.getElementById('imageModal').open = false"></button>
-						<p><strong id="imageModalHeader"></strong></p>
-					</header>
-					<p>
-						<img id="imageModalImage"><br>
-						<small id="imageModalDescription">
-						</small>
-					</p>
-					<small>
-						&copy; <span id="imageModalAttribution"></span>.
-					</small>
-				</article>
-			</dialog>
+	<!-- <script type="module" src="src/main.js"></script> -->
+	<script type="module" src="src/startScreen.js"></script>
+	<div class="pico" id="loader" aria-busy="true" style="display:none">
+		<div>
+			<h1>Ship Ahoy!</h1>
+			<img id="loaderLogo" src="favicon.png"><br>
+			Loading: <progress id="loaderProgress" value="0" max="100" />
 		</div>
+	</div>
+</body>
 
-		<script type="module" src="src/main.js"></script>
-		<div class="pico" id="loader" aria-busy="true">
-			<div>
-				<h1>Ship Ahoy!</h1>
-				<img id="loaderLogo" src="favicon.png"><br>
-				Loading: <progress id="loaderProgress" value="0" max="100"/>
-			</div>
-		</div>
-	</body>
 </html>

@@ -196,9 +196,9 @@ async function registerSW() {
     }
 };
 
-registerSW();
+// registerSW();
 
-init();
+// init();
 
 function init() {
     const waterLevel = 8;
@@ -339,10 +339,10 @@ function init() {
     controls.maxDistance = 500;
 
     // Load ship
-    loadShip("container");
+    // loadShip("container");
 
     // Set initial camera view
-    controls.setLookAt(...currentShip.defaultLookat);
+    // controls.setLookAt(...currentShip.defaultLookat);
 
     window.controls = controls;
 
@@ -621,3 +621,5 @@ function animate() {
         //renderer.render(scene, camera);
     }
 }
+
+export { ships, init, loadShip, registerSW };
