@@ -1,32 +1,91 @@
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ships, init, loadShip, registerSW } from "./main.js";
+
 registerSW?.();
 
-const startScreen   = document.getElementById("startScreen");
-const shipChooserEl = document.getElementById("shipChooser");
-const enterBtn      = document.getElementById("enterButton");
+const startScreen = document.getElementById("startScreen");
+const enterBtn = document.getElementById("enterButton");
+const prevBtn = document.getElementById("prevShip");
+const nextBtn = document.getElementById("nextShip");
+const canvas = document.getElementById("previewCanvas");
+const descBox = document.getElementById("shipDesc");
+const backBtn = document.getElementById("acknowledgementButton");
 
-let pickedShipName = null;
+let picked = 0;
+enterBtn.disabled = false;
 
-//create ship buttons
-ships.forEach(({ name }) => {
-  const btn = document.createElement("div");
-  btn.className  = "ship-button";
-  btn.textContent = name;
-  btn.addEventListener("click", () => {
-    document
-      .querySelectorAll(".ship-button")
-      .forEach(b => b.classList.remove("selected"));
-    btn.classList.add("selected");
+backBtn.style.display = "none";
+const loader = new GLTFLoader();
+const renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
+await renderer.init();
 
-    pickedShipName    = name;
-    enterBtn.disabled = false;
-  });
-  shipChooserEl.appendChild(btn);
+const CAN_W = 500, CAN_H = 500;
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(CAN_W, CAN_H, false);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, CAN_W / CAN_H, 0.1, 100);
+scene.add(
+  new THREE.AmbientLight(0xffffff, 0.6),
+  (() => {
+    const d = new THREE.DirectionalLight(0xffffff, 0.8);
+    d.position.set(0.3, 0.4, 1);
+    return d;
+  })()
+);
+
+let current = null;
+
+function frame(obj, fit = .9) {
+  const sphere = new THREE.Sphere();
+  new THREE.Box3().setFromObject(obj).getBoundingSphere(sphere);
+
+  const dist = sphere.radius /
+    (Math.sin(THREE.MathUtils.degToRad(camera.fov * .5)) * fit);
+  camera.position.set(0, 0, dist);
+  camera.lookAt(sphere.center);
+  camera.near = dist * .01;
+  camera.far = dist * 10;
+  camera.updateProjectionMatrix();
+}
+
+function show(idx) {
+  if (current) scene.remove(current);
+
+  loader.load(
+    ships[idx].path,
+    gltf => {
+      current = gltf.scene;
+      scene.add(current);
+      frame(current);
+    }
+  );
+
+  descBox.textContent = ships[idx].description ?? "No description available";
+
+  prevBtn.disabled = idx === 0;
+  nextBtn.disabled = idx === ships.length - 1;
+}
+
+show(picked);
+
+renderer.setAnimationLoop(() => {
+  if (current) current.rotation.y += 0.004;
+  renderer.render(scene, camera);
 });
 
-//launch scene 
+prevBtn.onclick = () => { if (picked) show(--picked); };
+nextBtn.onclick = () => { if (picked < ships.length - 1) show(++picked); };
+
+window.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") prevBtn.onclick();
+  if (e.key === "ArrowRight") nextBtn.onclick();
+});
+
 enterBtn.addEventListener("click", () => {
   startScreen.style.display = "none";
-  init();       
-  loadShip(pickedShipName);
+  backBtn.style.display = "";
+  init();
+  loadShip(ships[picked].name);
 });

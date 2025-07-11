@@ -370,6 +370,60 @@ a {
   z-index: 9999;
 }
 
+.selector-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem
+}
+
+#previewCanvas {
+  width: 500px;
+  height: 500px;
+  border-radius: .5rem;
+  background: #f4f4f4
+}
+
+.info-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem
+}
+
+.ship-desc {
+  width: 320px;
+  min-height: 320px;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: .5rem;
+  font-family: var(--font-main);
+  line-height: 1.4
+}
+
+.arrow-row {
+  display: flex;
+  gap: .75rem
+}
+
+.arrow {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  cursor: pointer
+}
+
+.arrow:disabled {
+  opacity: .35;
+  cursor: default
+}
+
+#enterButton {
+  margin: 1.5rem auto 0;
+  display: block
+}
+
 #shipChooser {
   display: flex;
   flex-wrap: wrap;

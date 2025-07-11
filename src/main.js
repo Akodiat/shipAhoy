@@ -48,7 +48,8 @@ const ships = [
         defaultLookat: [
             75, 50, 150, // Position
             -20, 5, 20   // Target
-        ]
+        ],
+        description: "A large cargo ship."
     },
         {
         name: "sail",
@@ -56,7 +57,8 @@ const ships = [
         defaultLookat: [
             26, 24, 21, // Position
             0, 7, 0   // Target
-        ]
+        ],
+        description: "A traditional sailing ship."
     }
 ];
 
