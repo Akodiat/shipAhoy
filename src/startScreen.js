@@ -10,17 +10,18 @@ const prevBtn = document.getElementById("prevShip");
 const nextBtn = document.getElementById("nextShip");
 const canvas = document.getElementById("previewCanvas");
 const descBox = document.getElementById("shipDesc");
-const backBtn = document.getElementById("acknowledgementButton");
+const backBtn = document.getElementById("backButton");
+const acknowledgementButton  = document.getElementById("acknowledgementButton");
 
 let picked = 0;
-enterBtn.disabled = false;
+let appStarted = false;
 
-backBtn.style.display = "none";
 const loader = new GLTFLoader();
 const renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
-await renderer.init();
-
 const CAN_W = 500, CAN_H = 500;
+
+enterBtn.disabled = false;
+await renderer.init();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(CAN_W, CAN_H, false);
 
@@ -86,6 +87,10 @@ window.addEventListener("keydown", e => {
 enterBtn.addEventListener("click", () => {
   startScreen.style.display = "none";
   backBtn.style.display = "";
-  init();
+  acknowledgementButton.style.display = "";
+  if (!appStarted) {
+    init();
+    appStarted = true;
+  }
   loadShip(ships[picked].name);
 });

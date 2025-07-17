@@ -39,6 +39,7 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
+const backBtn = document.getElementById("backButton");
 
 const ships = [
     {
@@ -623,5 +624,12 @@ function animate() {
         //renderer.render(scene, camera);
     }
 }
+
+backBtn.addEventListener("click", () => {
+  backBtn.style.display = "none";
+  document.getElementById("acknowledgementButton").style.display = "none";
+
+  document.getElementById("startScreen").style.display = "flex";
+});
 
 export { ships, init, loadShip, registerSW };

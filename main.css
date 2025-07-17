@@ -414,6 +414,17 @@ a {
   cursor: pointer
 }
 
+#backButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+}
+
+#backButton:hover {
+  background: rgba(220, 220, 220, .9)
+}
+
 .arrow:disabled {
   opacity: .35;
   cursor: default
