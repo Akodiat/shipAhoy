@@ -25,6 +25,9 @@ await renderer.init();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(CAN_W, CAN_H, false);
 
+backBtn.style.display = "none";
+acknowledgementButton.style.display = "none";
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(30, CAN_W / CAN_H, 0.1, 100);
 scene.add(
