@@ -26,7 +26,7 @@ body {
   justify-content:center;
   align-items:center;
   gap: 3rem;
-  padding-top: 1rem;
+  padding-top: 3rem;
 }
 
 #loader {
@@ -434,12 +434,12 @@ a {
 .selector-row {
   display: flex;
   align-items: flex-start;
-  gap: 3rem
+  gap: 2rem
 }
 
 #previewCanvas {
-  width: 500px;
-  height: 500px;
+  width: 30vw;
+  height: 30vw;
   border-radius: .5rem;
   background: #f4f4f4
 }
