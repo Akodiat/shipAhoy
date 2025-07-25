@@ -11,6 +11,37 @@ import {annotations} from "./annotations.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
 import {ParticleSystem} from "./particles.js";
 import {OutputFlow} from "./outputFlow.js";
+import {createCameraAnimation, exportDomeVideo} from "./domeExport.js";
+
+window.exportDomeVideo = (
+    resolution=800, duration=5, framerate=60, preview=false, eyeSep=0.064, tilt=27, transitionTime=1
+) => {
+    scene.remove(water);
+
+    exportDomeVideo(
+        resolution, duration, framerate, eyeSep, tilt, renderer, scene,
+        annotations, ships, mixers, preview,
+        (timestamp, delta) => {
+            const t = timestamp / 1000;
+
+            smoke.update(delta);
+
+            if (modelGroup) {
+                modelGroup.position.y = Math.sin(t) * 0.01;
+                const e = new THREE.Euler(
+                    Math.sin(t)* .001,
+                    0,
+                    Math.cos(t)* .001
+                );
+                modelGroup.quaternion.setFromEuler(e);
+
+                for (const mixer of mixers) {
+                    mixer.update(delta);
+                }
+            }
+        }
+    )
+};
 
 CameraControls.install({THREE: THREE});
 
@@ -352,7 +383,6 @@ function init() {
     // Hide infobox until an annotation is clicked
     document.getElementById("infobox").style.display = "none";
 
-
     // Handle resizing
 
     window.addEventListener("resize", onWindowResize);
@@ -365,7 +395,6 @@ function init() {
                 // Don't do anyting until map data is loaded
                 return;
             }
-
 
             selectedAnnotation = highlightedAnnotation;
             selectAnnotation(a);
@@ -394,6 +423,7 @@ function init() {
 
     document.addEventListener("keydown", event => {
         switch (event.key) {
+            case "c": animateCamera(); break;
             case "q":
                 // FPS stats shown in upper-left corner
                 // Only relevant for debugging
@@ -422,6 +452,14 @@ function init() {
  */
 function mod(n, m) {
   return ((n % m) + m) % m;
+}
+
+function animateCamera() {
+    const cameraAnimation = createCameraAnimation(annotations, ships, 1);
+    const mixer = new THREE.AnimationMixer(camera);
+    const action = mixer.clipAction(cameraAnimation);
+    action.play();
+    mixers.push(mixer);
 }
 
 /**
@@ -592,18 +630,22 @@ function onWindowResize() {
     mapView.map.invalidateSize();
 }
 
-function animate() {
+/**
+ * Animation loop
+ * @param {number} timestamp Timestamp in milliseconds (not used here)
+ * @param {number} delta Time delta in seconds since last frame
+ */
+function animate(timestamp, delta=clock.getDelta()) {
     if (stats) {
         stats.update();
     }
 
-    const delta = clock.getDelta();
     controls.update(delta);
 
     smoke.update(delta);
 
     if (modelGroup) {
-        const t = clock.getElapsedTime();
+        const t = timestamp / 1000;
         modelGroup.position.y = Math.sin(t) * 0.01;
         const e = new THREE.Euler(
             Math.sin(t)* .001,
