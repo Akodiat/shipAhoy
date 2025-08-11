@@ -105,10 +105,7 @@ function loadShip(name) {
         }
 
         // Setup annotations
-        const spriteTexture = textureLoader.load(
-            "resources/label.png",
-            texture => texture.colorSpace = THREE.SRGBColorSpace
-        );
+        const spriteTexture = loadShip._labelTexture ??= (()=>{const t=textureLoader.load("resources/label.png"); t.colorSpace=THREE.SRGBColorSpace; return t;})();
 
         // Position smoke
         if (ship.smokeStackPos !== undefined) {
