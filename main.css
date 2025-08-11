@@ -21,10 +21,10 @@ body {
   overflow: hidden;
 }
 
-.action-row{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+.action-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 3rem;
   padding-top: 3rem;
 }
@@ -60,24 +60,16 @@ body {
   animation-timing-function: cubic-bezier(.5, 0.05, 1, .5);
 }
 
-#acknowledgementButton {
+#titleboxWrapper {
   position: absolute;
-  margin: 20px;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.6) !important;
-  padding: 10px 15px !important;
-  color: black !important;
-  font-size: 75% !important;
-  border-width: 0px !important;
-  border-radius: 10px !important;
-  box-shadow: 0px 0px 30px 0 rgba(0, 0, 0, 0.15),
-    0 0px 20px 0 rgba(0, 0, 0, 0.1) !important;
-  backdrop-filter: blur(10px);
-  z-index: 10000;
-}
-
-#acknowledgementButton:hover {
-  background: rgba(200, 200, 200, 0.8) !important;
+  left: 20px;
+  top: 20px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0 1rem;
 }
 
 #body-text {
@@ -93,22 +85,12 @@ body {
 }
 
 #titlebox {
-  Color: white !important;
-  position: absolute;
-  max-width: 350px;
-  background: transparent;
-  /*   background: rgba(255, 255, 255, 0.6);
-  border-radius: 20px;
-  border-width: 1px 0 0 0;
-  border-color: white;
-  border-style:solid;
-  backdrop-filter: blur(10px); */
-  left: 20px;
+  max-width: clamp(420px, 32vw, 560px);
+  padding: 0;
+  background: none;
+  color: white;
   box-shadow: none !important;
-  top: -20px;
-  user-select: none !important;
-  -webkit-user-select: none;
-  pointer-events: none;
+  margin: 0;
 }
 
 #titlebox h1 {
@@ -297,6 +279,24 @@ a {
   display: inline-block;
 }
 
+#acknowledgementButton {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 10px 15px !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  color: black !important;
+  font-size: 75% !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15), 0 0 20px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(10px);
+  margin-top: 10px;
+}
+
+#acknowledgementButton:hover {
+  background: rgba(200, 200, 200, 0.8) !important;
+}
+
 @media (max-width: 768px) {
   body {
     overflow: auto;
@@ -327,30 +327,6 @@ a {
     margin: 0 0 1rem auto;
   }
 
-  #acknowledgementButton {
-    position: absolute;
-    top: 10px !important;
-    right: 10px;
-    padding: 6px 12px !important;
-    height: 20px;
-    border-radius: 10px !important;
-    margin: 0;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-  }
-
-  #titlebox {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 50;
-    max-width: 90vw;
-    padding: 0.5rem 1rem;
-  }
-
   #titlebox h1 {
     font-size: clamp(20px, 7vw, 32px);
     margin: 0.3rem 0;
@@ -374,7 +350,7 @@ a {
     overflow-y: auto;
   }
 
-  #startScreen > article {
+  #startScreen>article {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -393,7 +369,7 @@ a {
   }
 
   #previewCanvas {
-    width : 80vw !important;
+    width: 80vw !important;
     height: 80vw !important;
     margin-inline: auto;
     padding: clamp(0.5rem, 3vw, 1rem);
@@ -471,9 +447,10 @@ a {
 }
 
 #backButton {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 10000;
   background: rgba(255, 255, 255, 0.6) !important;
   padding: 10px 15px !important;

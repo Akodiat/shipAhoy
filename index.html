@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
 	<title>Ship Ahoy!</title>
 	<meta charset="utf-8">
@@ -16,6 +17,7 @@
 	<script src="lib/vega-lite.5.21.0.js"></script>
 	<script src="lib/vega-embed.6.26.0.js"></script>
 </head>
+
 <body>
 	<script type="importmap">
 			{
@@ -65,19 +67,26 @@
 	</div>
 
 	<div class="pico">
-		<button id="acknowledgementButton" class="pico secondary"
-			onclick="document.getElementById('acknowledgementModal').open = true">Acknowledgements</button>
-		<article id="titlebox">
-			<h1>Ship Ahoy!</h1>
-			<p>
-				Navigating away from limited visibility, to unveil the environmental pressures and impacts from maritime
-				transport.
-			</p>
-			<small>
-				This is still a work in progress! If you have any questions or if you want to contribute,
-				please contact Ida-Maja Hassellöv <br>(<a href="mailto:ida-maja@chalmers.se">ida-maja@chalmers.se</a>).
-			</small>
-		</article>
+		<div id="titleboxWrapper">
+			<article id="titlebox">
+				<h1>Ship Ahoy!</h1>
+				<p>
+					Navigating away from limited visibility, to unveil the environmental pressures and impacts from
+					maritime
+					transport.
+				</p>
+				<small>
+					This is still a work in progress! If you have any questions or if you want to contribute,
+					please contact Ida-Maja Hassellöv <br>(<a
+						href="mailto:ida-maja@chalmers.se">ida-maja@chalmers.se</a>).
+				</small>
+			</article>
+
+			<button id="acknowledgementButton" class="pico secondary"
+				onclick="document.getElementById('acknowledgementModal').open = true">
+				Acknowledgements
+			</button>
+		</div>
 
 		<dialog id="acknowledgementModal">
 			<article>
