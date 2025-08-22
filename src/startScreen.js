@@ -11,7 +11,7 @@ const nextBtn = document.getElementById("nextShip");
 const canvas = document.getElementById("previewCanvas");
 const descBox = document.getElementById("shipDesc");
 const backBtn = document.getElementById("backButton");
-const acknowledgementButton  = document.getElementById("acknowledgementButton");
+const acknowledgementButton = document.getElementById("acknowledgementButton");
 
 let picked = 0;
 let appStarted = false;
@@ -85,6 +85,10 @@ nextBtn.onclick = () => { if (picked < ships.length - 1) show(++picked); };
 window.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") prevBtn.onclick();
   if (e.key === "ArrowRight") nextBtn.onclick();
+  else if (e.key === "Enter" || e.code === "NumpadEnter" || e.key === " ") {
+    e.preventDefault();
+    enterBtn.click();
+  }
 });
 
 enterBtn.addEventListener("click", () => {
