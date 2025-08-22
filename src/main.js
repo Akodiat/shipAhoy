@@ -70,6 +70,7 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
+const backBtn = document.getElementById("backButton");
 
 const ships = [
     {
@@ -79,7 +80,8 @@ const ships = [
         defaultLookat: [
             75, 50, 150, // Position
             -20, 5, 20   // Target
-        ]
+        ],
+        description: "A large cargo ship."
     },
         {
         name: "sail",
@@ -87,7 +89,8 @@ const ships = [
         defaultLookat: [
             26, 24, 21, // Position
             0, 7, 0   // Target
-        ]
+        ],
+        description: "A traditional sailing ship."
     }
 ];
 
@@ -133,10 +136,7 @@ function loadShip(name) {
         }
 
         // Setup annotations
-        const spriteTexture = textureLoader.load(
-            "resources/label.png",
-            texture => texture.colorSpace = THREE.SRGBColorSpace
-        );
+        const spriteTexture = loadShip._labelTexture ??= (()=>{const t=textureLoader.load("resources/label.png"); t.colorSpace=THREE.SRGBColorSpace; return t;})();
 
         // Position smoke
         if (ship.smokeStackPos !== undefined) {
@@ -227,9 +227,9 @@ async function registerSW() {
     }
 };
 
-registerSW();
+// registerSW();
 
-init();
+// init();
 
 function init() {
     const waterLevel = 8;
@@ -370,10 +370,10 @@ function init() {
     controls.maxDistance = 500;
 
     // Load ship
-    loadShip("container");
+    // loadShip("container");
 
     // Set initial camera view
-    controls.setLookAt(...currentShip.defaultLookat);
+    // controls.setLookAt(...currentShip.defaultLookat);
 
     window.controls = controls;
 
@@ -663,3 +663,12 @@ function animate(timestamp, delta=clock.getDelta()) {
         //renderer.render(scene, camera);
     }
 }
+
+backBtn.addEventListener("click", () => {
+  backBtn.style.display = "none";
+  document.getElementById("acknowledgementButton").style.display = "none";
+
+  document.getElementById("startScreen").style.display = "flex";
+});
+
+export { ships, init, loadShip, registerSW };
