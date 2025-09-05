@@ -264,6 +264,7 @@ const annotations = [
                 attribution: ""
             }
         ],
+        mapTiff: "BALW_2018", 
         shipTypes: {
             tanker: {
                 labelPos: undefined,

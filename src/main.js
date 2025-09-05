@@ -1,18 +1,19 @@
 import * as THREE from "three";
-import {color, pass, objectPosition, screenUV} from "three/tsl";
-import {gaussianBlur} from "three/addons/tsl/display/GaussianBlurNode.js";
-import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
-import {WaterMesh} from "three/addons/objects/WaterMesh.js";
-import {SkyMesh} from "three/addons/objects/SkyMesh.js";
+import { color, pass, objectPosition, screenUV } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { WaterMesh } from "three/addons/objects/WaterMesh.js";
+import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 import Stats from "three/addons/libs/stats.module.js";
-import {MapView} from "./map.js";
-import {PlotView} from "./plot.js";
-import {annotations} from "./annotations.js";
+import { MapView } from "./map.js";
+import { PlotView } from "./plot.js";
+import { annotations } from "./annotations.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
-import {ParticleSystem} from "./particles.js";
-import {OutputFlow} from "./outputFlow.js";
+import { ParticleSystem } from "./particles.js";
+import { OutputFlow } from "./outputFlow.js";
+import { MapViewTiff } from "./map_tiff.js";
 
-CameraControls.install({THREE: THREE});
+CameraControls.install({ THREE: THREE });
 
 let camera, scene, labelScene, renderer;
 const modelGroup = new THREE.Group();
@@ -25,6 +26,7 @@ let mapView, plotView;
 let postProcessing;
 let outputFlow;
 let annotationSprites = new THREE.Group();
+let tiffMapView = null;
 
 const mixers = [];
 
@@ -52,7 +54,7 @@ const ships = [
         ],
         description: "A large cargo ship."
     },
-        {
+    {
         name: "sail",
         path: "resources/sailingship.glb",
         defaultLookat: [
@@ -65,13 +67,13 @@ const ships = [
 
 function advanceShip(step) {
     const name = currentShip ? currentShip.name : ships[0].name;
-    const i = ships.findIndex(s=>s.name === name);
-    const iNew = mod(i+step, ships.length);
+    const i = ships.findIndex(s => s.name === name);
+    const iNew = mod(i + step, ships.length);
     loadShip(ships[iNew].name);
 }
 
 function loadShip(name) {
-    const ship = ships.find(s=>s.name === name);
+    const ship = ships.find(s => s.name === name);
 
     // Remove previous model (if any)
     if (currentShip && currentShip.model) {
@@ -91,7 +93,7 @@ function loadShip(name) {
         currentShip.model.name = name;
 
         currentShip.model.traverse(child => {
-            if(child.isMesh) {
+            if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
             }
@@ -105,7 +107,7 @@ function loadShip(name) {
         }
 
         // Setup annotations
-        const spriteTexture = loadShip._labelTexture ??= (()=>{const t=textureLoader.load("resources/label.png"); t.colorSpace=THREE.SRGBColorSpace; return t;})();
+        const spriteTexture = loadShip._labelTexture ??= (() => { const t = textureLoader.load("resources/label.png"); t.colorSpace = THREE.SRGBColorSpace; return t; })();
 
         // Position smoke
         if (ship.smokeStackPos !== undefined) {
@@ -134,7 +136,7 @@ function loadShip(name) {
                     sizeAttenuation: false,
                     alphaTest: 0.5
                 }
-            ));
+                ));
             annotation.sprite.annotation = annotation;
             annotation.sprite.position.copy(annotation.spec.shipTypes[name].labelPos);
             annotation.sprite.scale.setScalar(annotationSizeDefault);
@@ -175,7 +177,7 @@ function loadShip(name) {
             gltf => setModel(gltf.scene, gltf.animations),
             xhr => {
                 // Update progress bar
-                document.getElementById("loaderProgress").value = ( xhr.loaded / xhr.total * 100 );
+                document.getElementById("loaderProgress").value = (xhr.loaded / xhr.total * 100);
             }
         );
     }
@@ -233,10 +235,10 @@ function init() {
 
     sun = new THREE.Vector3();
 
-    smoke = new ParticleSystem(10, 25, undefined, new THREE.Vector3(0,1,-0.5), textureLoader);
+    smoke = new ParticleSystem(10, 25, undefined, new THREE.Vector3(0, 1, -0.5), textureLoader);
     scene.add(smoke);
 
-    const waterGeometry =  new THREE.CircleGeometry( 5000, 3 );
+    const waterGeometry = new THREE.CircleGeometry(5000, 3);
     const waterNormals = textureLoader.load("resources/waternormals.jpg");
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 
@@ -324,10 +326,10 @@ function init() {
 
     const waterMask = objectPosition(camera).y.greaterThan(screenUV.y.mul(camera.near).add(waterLevel));
 
-    const scenePassColorBlurred = gaussianBlur( scenePassColor );
-    scenePassColorBlurred.directionNode = waterMask.select( scenePassDepth, scenePass.getLinearDepthNode().mul(5));
+    const scenePassColorBlurred = gaussianBlur(scenePassColor);
+    scenePassColorBlurred.directionNode = waterMask.select(scenePassDepth, scenePass.getLinearDepthNode().mul(5));
 
-    const vignette = screenUV.distance( .5 ).mul( 1.35 ).oneMinus();
+    const vignette = screenUV.distance(.5).mul(1.35).oneMinus();
 
     postProcessing = new THREE.PostProcessing(renderer);
     postProcessing.outputNode = waterMask.select(scenePassColorBlurred, scenePassColorBlurred.mul(color(0x7E95A5)).mul(vignette)).add(labelPass);
@@ -358,7 +360,7 @@ function init() {
     window.addEventListener("resize", onWindowResize);
 
     document.addEventListener("pointermove", onPointerMove);
-    renderer.domElement.addEventListener("click", event=>{
+    renderer.domElement.addEventListener("click", event => {
         if (highlightedAnnotation) {
             const a = highlightedAnnotation.annotation;
             if (!mapView.fullyLoaded) {
@@ -387,7 +389,7 @@ function init() {
     // Sometimes, the user might click the label itself, rather
     // than the sprite, so this makes sure the label is clickable
     // too. (useful on mobile in particular)
-    annotationLabel.addEventListener("click", ()=>{
+    annotationLabel.addEventListener("click", () => {
         selectAnnotation(highlightedAnnotation.annotation);
         annotationLabel.style.display = "none";
     })
@@ -421,7 +423,7 @@ function init() {
  * @returns {number} n % m
  */
 function mod(n, m) {
-  return ((n % m) + m) % m;
+    return ((n % m) + m) % m;
 }
 
 /**
@@ -437,15 +439,15 @@ function advanceAnnotation(step) {
     if (selectedAnnotation === undefined) {
         selectedAnnotation = as[0];
     } else {
-        const currentIdx = as.findIndex(v=>v===selectedAnnotation);
-        selectedAnnotation = as[mod(currentIdx+step, as.length)];
+        const currentIdx = as.findIndex(v => v === selectedAnnotation);
+        selectedAnnotation = as[mod(currentIdx + step, as.length)];
     }
     selectAnnotation(selectedAnnotation.annotation);
 }
 
 window.selectAnnotationByName = (annotationName) => {
     const sprite = annotationSprites.children.find(
-        a=>a.annotation.spec.name === annotationName
+        a => a.annotation.spec.name === annotationName
     );
     selectAnnotation(sprite.annotation);
 }
@@ -456,8 +458,11 @@ function selectAnnotation(a) {
         ...a.spec.shipTypes[currentShip.name].labelPos.toArray(),
         true
     );
-    document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
+
+    document.getElementById("textbox").innerHTML =
+        `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
     document.getElementById("infobox").style.display = "flex";
+
     a.onSelect();
 
     plotView.plot(a);
@@ -472,7 +477,7 @@ function selectAnnotation(a) {
 
     modelGroup.remove(detailModel);
     if (a.spec.model !== undefined) {
-        gltfLoader.load(a.spec.model, function(gltf) {
+        gltfLoader.load(a.spec.model, function (gltf) {
             detailModel = gltf.scene;
             detailModel.scale.multiplyScalar(1);
             modelGroup.add(detailModel);
@@ -489,11 +494,30 @@ function selectAnnotation(a) {
     water.visible = !a.spec.hideWater;
 
     modelGroup.remove(outputFlow);
-
     if (a.spec.shipTypes[currentShip.name].outletPos) {
         outputFlow = new OutputFlow();
         outputFlow.position.copy(a.spec.shipTypes[currentShip.name].outletPos);
         modelGroup.add(outputFlow);
+    }
+
+    const wantsTiff = !!a.spec.mapTiff;
+    const heatmapEl = document.getElementById("map");
+    const tiffEl = document.getElementById("mapTiff");
+
+    if (wantsTiff) {
+        tiffEl.style.display = "block";
+        heatmapEl.style.display = "none";
+
+        if (!tiffMapView) tiffMapView = new MapViewTiff("mapTiff");
+        tiffMapView.show("./resources/STEAM_BalW_2018.tif");
+
+        setTimeout(() => tiffMapView.map.invalidateSize(), 0);
+    } else {
+        tiffEl.style.display = "none";
+
+        if (heatmapEl.style.display !== "none") {
+            setTimeout(() => mapView?.map?.invalidateSize(), 0);
+        }
     }
 
     const style = document.getElementById("threeContainer").style;
@@ -507,16 +531,16 @@ function selectAnnotation(a) {
     } else {
         style.height = "100%";
         style.position = "absolute";
-        // Keep camera pivot slightly to the left
-        // of the screen center.
         const p = a.spec.shipTypes[currentShip.name];
-        const dist = p.cameraPos.distanceTo(
-            p.labelPos
-        );
-        controls.setFocalOffset(
-            //0.25 * controls.distance, 0, 0
-            0.25 * dist, 0, 0
-        );
+        const dist = p.cameraPos.distanceTo(p.labelPos);
+        controls.setFocalOffset(0.25 * dist, 0, 0);
+    }
+
+    if (tiffMapView?.map) {
+        setTimeout(() => tiffMapView.map.invalidateSize(), 0);
+    }
+    if (mapView?.map) {
+        setTimeout(() => mapView.map.invalidateSize(), 0);
     }
 }
 
@@ -606,9 +630,9 @@ function animate() {
         const t = clock.getElapsedTime();
         modelGroup.position.y = Math.sin(t) * 0.01;
         const e = new THREE.Euler(
-            Math.sin(t)* .001,
+            Math.sin(t) * .001,
             0,
-            Math.cos(t)* .001
+            Math.cos(t) * .001
         );
         modelGroup.quaternion.setFromEuler(e);
 
@@ -623,10 +647,10 @@ function animate() {
 }
 
 backBtn.addEventListener("click", () => {
-  backBtn.style.display = "none";
-  document.getElementById("acknowledgementButton").style.display = "none";
+    backBtn.style.display = "none";
+    document.getElementById("acknowledgementButton").style.display = "none";
 
-  document.getElementById("startScreen").style.display = "flex";
+    document.getElementById("startScreen").style.display = "flex";
 });
 
 export { ships, init, loadShip, registerSW };

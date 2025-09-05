@@ -183,7 +183,7 @@ a {
   background-color: white;
 }
 
-#map {
+#map, #mapTiff {
   margin-top: 20px;
   height: 500px;
   width: auto;
@@ -315,7 +315,7 @@ a {
     height: auto;
   }
 
-  #map {
+  #map, #mapTiff {
     width: 100%;
     height: 300px;
   }
