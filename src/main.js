@@ -27,13 +27,12 @@ let postProcessing;
 let outputFlow;
 let annotationSprites = new THREE.Group();
 let tiffMapView = null;
+let highlightedAnnotation, selectedAnnotation;
 
 const mixers = [];
 
 const threeContainer = document.getElementById("threeContainer");
-
 const annotationLabel = document.getElementById("annotationLabel");
-let highlightedAnnotation, selectedAnnotation;
 const annotationSizeDefault = 0.03;
 const annotationSizeHighlight = 0.035;
 const clock = new THREE.Clock();
@@ -42,6 +41,10 @@ const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
 const backBtn = document.getElementById("backButton");
+const GEO_TIFFS = {
+  BALW_2018: "./resources/STEAM_BalW_2018.tif",
+  SCRUB_CLOSED_2018: "./resources/STEAM_SCRUB_W_CLOSED_2018.tif",
+};
 
 const ships = [
     {
@@ -509,8 +512,13 @@ function selectAnnotation(a) {
         heatmapEl.style.display = "none";
 
         if (!tiffMapView) tiffMapView = new MapViewTiff("mapTiff");
-        tiffMapView.show("./resources/STEAM_BalW_2018.tif");
-
+        const tiffKeyOrUrl = a.spec.mapTiff;
+        const tiffUrl = GEO_TIFFS[tiffKeyOrUrl] ?? tiffKeyOrUrl;
+        if (tiffUrl) {
+            tiffMapView.show(tiffUrl);
+        } else {
+            console.warn("No geotiff found for", a.spec.name, tiffKeyOrUrl);
+        }
         setTimeout(() => tiffMapView.map.invalidateSize(), 0);
     } else {
         tiffEl.style.display = "none";

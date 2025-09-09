@@ -332,7 +332,7 @@ const annotations = [
         name: "Scrubber water",
         description: `
         <p>
-            Scrubbers are installed on ships to enable the vessel to continue to run on conventional high sulfur fuels while still being compliant to stricter regulations limiting the sulfur oxide content in shipss exhaust. In a scrubber, water is sprayed over the exhaust, reducing the concentration of SOx in the exhaust to compliant levels. The scrubber water is not only taking upp SOx, forming sulfuric acid and becoming highly acidic, but also scavenges other contaminants (e.g. metals and organic substances) that are instead discharged directly to the marine environment.
+            Scrubbers are installed on ships to enable the vessel to continue to run on conventional high sulfur fuels while still being compliant to stricter regulations limiting the sulfur oxide content in ships exhaust. In a scrubber, water is sprayed over the exhaust, reducing the concentration of SOx in the exhaust to compliant levels. The scrubber water is not only taking upp SOx, forming sulfuric acid and becoming highly acidic, but also scavenges other contaminants (e.g. metals and organic substances) that are instead discharged directly to the marine environment.
         </p>
         <p>
             The use of scrubbers introduces a new contamination source to the marine environment with substantial adverse effects on marine organisms at very low concentrations. The use of a scrubber also implies a fuel penalty with 2-3%, with higher climate footprint compared to a ship without a scrubber.
@@ -372,7 +372,8 @@ const annotations = [
                 attribution: " Ytreberg, E., Hansson, K., Lunde Hermansson, A., Parsmo, R., Lagerström, M., Jalkanen, J.P., Hassellöv, I.M., 2022. [Metal and PAH loads from ships and boats, relative other sources, in the Baltic Sea](https://doi.org/10.1016/j.marpolbul.2022.113904). Mar. Pollut. Bull. 182, 113904."
             }
         ],
-        mapLayer: "SCRUB_W_CLOSED",
+        mapTiff: "SCRUB_CLOSED_2018",
+        // mapLayer: "SCRUB_W_CLOSED",
         plotCaption: `Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from <a target="_blank" href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 20259.`,
         plotSpec: {
             $schema: "https://vega.github.io/schema/vega-lite/v5.json",
