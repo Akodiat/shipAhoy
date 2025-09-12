@@ -27,7 +27,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 3rem;
-  padding-top: 3rem;
+  padding-top: 2rem;
 }
 
 #loader {
@@ -350,11 +350,32 @@ a {
 #startScreen {
   position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--pico-background-color, #fff);
   z-index: 9999;
+}
+
+@media (max-width: 1024px) {
+  #startScreen {
+    overflow-y: auto;
+    padding-top: 1rem;
+  }
+
+  .action-row {
+    padding-bottom: 1rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  #startScreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+#startScreen h1 {
+  text-align: center;
+  width: 100%;
 }
 
 .arrow-row {
