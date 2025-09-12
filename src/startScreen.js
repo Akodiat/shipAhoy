@@ -25,6 +25,48 @@ await renderer.init();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(CAN_W, CAN_H, false);
 
+/* --------------------------------
+ * POWER BARS
+ * -------------------------------- */
+const barsSpec = [
+  { key: "speed",    label: "Speed",    class: "orange" },
+  { key: "capacity", label: "Capacity", class: "red"   },
+  { key: "noise",    label: "Noise",    class: "blue"   },
+  { key: "emissions",      label: "Emissions",      class: "gray"  }
+];
+
+function buildBars() {
+  const hud = document.getElementById("hudBars");
+  hud.innerHTML = "";
+  for (const b of barsSpec) {
+    const row = document.createElement("div");
+    row.className = `hud-row ${b.class}`;
+    row.dataset.key = b.key;
+    row.innerHTML = `
+      <div class="hud-label">${b.label}</div>
+      <div class="hud-track"><div class="hud-fill"></div></div>
+      <div class="hud-value">0</div>
+    `;
+    hud.appendChild(row);
+  }
+}
+
+function updateBars(ship) {
+  const hud = document.getElementById("hudBars");
+  if (!hud || !ship?.stats) return;
+  for (const b of barsSpec) {
+    const row = hud.querySelector(`.hud-row[data-key="${b.key}"]`);
+    if (!row) continue;
+    const pct = Math.max(0, Math.min(100, ship.stats[b.key] ?? 0));
+    row.querySelector(".hud-fill").style.setProperty("--pct", pct);
+    row.querySelector(".hud-value").textContent = `${pct}`;
+    row.title = `${b.label}: ${pct}`;
+  }
+}
+
+buildBars();
+/* -------------------------------- */
+
 backBtn.style.display = "none";
 acknowledgementButton.style.display = "none";
 
@@ -32,11 +74,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(30, CAN_W / CAN_H, 0.1, 100);
 scene.add(
   new THREE.AmbientLight(0xffffff, 0.6),
-  (() => {
-    const d = new THREE.DirectionalLight(0xffffff, 0.8);
-    d.position.set(0.3, 0.4, 1);
-    return d;
-  })()
+  (() => { const d = new THREE.DirectionalLight(0xffffff, 0.8); d.position.set(0.3, 0.4, 1); return d; })()
 );
 
 let current = null;
@@ -44,9 +82,7 @@ let current = null;
 function frame(obj, fit = .9) {
   const sphere = new THREE.Sphere();
   new THREE.Box3().setFromObject(obj).getBoundingSphere(sphere);
-
-  const dist = sphere.radius /
-    (Math.sin(THREE.MathUtils.degToRad(camera.fov * .5)) * fit);
+  const dist = sphere.radius / (Math.sin(THREE.MathUtils.degToRad(camera.fov * .5)) * fit);
   camera.position.set(0, 0, dist);
   camera.lookAt(sphere.center);
   camera.near = dist * .01;
@@ -57,16 +93,14 @@ function frame(obj, fit = .9) {
 function show(idx) {
   if (current) scene.remove(current);
 
-  loader.load(
-    ships[idx].path,
-    gltf => {
-      current = gltf.scene;
-      scene.add(current);
-      frame(current);
-    }
-  );
+  loader.load(ships[idx].path, gltf => {
+    current = gltf.scene;
+    scene.add(current);
+    frame(current);
+  });
 
   descBox.textContent = ships[idx].description ?? "No description available";
+  updateBars(ships[idx]);
 
   prevBtn.disabled = idx === 0;
   nextBtn.disabled = idx === ships.length - 1;

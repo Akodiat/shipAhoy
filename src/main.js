@@ -47,25 +47,31 @@ const GEO_TIFFS = {
 };
 
 const ships = [
-    {
-        name: "container",
-        path: "resources/cargoship.glb",
-        smokeStackPos: new THREE.Vector3(0.5, 45, -57),
-        defaultLookat: [
-            75, 50, 150, // Position
-            -20, 5, 20   // Target
-        ],
-        description: "A large cargo ship."
-    },
-    {
-        name: "sail",
-        path: "resources/sailingship.glb",
-        defaultLookat: [
-            26, 24, 21, // Position
-            0, 7, 0   // Target
-        ],
-        description: "A traditional sailing ship."
+  {
+    name: "container",
+    path: "resources/cargoship.glb",
+    smokeStackPos: new THREE.Vector3(0.5, 45, -57),
+    defaultLookat: [75, 50, 150, -20, 5, 20],
+    description: "A large cargo ship.",
+    stats: {
+      speed: 68,
+      capacity: 95,
+      noise: 35,
+      emissions: 40
     }
+  },
+  {
+    name: "sail",
+    path: "resources/sailingship.glb",
+    defaultLookat: [26, 24, 21, 0, 7, 0],
+    description: "A traditional sailing ship.",
+    stats: {
+      speed: 38,
+      capacity: 12,
+      noise: 70,
+      emissions: 96
+    }
+  }
 ];
 
 function advanceShip(step) {
