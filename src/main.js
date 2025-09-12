@@ -52,7 +52,7 @@ const ships = [
     path: "resources/cargoship.glb",
     smokeStackPos: new THREE.Vector3(0.5, 45, -57),
     defaultLookat: [75, 50, 150, -20, 5, 20],
-    description: "A large cargo ship.",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem. Aenean et consequat risus, non ullamcorper urna. Morbi tincidunt diam urna, vel lobortis leo accumsan et. Nulla quis tincidunt purus. Praesent et arcu a elit accumsan dictum. Suspendisse diam odio, suscipit at dui vitae, gravida consectetur velit. Nullam mauris leo, dictum sed volutpat sed, tincidunt vel turpis. Vivamus aliquam porttitor magna, id tempus lacus aliquet at. Curabitur auctor purus et gravida rhoncus. Mauris vitae velit nulla. Aliquam porta, quam vel efficitur sodales, nunc odio lacinia massa, placerat mollis massa orci id enim. Morbi elit ligula, eleifend eu lacus non, imperdiet eleifend ex. Sed lacinia a arcu id convallis. Curabitur convallis, ante gravida dapibus suscipit, neque neque maximus leo, vel pellentesque magna orci quis velit. Phasellus ornare efficitur quam, sit amet consectetur felis imperdiet sed. Nunc iaculis lacus urna, id commodo elit lacinia ac.",
     stats: {
       speed: 68,
       capacity: 95,
@@ -64,7 +64,7 @@ const ships = [
     name: "sail",
     path: "resources/sailingship.glb",
     defaultLookat: [26, 24, 21, 0, 7, 0],
-    description: "A traditional sailing ship.",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem. Aenean et consequat risus, non ullamcorper urna. Morbi tincidunt diam urna, vel lobortis leo accumsan et. Nulla quis tincidunt purus. Praesent et arcu a elit accumsan dictum. Suspendisse diam odio, suscipit at dui vitae, gravida consectetur velit. Nullam mauris leo, dictum sed volutpat sed, tincidunt vel turpis. Vivamus aliquam porttitor magna, id tempus lacus aliquet at. Curabitur auctor purus et gravida rhoncus. Mauris vitae velit nulla. Aliquam porta, quam vel efficitur sodales, nunc odio lacinia.",
     stats: {
       speed: 38,
       capacity: 12,
