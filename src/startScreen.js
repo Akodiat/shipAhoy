@@ -20,21 +20,32 @@ const loader = new GLTFLoader();
 const renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
 const CAN_W = 500, CAN_H = 500;
 
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, CAN_W / CAN_H, 0.1, 100);
+scene.add(
+  new THREE.AmbientLight(0xffffff, 0.6),
+  (() => { const d = new THREE.DirectionalLight(0xffffff, 0.8); d.position.set(0.3, 0.4, 1); return d; })()
+);
+
+let current = null;
+
+//power bars setup
+const barsSpec = [
+  { key: "speed", label: "Speed", class: "orange" },
+  { key: "capacity", label: "Capacity", class: "red" },
+  { key: "noise", label: "Noise", class: "blue" },
+  { key: "emissions", label: "Emissions", class: "gray" }
+];
+
+//initial UI
+backBtn.style.display = "none";
+acknowledgementButton.style.display = "none";
 enterBtn.disabled = false;
 await renderer.init();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(CAN_W, CAN_H, false);
 
-/* --------------------------------
- * POWER BARS
- * -------------------------------- */
-const barsSpec = [
-  { key: "speed",    label: "Speed",    class: "orange" },
-  { key: "capacity", label: "Capacity", class: "red"   },
-  { key: "noise",    label: "Noise",    class: "blue"   },
-  { key: "emissions",      label: "Emissions",      class: "gray"  }
-];
-
+//functions
 function buildBars() {
   const hud = document.getElementById("hudBars");
   hud.innerHTML = "";
@@ -64,21 +75,6 @@ function updateBars(ship) {
   }
 }
 
-buildBars();
-/* -------------------------------- */
-
-backBtn.style.display = "none";
-acknowledgementButton.style.display = "none";
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(30, CAN_W / CAN_H, 0.1, 100);
-scene.add(
-  new THREE.AmbientLight(0xffffff, 0.6),
-  (() => { const d = new THREE.DirectionalLight(0xffffff, 0.8); d.position.set(0.3, 0.4, 1); return d; })()
-);
-
-let current = null;
-
 function frame(obj, fit = .9) {
   const sphere = new THREE.Sphere();
   new THREE.Box3().setFromObject(obj).getBoundingSphere(sphere);
@@ -106,13 +102,13 @@ function show(idx) {
   nextBtn.disabled = idx === ships.length - 1;
 }
 
-show(picked);
-
+//render loop
 renderer.setAnimationLoop(() => {
   if (current) current.rotation.y += 0.004;
   renderer.render(scene, camera);
 });
 
+//event handlers
 prevBtn.onclick = () => { if (picked) show(--picked); };
 nextBtn.onclick = () => { if (picked < ships.length - 1) show(++picked); };
 
@@ -135,3 +131,6 @@ enterBtn.addEventListener("click", () => {
   }
   loadShip(ships[picked].name);
 });
+
+buildBars();
+show(picked);
