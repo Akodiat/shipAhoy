@@ -667,4 +667,28 @@ backBtn.addEventListener("click", () => {
     document.getElementById("startScreen").style.display = "flex";
 });
 
+//reset page afte 5 minutes of inactivity
+(() => {
+  const IDLE_MS = 5 * 60 * 1000; //5 minutes
+  let timer;
+
+  const refresh = () => location.reload();
+
+  const reset = () => {
+    clearTimeout(timer);
+    timer = setTimeout(refresh, IDLE_MS);
+  };
+
+  ["pointermove","pointerdown","click","keydown","wheel","touchstart"].forEach(ev =>
+    addEventListener(ev, reset, { passive: true })
+  );
+
+  addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") reset();
+    else clearTimeout(timer);
+  });
+
+  reset();
+})();
+
 export { ships, init, loadShip, registerSW };
