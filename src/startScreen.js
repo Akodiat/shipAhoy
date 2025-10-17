@@ -9,6 +9,7 @@ const enterBtn = document.getElementById("enterButton");
 const prevBtn = document.getElementById("prevShip");
 const nextBtn = document.getElementById("nextShip");
 const canvas = document.getElementById("previewCanvas");
+const nameBox = document.getElementById("shipName");
 const descBox = document.getElementById("shipDesc");
 const backBtn = document.getElementById("backButton");
 const acknowledgementButton = document.getElementById("acknowledgementButton");
@@ -95,6 +96,7 @@ function show(idx) {
     frame(current);
   });
 
+  nameBox.textContent = ships[idx].name ?? "—";
   descBox.textContent = ships[idx].description ?? "No description available";
   updateBars(ships[idx]);
 
