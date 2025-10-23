@@ -384,9 +384,16 @@ a {
   margin-bottom: 5%;
 }
 
-.ship-name {
+#shipName {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-main);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  color: black;
+  z-index: 3;
+  pointer-events: none;
 }
 
 .arrow-row {
