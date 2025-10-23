@@ -48,7 +48,7 @@ const GEO_TIFFS = {
 
 const ships = [
   {
-    name: "Container Ship",
+    name: "container",
     path: "resources/cargoship.glb",
     smokeStackPos: new THREE.Vector3(0.5, 45, -57),
     defaultLookat: [75, 50, 150, -20, 5, 20],
@@ -61,7 +61,7 @@ const ships = [
     }
   },
   {
-    name: "Cruise Ship",
+    name: "sail",
     path: "resources/sailingship.glb",
     defaultLookat: [26, 24, 21, 0, 7, 0],
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem. Aenean et consequat risus, non ullamcorper urna. Morbi tincidunt diam urna, vel lobortis leo accumsan et. Nulla quis tincidunt purus. Praesent et arcu a elit accumsan dictum. Suspendisse diam odio, suscipit at dui vitae, gravida consectetur velit. Nullam mauris leo, dictum sed volutpat sed, tincidunt vel turpis. Vivamus aliquam porttitor magna, id tempus lacus aliquet at. Curabitur auctor purus et gravida rhoncus. Mauris vitae velit nulla. Aliquam porta, quam vel efficitur sodales, nunc odio lacinia.",
