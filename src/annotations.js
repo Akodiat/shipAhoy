@@ -444,12 +444,12 @@ const annotations = [
         // Exhaust
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0.5, 45, -105),
+                cameraPos: new Vector3(35, 45, -105)
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0.5, 65, -85),
+                cameraPos: new Vector3(35, 65, -85)
             },
             container: {
                 labelPos: new Vector3(0.5, 40, -58),
@@ -560,8 +560,8 @@ const annotations = [
                 cameraPos: undefined
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(5.5, -5.5, -130),
+                cameraPos: new Vector3(10, -5, -140),
             },
             container: {
                 labelPos: new Vector3(0, 3, -62),

@@ -82,7 +82,7 @@ const ships = [
         ]
     },
     {
-        name: "chemtanker",
+        name: "tanker",
         path: "resources/chemtanker.glb",
         smokeStackPos: new THREE.Vector3(0.5, 45, -105),
         defaultLookat: [
@@ -90,7 +90,7 @@ const ships = [
             -20, 5, 20   // Target
         ]
     },{
-        name: "cruiseship",
+        name: "cruise",
         path: "resources/cruiseship.glb",
         smokeStackPos: new THREE.Vector3(0.5, 65, -85),
         defaultLookat: [
