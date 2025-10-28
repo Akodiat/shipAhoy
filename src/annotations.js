@@ -503,7 +503,6 @@ const annotations = [
     {
         name: "Powertrain",
         description: "Burning fuel in engines produce mechnical power but have higher emissions. Fuel cell have lesser emissions and produce electricity through electrochemical reaction of different fuels. Battery-electric uses stored electricity and have zero emission but have limited energy capacity.",
-        model: "resources/engine.glb",
         hideWater: true,
         // Engine
         shipTypes: {
@@ -516,8 +515,8 @@ const annotations = [
                 cameraPos: undefined
             },
             container: {
-                labelPos: new Vector3(0, 5, -47),
-                cameraPos: new Vector3(4.5, 9, -58),
+                labelPos: new Vector3(0, 5, -27),
+                cameraPos: new Vector3(4.5, 9, -30),
             }
         },
         sdgIcons: [7,9,11,13,14,15]
