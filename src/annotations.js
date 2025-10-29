@@ -64,8 +64,8 @@ const annotations = [
                 cameraPos: undefined
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, -2, 140),
+                cameraPos: new Vector3(10, 2, 160)
             },
             container: {
                 labelPos: new Vector3(0, 5, 119),
@@ -122,8 +122,8 @@ const annotations = [
                 cameraPos: undefined
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(12, 0, 90),
+                cameraPos: new Vector3(50, 5, 120)
             },
             container: {
                 labelPos: new Vector3(12, 3, 20),
@@ -142,7 +142,7 @@ const annotations = [
             Biofouling results in the spread of invasive species and also a higher climate footprint due to the fuel penalty from increased roughness of the hull.
         </p>
         <p>
-            Measures against biofouling involves antifouling paints (see <a onclick="selectAnnotationByName('Antifouling')">Biofouling</a>), ballast water treatment systems (see <a onclick="selectAnnotationByName('Ballast water')">Ballast water</a>), and antifouling agents in sea chests (see <a onclick="selectAnnotationByName('Cooling water')">Cooling water</a>).
+            Measures against biofouling involves antifouling paints (see <a onclick="selectAnnotationByName('Antifouling')">Antifouling</a>), ballast water treatment systems (see <a onclick="selectAnnotationByName('Ballast water')">Ballast water</a>), and antifouling agents in sea chests (see <a onclick="selectAnnotationByName('Cooling water')">Cooling water</a>).
         </p>
         `,
         environmentalImpact: "Spreading of invasive species and increased emissions of e.g. green house gases, particles and NOx due to higher fuel consumption resulting from increased drag, friction and manouverability. Increased air emissions impact air quality and global warming.",
@@ -175,16 +175,12 @@ const annotations = [
                 cameraPos: undefined
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(15, 0, 80),
+                cameraPos: new Vector3(50, 5, 70)
             },
             container: {
                 labelPos: new Vector3(12, 3, -20),
                 cameraPos: new Vector3(40, 15, -20)
-            },
-            sail: {
-                labelPos: new Vector3(2, 7, 4),
-                cameraPos: new Vector3(6.5, 5.7, 13)
             }
         }
     },
@@ -218,8 +214,9 @@ const annotations = [
                 cameraPos: undefined
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                outletPos: new Vector3(21.7601, 3.64208, -85.8984),
+                labelPos: new Vector3(21.7601, 3.64208, -85.8984),
+                cameraPos: new Vector3(30, 4, -86)
             },
             container: {
                 outletPos: new Vector3(13.479, 14.411, 91.698),
@@ -265,8 +262,9 @@ const annotations = [
                 cameraPos: undefined
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                outletPos: new Vector3(21.6058, -1.9977, 31.9649),
+                labelPos: new Vector3(22.3, -1.9977, 31.9649),
+                cameraPos: new Vector3(30, 2, 32)
             },
             container: {
                 outletPos: new Vector3(13.3245, 4.58666, -26.1653),
@@ -366,8 +364,8 @@ const annotations = [
                 cameraPos: undefined
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0.5, 45, -85),
+                cameraPos: new Vector3(45, 45, -85)
             },
             container: {
                 labelPos: new Vector3(0.5, 30, -57),
@@ -412,8 +410,8 @@ const annotations = [
                 cameraPos: undefined
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(5.5, -5.5, -125),
+                cameraPos: new Vector3(10, -5, -125),
             },
             container: {
                 labelPos: new Vector3(0, 2, -58),
@@ -449,7 +447,7 @@ const annotations = [
             },
             cruise: {
                 labelPos: new Vector3(0.5, 65, -85),
-                cameraPos: new Vector3(35, 65, -85)
+                cameraPos: new Vector3(45, 65, -85)
             },
             container: {
                 labelPos: new Vector3(0.5, 40, -58),
