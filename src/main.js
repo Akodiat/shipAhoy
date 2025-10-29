@@ -668,7 +668,10 @@ function animate(timestamp, delta=clock.getDelta()) {
         }
 
         //Render scene
-        postProcessing.render();
-        //renderer.render(scene, camera);
+        if (water.visible) {
+            postProcessing.render();
+        } else {
+            renderer.render(scene, camera);
+        }
     }
 }
