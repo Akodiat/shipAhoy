@@ -585,11 +585,12 @@ const annotations = [
     },
     {
         name: "Container loss",
+        model: "resources/lost_container.glb",
         // One of the containers
         shipTypes: {
             container: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(12, 30, 20),
+                cameraPos: new Vector3(43, 46, 67),
             }
         }
     },
