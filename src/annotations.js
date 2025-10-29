@@ -422,7 +422,7 @@ const annotations = [
     },
     {
         name: "Solid waste (food waste)",
-        model: "../resources/burger.glb",
+        model: "resources/burger.glb",
         shipTypes: {
             tanker: {
                 labelPos: undefined,
