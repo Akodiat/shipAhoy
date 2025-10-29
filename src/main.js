@@ -191,7 +191,10 @@ function loadShip(name) {
             controls.setLookAt(...currentShip.defaultLookat, true);
         } else {
             const a = selectedAnnotation.annotation;
-            if (a.spec.shipTypes[name] !== undefined) {
+            if (a.spec.shipTypes[name] !== undefined &&
+                a.spec.shipTypes[name].cameraPos !== undefined &&
+                a.spec.shipTypes[name].labelPos !== undefined
+            ) {
                 controls.setLookAt(
                     ...a.spec.shipTypes[name].cameraPos.toArray(),
                     ...a.spec.shipTypes[name].labelPos.toArray(),
