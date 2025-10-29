@@ -77,7 +77,7 @@ const ships = [
         path: "resources/cargoship.glb",
         smokeStackPos: new THREE.Vector3(0.5, 45, -57),
         defaultLookat: [
-            75, 50, 150, // Position
+            80, 50, 160, // Position
             -20, 5, 20   // Target
         ]
     },
@@ -86,7 +86,7 @@ const ships = [
         path: "resources/chemtanker.glb",
         smokeStackPos: new THREE.Vector3(0.5, 45, -105),
         defaultLookat: [
-            75, 50, 150, // Position
+            80, 50, 160, // Position
             -20, 5, 20   // Target
         ]
     },{
@@ -94,7 +94,7 @@ const ships = [
         path: "resources/cruiseship.glb",
         smokeStackPos: new THREE.Vector3(0.5, 65, -85),
         defaultLookat: [
-            75, 50, 150, // Position
+            75, 70, 230, // Position
             -20, 5, 20   // Target
         ]
     }
