@@ -421,7 +421,22 @@ const annotations = [
         mapLayer: "STERN_TUBE"
     },
     {
-        name: "Solid waste (food waste)"
+        name: "Solid waste (food waste)",
+        model: "../resources/burger.glb",
+        shipTypes: {
+            tanker: {
+                labelPos: undefined,
+                cameraPos: undefined
+            },
+            cruise: {
+                labelPos: new Vector3(20.93, 26.95, -130.49),
+                cameraPos: new Vector3(29, 34, -140),
+            },
+            container: {
+                labelPos: undefined,
+                cameraPos: undefined
+            }
+        },
     },
     {
         name: "Exhaust gas",
