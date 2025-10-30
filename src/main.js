@@ -127,12 +127,6 @@ function loadShip(name) {
         modelGroup.name = name;
         currentShip.model.name = name;
 
-        currentShip.model.traverse(child => {
-            if(child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
 
         if (animations.length > 0) {
             const mixer = new THREE.AnimationMixer(model);
@@ -255,7 +249,6 @@ function init() {
     // renderer
 
     renderer = new THREE.WebGPURenderer();
-    renderer.shadowMap.enabled = true;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(
         threeContainer.offsetWidth,
