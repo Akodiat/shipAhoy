@@ -60,8 +60,8 @@ const annotations = [
         // At the (bulbous) bow:
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 5, 100),
+                cameraPos: new Vector3(5.94, 6.95, 122.69)
             },
             cruise: {
                 labelPos: new Vector3(0, -2, 140),
@@ -118,8 +118,8 @@ const annotations = [
         // Somewhere on the immersed part of the hull
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(16, 5, 20),
+                cameraPos: new Vector3(55.07, 7.27, 18.50)
             },
             cruise: {
                 labelPos: new Vector3(12, 0, 90),
@@ -171,8 +171,8 @@ const annotations = [
         // Somewhere on the immersed part of the hull
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(16, 5, -60),
+                cameraPos: new Vector3(47.05, 6.32, -58.12)
             },
             cruise: {
                 labelPos: new Vector3(15, 0, 80),
@@ -210,8 +210,9 @@ const annotations = [
         ],
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(16, 11, -86),
+                cameraPos: new Vector3(33.56, 12.07, -86.14),
+                outletPos: new Vector3(16, 10.65, -86)
             },
             cruise: {
                 outletPos: new Vector3(21.7601, 3.64208, -85.8984),
@@ -258,8 +259,9 @@ const annotations = [
         // Seachest inlet
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                outletPos: new Vector3(16, 4.5, -43.6),
+                labelPos: new Vector3(16, 4, -44),
+                cameraPos: new Vector3(33.91, 5.82, -41.95)
             },
             cruise: {
                 outletPos: new Vector3(21.6058, -1.9977, 31.9649),
@@ -360,8 +362,8 @@ const annotations = [
         // Smokestack (end engine)
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 35, -105),
+                cameraPos: new Vector3(8.92, 46.55, -129.72)
             },
             cruise: {
                 labelPos: new Vector3(0.5, 45, -85),
@@ -406,8 +408,8 @@ const annotations = [
         `,
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 0, -115),
+                cameraPos: new Vector3(16.35, 4.74, -144.10),
             },
             cruise: {
                 labelPos: new Vector3(5.5, -5.5, -125),
@@ -569,8 +571,8 @@ const annotations = [
         // Propeller
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 0, -120),
+                cameraPos: new Vector3(-13.68, 3.06, -141.22),
             },
             cruise: {
                 labelPos: new Vector3(5.5, -5.5, -130),
