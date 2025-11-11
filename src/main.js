@@ -445,6 +445,8 @@ function init() {
             case "ArrowRight": advanceAnnotation(1); break;
             case "ArrowUp": advanceShip(-1); break;
             case "ArrowDown": advanceShip(1); break;
+            case "PageUp": advanceShip(-1); break;
+            case "PageDown": advanceShip(1); break;
         }
     });
 }
