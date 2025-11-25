@@ -229,8 +229,8 @@ const annotations = [
         // Discharge point/tank
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(-4, 18, -10),
+                cameraPos: new Vector3(3.82, 23.10, -24.08),
             }
         }
     },
