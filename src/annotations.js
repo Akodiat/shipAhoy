@@ -7,6 +7,7 @@ import {Annotation} from "./annotation.js"
  */
 const annotations = [
     {name: "Anchorage",
+        model: "resources/anchor.glb",
         environmentalImpact: "Underwater noise, destruction of seabed habitat",
         humanImpact: "Damage to underwater infrastructure (e.g. cables)",
         // At anchor:
