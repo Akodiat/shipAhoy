@@ -127,11 +127,11 @@ function loadShip(name) {
         modelGroup.name = name;
         currentShip.model.name = name;
 
-
         if (animations.length > 0) {
             const mixer = new THREE.AnimationMixer(model);
-            const action = mixer.clipAction(animations[0]);
-            action.play();
+            for (const a of animations) {
+                mixer.clipAction(a).play();
+            }
             mixers.push(mixer);
         }
 
@@ -524,8 +524,9 @@ function selectAnnotation(a) {
 
             if (gltf.animations.length > 0) {
                 const mixer = new THREE.AnimationMixer(gltf.scene);
-                const action = mixer.clipAction(gltf.animations[0]);
-                action.play();
+                for (const a of gltf.animations) {
+                    mixer.clipAction(a).play();
+                }
                 mixers.push(mixer);
             }
         });
