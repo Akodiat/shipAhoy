@@ -13,12 +13,9 @@ const annotations = [
         // At anchor:
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
-            },
-            cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(10, 13.3, 94.8),
+                cameraPos: new Vector3(20, 20, 95),
+                modelTranslation: new Vector3(-2, -5, -14.7)
             },
             container: {
                 labelPos: new Vector3(12, 19, 110),

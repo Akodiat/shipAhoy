@@ -527,6 +527,11 @@ function selectAnnotation(a) {
     if (a.spec.model !== undefined) {
         gltfLoader.load(a.spec.model, function(gltf) {
             detailModel = gltf.scene;
+            if (a.spec.shipTypes[currentShip.name].modelTranslation) {
+                detailModel.position.add(
+                    a.spec.shipTypes[currentShip.name].modelTranslation
+                );
+            }
             detailModel.scale.multiplyScalar(1);
             modelGroup.add(detailModel);
 
