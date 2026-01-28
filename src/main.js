@@ -496,9 +496,13 @@ window.selectAnnotationByName = (annotationName) => {
 }
 
 function selectAnnotation(a) {
+    const cameraPos = a.spec.shipTypes[currentShip.name].cameraPos;
+    const labelPos = a.spec.shipTypes[currentShip.name].labelPos;
+    controls.maxDistance = cameraPos.distanceTo(labelPos);
+
     controls.setLookAt(
-        ...a.spec.shipTypes[currentShip.name].cameraPos.toArray(),
-        ...a.spec.shipTypes[currentShip.name].labelPos.toArray(),
+        ...cameraPos.toArray(),
+        ...labelPos.toArray(),
         true
     );
     document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
@@ -567,6 +571,7 @@ function selectAnnotation(a) {
 }
 
 function clearAnnotationSelection() {
+    controls.maxDistance = 500;
     controls.setLookAt(...currentShip.defaultLookat, true);
     document.getElementById("infobox").style.display = "none";
     selectedAnnotation = undefined;
