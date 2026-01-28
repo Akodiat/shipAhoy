@@ -502,12 +502,12 @@ const annotations = [
         // Engine
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 3, -82),
+                cameraPos: new Vector3(4, 6, -86),
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, -5, -80),
+                cameraPos: new Vector3(4, -2, -87),
             },
             container: {
                 labelPos: new Vector3(0, 5, -27),
