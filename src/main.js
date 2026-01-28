@@ -374,6 +374,10 @@ function init() {
     // Don't move the camera further than 500 m away
     controls.maxDistance = 500;
 
+    // Restrict camera angles
+    controls.minAzimuthAngle = 0;
+    controls.maxAzimuthAngle = Math.PI;
+
     // Load ship
     loadShip("container");
 
