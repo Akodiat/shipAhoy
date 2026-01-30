@@ -36,27 +36,30 @@
 
 	<div id="startScreen">
 		<article class="pico">
-			<h1>Select a vessel</h1>
+			<div class="start-body">
+				<div class="selector-row">
+					<div class="preview-wrap">
+						<canvas id="previewCanvas"></canvas>
+						<div id="shipName"></div>
+						<button id="enterButton" class="primary enter-button" disabled>Enter</button>
+					</div>
 
-			<div class="selector-row">
-				<div class="preview-wrap">
-					<canvas id="previewCanvas"></canvas>
-					<div id="shipName"></div>
-					<div id="hudBars" class="hud-bars" aria-label="Ship stats"></div>
+					<div class="stats-wrap">
+						<div id="hudBars" class="hud-bars" aria-label="Ship stats"></div>
+					</div>
 				</div>
 
-				<div class="info-col">
+				<div class="info-row">
 					<div id="shipDesc" class="ship-desc"></div>
 				</div>
+
+				<div id="shipChooser"></div>
+
+				<footer class="action-row">
+					<button id="prevShip" class="arrow">&#x276E;</button>
+					<button id="nextShip" class="arrow">&#x276F;</button>
+				</footer>
 			</div>
-
-			<div id="shipChooser"></div>
-
-			<footer class="action-row">
-				<button id="prevShip" class="arrow">&#x276E;</button>
-				<button id="enterButton" class="primary" disabled>Enter</button>
-				<button id="nextShip" class="arrow">&#x276F;</button>
-			</footer>
 		</article>
 	</div>
 

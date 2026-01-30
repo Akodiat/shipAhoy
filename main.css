@@ -353,6 +353,23 @@ a {
   z-index: 9999;
 }
 
+#startScreen article.pico {
+  width: 100%;
+  max-width: 80vw;
+  margin: 0 auto;
+}
+
+.start-body {
+  margin-top: 1.25rem;
+  padding: 2.5rem 3rem 2.75rem;
+  background: linear-gradient(145deg, #ffffff 0%, #f4f6fb 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  position: relative;
+  min-height: 90vh;
+  width: 100%;
+}
+
 .preview-wrap {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -366,22 +383,38 @@ a {
 @media (min-width:1025px) {
   .selector-row {
     display: grid;
-    grid-template-columns: 420px 1fr;
-    column-gap: 2rem;
-    align-items: start;
+    grid-template-columns: 380px 1fr;
+    column-gap: 1.25rem;
+    align-items: center;
+    position: relative;
+    min-height: 400px;
   }
 
   .info-col {
     min-width: 0;
   }
-}
 
-#startScreen h1 {
-  text-align: center;
-  width: 100%;
-  margin-top: 5%;
-  font-size: 50px;
-  margin-bottom: 5%;
+  #prevShip,
+  #nextShip {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10001;
+    box-shadow: none !important;
+    background: transparent !important;
+    color: black !important;
+    border: none !important;
+    padding: 0.75rem;
+    font-size: 2rem;
+  }
+
+  #prevShip {
+    left: 12px;
+  }
+
+  #nextShip {
+    right: 12px;
+  }
 }
 
 #shipName {
@@ -405,9 +438,9 @@ a {
   font-size: 1.5rem;
   background: none;
   border: none;
-  padding: .5rem 1rem;
+  padding: .5rem;
   border-radius: 10px !important;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .hud-row {
@@ -503,6 +536,7 @@ a {
   margin: 0;
   display: block;
   border-radius: 10px !important;
+  padding: 6px 4px !important;
 }
 
 #shipChooser {
@@ -532,13 +566,47 @@ a {
   width: 100%;
   display: grid;
   align-items: start;
+  grid-template-columns: minmax(320px, 420px) 1fr;
   column-gap: 2rem;
+  row-gap: 1.25rem;
 }
 
 @media (max-width: 1024px) {
   #startScreen {
     overflow-y: auto;
     padding-top: 1rem;
+  }
+
+  .start-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  .stats-wrap {
+    padding: 1rem 1.1rem;
+  }
+
+  .enter-button {
+    position: static;
+    transform: none;
+    width: 60%;
+    max-width: 240px;
+    margin-top: 0.75rem;
+    box-shadow: none;
+  }
+
+  .selector-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    grid-template-columns: none;
+    column-gap: 0;
+    row-gap: 1rem;
+  }
+
+  .preview-wrap {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
   }
 
   .action-row {
@@ -550,13 +618,13 @@ a {
   }
 
   .ship-desc {
-    max-height: 40vh;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+    max-height: none;
+    overflow: visible;
     overflow-wrap: anywhere;
-    padding-left: 1rem;
-    padding-top: 1.5rem;
-    padding-right: 1rem;
+    padding: 1.25rem 1.25rem 1.5rem;
+    background: #fff;
+    border-radius: .75rem;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
   }
 }
 
@@ -568,30 +636,47 @@ a {
   background: transparent;
 }
 
+.enter-button {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  width: 30%;
+  max-width: 260px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.stats-wrap {
+  width: 100%;
+  align-self: stretch;
+  background: #fff;
+  border-radius: .75rem;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .ship-desc {
   font-family: var(--font-main);
   line-height: 1.4;
   background: #fff;
-  border-radius: .5rem;
+  border-radius: .75rem;
   box-sizing: border-box;
-  overflow: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  overflow: visible;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
-.ship-desc::-webkit-scrollbar {
-  display: none;
-}
-
-#startScreen article.pico {
-  max-width: 1100px;
-  margin: 0 auto;
+.info-row {
+  margin-top: 1.5rem;
 }
 
 .hud-bars {
-  position: absolute;
-  inset: auto 12px 12px 12px;
-  max-width: calc(100% - 24px);
+  position: static;
+  width: 100%;
   box-sizing: border-box;
-  z-index: 2;
+  display: grid;
+  row-gap: 10px;
 }

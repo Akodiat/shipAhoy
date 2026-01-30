@@ -46,42 +46,59 @@ const GEO_TIFFS = {
   SCRUB_CLOSED_2018: "./resources/STEAM_SCRUB_W_CLOSED_2018.tif",
 };
 
+const shipKey = (name) => name?.toLowerCase();
+
 const ships = [
   {
-    name: "container",
+    name: "Container",
     path: "resources/cargoship.glb",
     smokeStackPos: new THREE.Vector3(0.5, 45, -57),
     defaultLookat: [75, 50, 150, -20, 5, 20],
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem. Aenean et consequat risus, non ullamcorper urna. Morbi tincidunt diam urna, vel lobortis leo accumsan et. Nulla quis tincidunt purus. Praesent et arcu a elit accumsan dictum. Suspendisse diam odio, suscipit at dui vitae, gravida consectetur velit. Nullam mauris leo, dictum sed volutpat sed, tincidunt vel turpis. Vivamus aliquam porttitor magna, id tempus lacus aliquet at. Curabitur auctor purus et gravida rhoncus. Mauris vitae velit nulla. Aliquam porta, quam vel efficitur sodales, nunc odio lacinia massa, placerat mollis massa orci id enim. Morbi elit ligula, eleifend eu lacus non, imperdiet eleifend ex. Sed lacinia a arcu id convallis. Curabitur convallis, ante gravida dapibus suscipit, neque neque maximus leo, vel pellentesque magna orci quis velit. Phasellus ornare efficitur quam, sit amet consectetur felis imperdiet sed. Nunc iaculis lacus urna, id commodo elit lacinia ac.",
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem.",
     stats: {
-      speed: 68,
-      capacity: 95,
-      noise: 35,
-      emissions: 40
+      length: 68,
+      width: 95,
+      tonnage: 35,
+      crew: 40,
+      passenger: 2,
+      speed: 22,
+      fuel: 300,
+      propellers: 1,
+      propellerSize: 9,
     }
   },
   {
-    name: "sail",
+    name: "Sail",
     path: "resources/sailingship.glb",
     defaultLookat: [26, 24, 21, 0, 7, 0],
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem. Aenean et consequat risus, non ullamcorper urna. Morbi tincidunt diam urna, vel lobortis leo accumsan et. Nulla quis tincidunt purus. Praesent et arcu a elit accumsan dictum. Suspendisse diam odio, suscipit at dui vitae, gravida consectetur velit. Nullam mauris leo, dictum sed volutpat sed, tincidunt vel turpis. Vivamus aliquam porttitor magna, id tempus lacus aliquet at. Curabitur auctor purus et gravida rhoncus. Mauris vitae velit nulla. Aliquam porta, quam vel efficitur sodales, nunc odio lacinia.",
     stats: {
-      speed: 38,
-      capacity: 12,
-      noise: 70,
-      emissions: 96
+      length: 68,
+      width: 95,
+      tonnage: 35,
+      crew: 40,
+      passenger: 2,
+      speed: 22,
+      fuel: 300,
+      propellers: 1,
+      propellerSize: 9,
     }
   },
     {
-    name: "Chemtanker Ship",
+    name: "Chemtanker",
     path: "resources/sailingship.glb",
     defaultLookat: [26, 24, 21, 0, 7, 0],
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem. Aenean et consequat risus, non ullamcorper urna. Morbi tincidunt diam urna, vel lobortis leo accumsan et. Nulla quis tincidunt purus. Praesent et arcu a elit accumsan dictum. Suspendisse diam odio, suscipit at dui vitae, gravida consectetur velit. Nullam mauris leo, dictum sed volutpat sed, tincidunt vel turpis. Vivamus aliquam porttitor magna, id tempus lacus aliquet at. Curabitur auctor purus et gravida rhoncus. Mauris vitae velit nulla. Aliquam porta, quam vel efficitur sodales, nunc odio lacinia.",
     stats: {
-      speed: 18,
-      capacity: 10,
-      noise: 50,
-      emissions: 100
+      length: 68,
+      width: 95,
+      tonnage: 35,
+      crew: 40,
+      passenger: 2,
+      speed: 22,
+      fuel: 300,
+      propellers: 1,
+      propellerSize: 9,
     }
   }
 ];
@@ -142,10 +159,12 @@ function loadShip(name) {
         labelScene.remove(annotationSprites);
         annotationSprites = new THREE.Group();
 
+        const shipTypeKey = shipKey(name);
+
         for (const annotation of annotations) {
             if (annotation.spec.shipTypes === undefined ||
-                annotation.spec.shipTypes[name] === undefined ||
-                annotation.spec.shipTypes[name].labelPos === undefined
+                annotation.spec.shipTypes[shipTypeKey] === undefined ||
+                annotation.spec.shipTypes[shipTypeKey].labelPos === undefined
             ) {
                 continue;
             }
@@ -159,7 +178,7 @@ function loadShip(name) {
                 }
                 ));
             annotation.sprite.annotation = annotation;
-            annotation.sprite.position.copy(annotation.spec.shipTypes[name].labelPos);
+            annotation.sprite.position.copy(annotation.spec.shipTypes[shipTypeKey].labelPos);
             annotation.sprite.scale.setScalar(annotationSizeDefault);
             annotationSprites.add(annotation.sprite);
         }
@@ -174,10 +193,10 @@ function loadShip(name) {
             controls.setLookAt(...currentShip.defaultLookat, true);
         } else {
             const a = selectedAnnotation.annotation;
-            if (a.spec.shipTypes[name] !== undefined) {
+            if (a.spec.shipTypes[shipTypeKey] !== undefined) {
                 controls.setLookAt(
-                    ...a.spec.shipTypes[name].cameraPos.toArray(),
-                    ...a.spec.shipTypes[name].labelPos.toArray(),
+                    ...a.spec.shipTypes[shipTypeKey].cameraPos.toArray(),
+                    ...a.spec.shipTypes[shipTypeKey].labelPos.toArray(),
                     true
                 );
             } else {
@@ -474,9 +493,11 @@ window.selectAnnotationByName = (annotationName) => {
 }
 
 function selectAnnotation(a) {
+    const shipTypeKey = shipKey(currentShip.name);
+
     controls.setLookAt(
-        ...a.spec.shipTypes[currentShip.name].cameraPos.toArray(),
-        ...a.spec.shipTypes[currentShip.name].labelPos.toArray(),
+        ...a.spec.shipTypes[shipTypeKey].cameraPos.toArray(),
+        ...a.spec.shipTypes[shipTypeKey].labelPos.toArray(),
         true
     );
 
@@ -515,9 +536,9 @@ function selectAnnotation(a) {
     water.visible = !a.spec.hideWater;
 
     modelGroup.remove(outputFlow);
-    if (a.spec.shipTypes[currentShip.name].outletPos) {
+    if (a.spec.shipTypes[shipTypeKey].outletPos) {
         outputFlow = new OutputFlow();
-        outputFlow.position.copy(a.spec.shipTypes[currentShip.name].outletPos);
+        outputFlow.position.copy(a.spec.shipTypes[shipTypeKey].outletPos);
         modelGroup.add(outputFlow);
     }
 
@@ -557,7 +578,7 @@ function selectAnnotation(a) {
     } else {
         style.height = "100%";
         style.position = "absolute";
-        const p = a.spec.shipTypes[currentShip.name];
+        const p = a.spec.shipTypes[shipTypeKey];
         const dist = p.cameraPos.distanceTo(p.labelPos);
         controls.setFocalOffset(0.25 * dist, 0, 0);
     }
