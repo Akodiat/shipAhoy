@@ -4,6 +4,10 @@ import { ships, init, loadShip, registerSW } from "./main.js";
 
 registerSW?.();
 
+let picked = 0;
+let appStarted = false;
+let current = null;
+
 const startScreen = document.getElementById("startScreen");
 const enterBtn = document.getElementById("enterButton");
 const prevBtn = document.getElementById("prevShip");
@@ -13,9 +17,7 @@ const nameBox = document.getElementById("shipName");
 const descBox = document.getElementById("shipDesc");
 const backBtn = document.getElementById("backButton");
 const acknowledgementButton = document.getElementById("acknowledgementButton");
-
-let picked = 0;
-let appStarted = false;
+const hudBars = document.getElementById("hudBars");
 
 const loader = new GLTFLoader();
 const renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
@@ -28,15 +30,12 @@ scene.add(
   (() => { const d = new THREE.DirectionalLight(0xffffff, 0.8); d.position.set(0.3, 0.4, 1); return d; })()
 );
 
-let current = null;
+const statKeys = Array.from(new Set(ships.flatMap(s => Object.keys(s.stats ?? {}))));
 
-//power bars setup
-const barsSpec = [
-  { key: "speed", label: "Speed", class: "orange" },
-  { key: "capacity", label: "Capacity", class: "red" },
-  { key: "noise", label: "Noise", class: "blue" },
-  { key: "emissions", label: "Emissions", class: "gray" }
-];
+const toLabel = (key) =>
+  key.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/_/g, " ")
+    .replace(/(^|\s)([a-z])/g, (_, s, c) => s + c.toUpperCase());
 
 //initial UI
 backBtn.style.display = "none";
@@ -48,31 +47,26 @@ renderer.setSize(CAN_W, CAN_H, false);
 
 //functions
 function buildBars() {
-  const hud = document.getElementById("hudBars");
-  hud.innerHTML = "";
-  for (const b of barsSpec) {
+  hudBars.innerHTML = "";
+  for (const key of statKeys) {
     const row = document.createElement("div");
-    row.className = `hud-row ${b.class}`;
-    row.dataset.key = b.key;
+    row.className = "stat-row";
+    row.dataset.key = key;
     row.innerHTML = `
-      <div class="hud-label">${b.label}</div>
-      <div class="hud-track"><div class="hud-fill"></div></div>
-      <div class="hud-value">0</div>
+      <span class="stat-label">${toLabel(key)}</span>
+      <span class="stat-value">—</span>
     `;
-    hud.appendChild(row);
+    hudBars.appendChild(row);
   }
 }
 
 function updateBars(ship) {
-  const hud = document.getElementById("hudBars");
-  if (!hud || !ship?.stats) return;
-  for (const b of barsSpec) {
-    const row = hud.querySelector(`.hud-row[data-key="${b.key}"]`);
+  if (!hudBars || !ship?.stats) return;
+  for (const key of statKeys) {
+    const row = hudBars.querySelector(`.stat-row[data-key="${key}"]`);
     if (!row) continue;
-    const pct = Math.max(0, Math.min(100, ship.stats[b.key] ?? 0));
-    row.querySelector(".hud-fill").style.setProperty("--pct", pct);
-    row.querySelector(".hud-value").textContent = `${pct}`;
-    row.title = `${b.label}: ${pct}`;
+    const value = ship.stats[key];
+    row.querySelector(".stat-value").textContent = value ?? "—";
   }
 }
 
