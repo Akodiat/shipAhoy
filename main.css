@@ -141,8 +141,8 @@ a {
   flex-direction: column;
   gap: 10px;
   overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.35) transparent;
   backdrop-filter: blur(10px);
   z-index: 100;
 }
@@ -163,7 +163,16 @@ a {
 }
 
 #infobox::-webkit-scrollbar {
-  display: none;
+  width: 8px;
+}
+
+#infobox::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#infobox::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
 }
 
 #infobox>* {
