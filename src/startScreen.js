@@ -18,6 +18,11 @@ const descBox = document.getElementById("shipDesc");
 const backBtn = document.getElementById("backButton");
 const acknowledgementButton = document.getElementById("acknowledgementButton");
 const hudBars = document.getElementById("hudBars");
+const infoClickHandler = (text) => {
+  if (text) {
+    descBox.textContent = text;
+  }
+};
 
 const loader = new GLTFLoader();
 const renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
@@ -54,7 +59,9 @@ function buildBars() {
     row.dataset.key = key;
     row.innerHTML = `
       <span class="stat-label">${toLabel(key)}</span>
+      <button class="stat-info-button stat-info-label" aria-label="More info on ${toLabel(key)}" data-key="${key}">i</button>
       <span class="stat-value">—</span>
+      <button class="stat-info-button stat-info-value" aria-label="More info on value ${toLabel(key)}" data-key="${key}">i</button>
     `;
     hudBars.appendChild(row);
   }
@@ -65,8 +72,44 @@ function updateBars(ship) {
   for (const key of statKeys) {
     const row = hudBars.querySelector(`.stat-row[data-key="${key}"]`);
     if (!row) continue;
-    const value = ship.stats[key];
+    const statEntry = ship.stats[key];
+    const value = (statEntry && typeof statEntry === "object" && "value" in statEntry)
+      ? statEntry.value
+      : statEntry;
+
+    const labelInfo =
+      (statEntry && typeof statEntry === "object" && statEntry.labelInfo) ??
+      ship.statInfoLabel?.[key];
+
+    const valueInfo =
+      (statEntry && typeof statEntry === "object" && statEntry.valueInfo) ??
+      ship.statInfoValue?.[key] ??
+      ship.statInfo?.[key];
+
     row.querySelector(".stat-value").textContent = value ?? "—";
+
+    const labelBtn = row.querySelector(".stat-info-label");
+    const valueBtn = row.querySelector(".stat-info-value");
+
+    if (labelBtn) {
+      if (labelInfo) {
+        labelBtn.style.display = "inline-flex";
+        labelBtn.onclick = () => infoClickHandler(labelInfo);
+      } else {
+        labelBtn.style.display = "none";
+        labelBtn.onclick = null;
+      }
+    }
+
+    if (valueBtn) {
+      if (valueInfo) {
+        valueBtn.style.display = "inline-flex";
+        valueBtn.onclick = () => infoClickHandler(valueInfo);
+      } else {
+        valueBtn.style.display = "none";
+        valueBtn.onclick = null;
+      }
+    }
   }
 }
 

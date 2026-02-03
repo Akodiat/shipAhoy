@@ -42,65 +42,69 @@ const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
 const backBtn = document.getElementById("backButton");
 const GEO_TIFFS = {
-  BALW_2018: "./resources/STEAM_BalW_2018.tif",
-  SCRUB_CLOSED_2018: "./resources/STEAM_SCRUB_W_CLOSED_2018.tif",
+    BALW_2018: "./resources/STEAM_BalW_2018.tif",
+    SCRUB_CLOSED_2018: "./resources/STEAM_SCRUB_W_CLOSED_2018.tif",
 };
 
 const shipKey = (name) => name?.toLowerCase();
 
 const ships = [
-  {
-    name: "Container",
-    path: "resources/cargoship.glb",
-    smokeStackPos: new THREE.Vector3(0.5, 45, -57),
-    defaultLookat: [75, 50, 150, -20, 5, 20],
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem.",
-    stats: {
-      length: "190 m",
-      width: "32 m",
-      tonnage: "36100 GT",
-      crew: 24,
-      passenger: "N/A",
-      speed: "25 kn",
-      fuel: "N/A",
-      propellers: 1,
-      propellerSize: "N/A",
-    }
-  },
-  {
-    name: "Sail",
-    path: "resources/sailingship.glb",
-    defaultLookat: [26, 24, 21, 0, 7, 0],
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem. Aenean et consequat risus, non ullamcorper urna. Morbi tincidunt diam urna, vel lobortis leo accumsan et. Nulla quis tincidunt purus. Praesent et arcu a elit accumsan dictum. Suspendisse diam odio, suscipit at dui vitae, gravida consectetur velit. Nullam mauris leo, dictum sed volutpat sed, tincidunt vel turpis. Vivamus aliquam porttitor magna, id tempus lacus aliquet at. Curabitur auctor purus et gravida rhoncus. Mauris vitae velit nulla. Aliquam porta, quam vel efficitur sodales, nunc odio lacinia.",
-    stats: {
-      length: "110 m",
-      width: "40 m",
-      tonnage: "17 300 GT",
-      crew: 35,
-      passenger: 1865,
-      speed: "22 kn",
-      fuel: "N/A",
-      propellers: 2,
-      propellerSize: "N/A",
-    }
-  },
     {
-    name: "Chemtanker",
-    path: "resources/sailingship.glb",
-    defaultLookat: [26, 24, 21, 0, 7, 0],
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam mattis pulvinar ligula, sit amet scelerisque sem. Aenean et consequat risus, non ullamcorper urna. Morbi tincidunt diam urna, vel lobortis leo accumsan et. Nulla quis tincidunt purus. Praesent et arcu a elit accumsan dictum. Suspendisse diam odio, suscipit at dui vitae, gravida consectetur velit. Nullam mauris leo, dictum sed volutpat sed, tincidunt vel turpis. Vivamus aliquam porttitor magna, id tempus lacus aliquet at. Curabitur auctor purus et gravida rhoncus. Mauris vitae velit nulla. Aliquam porta, quam vel efficitur sodales, nunc odio lacinia.",
-    stats: {
-      length: "164 m",
-      width: "27 m",
-      tonnage: "25500 GT",
-      crew: 27,
-      passenger: "N/A",
-      speed: "14 kn",
-      fuel: "N/A",
-      propellers: 1,
-      propellerSize: "N/A",
+        name: "Container",
+        path: "resources/cargoship.glb",
+        smokeStackPos: new THREE.Vector3(0.5, 45, -57),
+        defaultLookat: [75, 50, 150, -20, 5, 20],
+        description: "This is a container ship.",
+        stats: {
+            length: { value: "190 m", labelInfo: "HELCOM maritime assessment 2018" },
+            width: { value: "32 m", labelInfo: "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities", valueInfo: "Most commercial merchant vessels have L∕B ratios in the range of 5.5 to 7.0. Assume L/B of 6 for container vessels which results in 32 m." },
+            tonnage: { value: "36100 GT", labelInfo: "HELCOM maritime assessment 2018" },
+            crew: { value: 24, labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
+            passenger: { value: "N/A", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)" },
+            speed: { value: "25 kn", labelInfo: "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)" },
+            fuel: "N/A",
+            propellers: { value: 1, labelInfo: "“Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf”" },
+            propellerSize: "N/A",
+        }
+    },
+    {
+        name: "Sail",
+        path: "resources/sailingship.glb",
+        defaultLookat: [26, 24, 21, 0, 7, 0],
+        description: "This is a cruise ship.",
+        stats: {
+            length: { value: "110 m", labelInfo: "HELCOM maritime assessment 2018" },
+            width: { value: "40 m", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478", valueInfo: "In the article the authors model a reference ship and the same width is assumed here. Note that the authors assumed a much longer vessel (350 m) so the ratio might not be correct as two different sources were used for the length and width." },
+            tonnage: { value: "17300 GT", labelInfo: "HELCOM maritime assessment 2018" },
+            crew: { value: 35, labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
+            passenger: { value: 1865, labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)", valueInfo: "In 2014, cruise ships had a median capacity of ca 1900 people including staff and passengers" },
+            speed: "22 kn",
+            speed: { value: "22 kn", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478 In the article the authors model" },
+            fuel: "N/A",
+            propellers: { value: 2, labelInfo: "“Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf”" },
+            propellerSize: "N/A",
+        }
+    },
+    {
+        name: "Chemtanker",
+        path: "resources/sailingship.glb",
+        defaultLookat: [26, 24, 21, 0, 7, 0],
+        description: "This is a chemtanker ship.",
+        stats: {
+            length: { value: "164 m", labelInfo: "HELCOM maritime assessment 2018" },
+            width: "27 m",
+            width: { value: "27 m", labelInfo: "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities", valueInfo: "Tankers vary considerably in their dimensional ratios, but the larger vessels tend to have a moderate L∕B in the range of 5.5 to 6.5”. Assume an L/B ratio of 6, which gives 27 m." },
+            tonnage: { value: "25500 GT", labelInfo: "HELCOM maritime assessment 2018" },
+            crew: { value: 27, labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
+            passenger: { value: "N/A", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)" },
+            speed: { value: "14 kn", labelInfo: "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)" },
+            fuel: "N/A",
+            propellers: { value: 1, labelInfo: "“Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf”" },
+            propellerSize: "N/A",
+        },
+        statInfoLabel: { crew: "Crew headcount incl. officers" },
+
     }
-  }
 ];
 
 function advanceShip(step) {
@@ -702,26 +706,26 @@ backBtn.addEventListener("click", () => {
 
 //reset page afte 5 minutes of inactivity
 (() => {
-  const IDLE_MS = 5 * 60 * 1000; //5 minutes
-  let timer;
+    const IDLE_MS = 5 * 60 * 1000; //5 minutes
+    let timer;
 
-  const refresh = () => location.reload();
+    const refresh = () => location.reload();
 
-  const reset = () => {
-    clearTimeout(timer);
-    timer = setTimeout(refresh, IDLE_MS);
-  };
+    const reset = () => {
+        clearTimeout(timer);
+        timer = setTimeout(refresh, IDLE_MS);
+    };
 
-  ["pointermove","pointerdown","click","keydown","wheel","touchstart"].forEach(ev =>
-    addEventListener(ev, reset, { passive: true })
-  );
+    ["pointermove", "pointerdown", "click", "keydown", "wheel", "touchstart"].forEach(ev =>
+        addEventListener(ev, reset, { passive: true })
+    );
 
-  addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") reset();
-    else clearTimeout(timer);
-  });
+    addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") reset();
+        else clearTimeout(timer);
+    });
 
-  reset();
+    reset();
 })();
 
 export { ships, init, loadShip, registerSW };

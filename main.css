@@ -682,7 +682,7 @@ a {
 
 .stat-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   padding: 6px 0;
   font-family: var(--font-main);
@@ -692,8 +692,33 @@ a {
 
 .stat-label {
   opacity: 0.9;
+  justify-self: start;
 }
 
 .stat-value {
   opacity: 0.9;
+  justify-self: end;
+}
+
+.stat-info-button {
+  display: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+
+.stat-info-button:hover {
+  border-color: var(--pico-primary, #0d6efd);
+  color: var(--pico-primary, #0d6efd);
+  background: rgba(13, 110, 253, 0.08);
 }
