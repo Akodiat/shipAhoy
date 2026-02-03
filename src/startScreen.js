@@ -18,9 +18,21 @@ const descBox = document.getElementById("shipDesc");
 const backBtn = document.getElementById("backButton");
 const acknowledgementButton = document.getElementById("acknowledgementButton");
 const hudBars = document.getElementById("hudBars");
-const infoClickHandler = (text) => {
-  if (text) {
-    descBox.textContent = text;
+const infoClickHandler = ({ valueInfo, labelInfo }) => {
+  descBox.innerHTML = "";
+
+  if (valueInfo !== undefined && valueInfo !== null) {
+    const primary = document.createElement("div");
+    primary.className = "stat-info-primary";
+    primary.textContent = valueInfo;
+    descBox.appendChild(primary);
+  }
+
+  if (labelInfo) {
+    const citation = document.createElement("div");
+    citation.className = "stat-citation";
+    citation.textContent = labelInfo;
+    descBox.appendChild(citation);
   }
 };
 
@@ -59,9 +71,8 @@ function buildBars() {
     row.dataset.key = key;
     row.innerHTML = `
       <span class="stat-label">${toLabel(key)}</span>
-      <button class="stat-info-button stat-info-label" aria-label="More info on ${toLabel(key)}" data-key="${key}">i</button>
       <span class="stat-value">—</span>
-      <button class="stat-info-button stat-info-value" aria-label="More info on value ${toLabel(key)}" data-key="${key}">i</button>
+      <button class="stat-info-button stat-info" aria-label="More info on ${toLabel(key)}" data-key="${key}">i</button>
     `;
     hudBars.appendChild(row);
   }
@@ -88,26 +99,16 @@ function updateBars(ship) {
 
     row.querySelector(".stat-value").textContent = value ?? "—";
 
-    const labelBtn = row.querySelector(".stat-info-label");
-    const valueBtn = row.querySelector(".stat-info-value");
+    const infoBtn = row.querySelector(".stat-info-button");
+    const hasInfo = !!(labelInfo || valueInfo);
 
-    if (labelBtn) {
-      if (labelInfo) {
-        labelBtn.style.display = "inline-flex";
-        labelBtn.onclick = () => infoClickHandler(labelInfo);
+    if (infoBtn) {
+      if (hasInfo) {
+        infoBtn.style.display = "inline-flex";
+        infoBtn.onclick = () => infoClickHandler({ valueInfo, labelInfo });
       } else {
-        labelBtn.style.display = "none";
-        labelBtn.onclick = null;
-      }
-    }
-
-    if (valueBtn) {
-      if (valueInfo) {
-        valueBtn.style.display = "inline-flex";
-        valueBtn.onclick = () => infoClickHandler(valueInfo);
-      } else {
-        valueBtn.style.display = "none";
-        valueBtn.onclick = null;
+        infoBtn.style.display = "none";
+        infoBtn.onclick = null;
       }
     }
   }

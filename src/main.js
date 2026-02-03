@@ -63,7 +63,7 @@ const ships = [
             passenger: { value: "N/A", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)" },
             speed: { value: "25 kn", labelInfo: "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)" },
             fuel: "N/A",
-            propellers: { value: 1, labelInfo: "“Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf”" },
+            propellers: { value: 1, labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
             propellerSize: "N/A",
         }
     },
@@ -81,7 +81,7 @@ const ships = [
             speed: "22 kn",
             speed: { value: "22 kn", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478 In the article the authors model" },
             fuel: "N/A",
-            propellers: { value: 2, labelInfo: "“Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf”" },
+            propellers: { value: 2, labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
             propellerSize: "N/A",
         }
     },
@@ -99,7 +99,7 @@ const ships = [
             passenger: { value: "N/A", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)" },
             speed: { value: "14 kn", labelInfo: "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)" },
             fuel: "N/A",
-            propellers: { value: 1, labelInfo: "“Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf”" },
+            propellers: { value: 1, labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
             propellerSize: "N/A",
         },
         statInfoLabel: { crew: "Crew headcount incl. officers" },

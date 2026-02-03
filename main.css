@@ -682,7 +682,7 @@ a {
 
 .stat-row {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 6px 0;
   font-family: var(--font-main);
@@ -698,6 +698,10 @@ a {
 .stat-value {
   opacity: 0.9;
   justify-self: end;
+}
+
+.stat-info {
+  justify-self: start;
 }
 
 .stat-info-button {
@@ -721,4 +725,16 @@ a {
   border-color: var(--pico-primary, #0d6efd);
   color: var(--pico-primary, #0d6efd);
   background: rgba(13, 110, 253, 0.08);
+}
+
+.stat-info-primary {
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.stat-citation {
+  font-size: 0.7em;
+  color: #444;
+  line-height: 1.5;
+  font-style: italic;
 }
