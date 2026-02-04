@@ -585,6 +585,10 @@ a {
     padding: 1rem 1.1rem;
   }
 
+  .stat-bar {
+    right: 42px !important;
+  }
+
   .enter-button {
     position: static;
     transform: none;
@@ -649,10 +653,8 @@ a {
 .stats-wrap {
   width: 100%;
   align-self: stretch;
-  background: #fff;
   border-radius: .75rem;
-  padding: 1rem 1rem;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  padding-right: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -678,39 +680,73 @@ a {
   width: 100%;
   box-sizing: border-box;
   display: grid;
+  row-gap: 3px;
 }
 
 .stat-row {
+  position: relative;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
-  padding: 6px 0;
+  padding: 6px 2.2rem 6px 0;
   font-family: var(--font-main);
   font-weight: 600;
   gap: 8px;
+  overflow: hidden;
+}
+
+.stat-row>* {
+  position: relative;
+  z-index: 2;
+}
+
+.stat-bar {
+  position: absolute;
+  top: 3px;
+  left: 0px;
+  right: 50px;
+  bottom: 3px;
+  border-radius: 12px;
+  background: rgba(0, 85, 170, 0.05);
+  z-index: 1;
+}
+
+.stat-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(0, 122, 255, 0.28), rgba(0, 122, 255, 0.6));
+  border-radius: inherit;
+  transition: width 0.2s ease;
 }
 
 .stat-label {
+  padding-left: 5px;
   opacity: 0.9;
   justify-self: start;
 }
 
 .stat-value {
   opacity: 0.9;
+  padding-right: 10px;
   justify-self: end;
-}
-
-.stat-info {
-  justify-self: start;
 }
 
 .stat-info-button {
   display: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 1px solid #ccc;
-  background: #f7f7f7;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: none !important;
+  background-color: rgba(0, 0, 0, 0) !important;
+  background-image: url("resources/info.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 25px 25px !important;
+  box-shadow: none !important;
+  outline: none !important;
   font-weight: 700;
   font-size: 12px;
   line-height: 1;
@@ -722,9 +758,13 @@ a {
 }
 
 .stat-info-button:hover {
-  border-color: var(--pico-primary, #0d6efd);
-  color: var(--pico-primary, #0d6efd);
-  background: rgba(13, 110, 253, 0.08);
+  transform: translateY(-50%) scale(1.08);
+  border: none !important;
+  color: inherit !important;
+  background-image: url("resources/info.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 26px 26px !important;
 }
 
 .stat-info-primary {
@@ -737,4 +777,8 @@ a {
   color: #444;
   line-height: 1.5;
   font-style: italic;
+}
+
+.stat-info-primary+.stat-citation {
+  padding-top: 20px;
 }

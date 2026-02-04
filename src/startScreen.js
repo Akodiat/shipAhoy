@@ -48,6 +48,31 @@ scene.add(
 );
 
 const statKeys = Array.from(new Set(ships.flatMap(s => Object.keys(s.stats ?? {}))));
+const statMax = {};
+
+const toNumber = (v) => {
+  if (v === undefined || v === null) return null;
+  if (typeof v === "number") return v;
+  if (typeof v === "string") {
+    const match = v.match(/-?\d+(?:\.\d+)?/);
+    return match ? parseFloat(match[0]) : null;
+  }
+  return null;
+};
+
+//compute max numeric value per stat across ships
+for (const key of statKeys) {
+  let max = null;
+  for (const ship of ships) {
+    const entry = ship.stats?.[key];
+    const val = (entry && typeof entry === "object" && "value" in entry) ? entry.value : entry;
+    const num = toNumber(val);
+    if (num !== null) {
+      max = (max === null) ? num : Math.max(max, num);
+    }
+  }
+  statMax[key] = max;
+}
 
 const toLabel = (key) =>
   key.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -70,9 +95,10 @@ function buildBars() {
     row.className = "stat-row";
     row.dataset.key = key;
     row.innerHTML = `
+      <div class="stat-bar"><div class="stat-bar-fill"></div></div>
       <span class="stat-label">${toLabel(key)}</span>
       <span class="stat-value">—</span>
-      <button class="stat-info-button stat-info" aria-label="More info on ${toLabel(key)}" data-key="${key}">i</button>
+      <button class="stat-info-button stat-info" aria-label="More info on ${toLabel(key)}" data-key="${key}" type="button"></button>
     `;
     hudBars.appendChild(row);
   }
@@ -97,7 +123,30 @@ function updateBars(ship) {
       ship.statInfoValue?.[key] ??
       ship.statInfo?.[key];
 
+    const barColor =
+      (statEntry && typeof statEntry === "object" && statEntry.color) ??
+      ship.statColors?.[key];
+
     row.querySelector(".stat-value").textContent = value ?? "—";
+    const fill = row.querySelector(".stat-bar-fill");
+    const maxVal = statMax[key];
+    const numeric = toNumber(value);
+    if (fill) {
+      if (numeric !== null && maxVal && maxVal !== 0) {
+        const pct = Math.min(100, Math.max(0, (numeric / maxVal) * 100));
+        fill.style.width = `${pct}%`;
+        fill.style.opacity = 1;
+      } else {
+        fill.style.width = "0%";
+        fill.style.opacity = 0.15;
+      }
+
+      if (barColor) {
+        fill.style.background = barColor;
+      } else {
+        fill.style.background = "";
+      }
+    }
 
     const infoBtn = row.querySelector(".stat-info-button");
     const hasInfo = !!(labelInfo || valueInfo);
@@ -142,13 +191,11 @@ function show(idx) {
   nextBtn.disabled = idx === ships.length - 1;
 }
 
-//render loop
 renderer.setAnimationLoop(() => {
   if (current) current.rotation.y += 0.004;
   renderer.render(scene, camera);
 });
 
-//event handlers
 prevBtn.onclick = () => { if (picked) show(--picked); };
 nextBtn.onclick = () => { if (picked < ships.length - 1) show(++picked); };
 
