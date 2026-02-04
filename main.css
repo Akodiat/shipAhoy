@@ -380,6 +380,51 @@ a {
   background: #f4f4f4;
 }
 
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  background: transparent !important;
+  color: transparent;
+  border: none !important;
+  cursor: pointer;
+  box-shadow: none !important;
+  z-index: 6;
+  padding: 0;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 28px 28px !important;
+}
+
+.arrow#prevShip {
+  left: 8px;
+  background-image: url("resources/arrow_back.svg") !important;
+}
+
+.arrow#nextShip {
+  right: 8px;
+  background-image: url("resources/arrow_forward.svg") !important;
+}
+
+.arrow:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.arrow:hover,
+.arrow:focus-visible {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: 2px solid transparent;
+}
+
 @media (min-width:1025px) {
   .selector-row {
     display: grid;
@@ -392,28 +437,6 @@ a {
 
   .info-col {
     min-width: 0;
-  }
-
-  #prevShip,
-  #nextShip {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10001;
-    box-shadow: none !important;
-    background: transparent !important;
-    color: black !important;
-    border: none !important;
-    padding: 0.75rem;
-    font-size: 2rem;
-  }
-
-  #prevShip {
-    left: 12px;
-  }
-
-  #nextShip {
-    right: 12px;
   }
 }
 
@@ -537,6 +560,7 @@ a {
   display: block;
   border-radius: 10px !important;
   padding: 6px 4px !important;
+  background-color: black;
 }
 
 #shipChooser {
@@ -605,6 +629,14 @@ a {
     grid-template-columns: none;
     column-gap: 0;
     row-gap: 1rem;
+  }
+
+  .arrow#prevShip {
+    left: 6px;
+  }
+
+  .arrow#nextShip {
+    right: 6px;
   }
 
   .preview-wrap {
@@ -690,7 +722,7 @@ a {
   align-items: center;
   padding: 6px 2.2rem 6px 0;
   font-family: var(--font-main);
-  font-weight: 600;
+  font-weight: 500;
   gap: 8px;
   overflow: hidden;
 }
