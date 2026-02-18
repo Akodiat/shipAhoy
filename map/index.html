@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Map</title>
 
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    >
+
     <script src="https://unpkg.com/h3-js@^4.0.0"></script>
     <script src="https://unpkg.com/deck.gl@^9.0.0/dist.min.js"></script>
     <!-- optional if maplibre base map is needed -->
@@ -15,17 +20,36 @@
 
     <!-- Allow the map to render in full screen  -->
     <style>
-        body {
+        #mapContainer {
             width: 100vw;
             height: 100vh;
             margin: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        main {
+          position: relative;
         }
     </style>
 
   </head>
   <body>
+    <div id="mapContainer"></div>
     <main class="container">
-      <h1>Hello world!</h1>
+      <article>
+        <h1>Ship density</h1>
+        <fieldset>
+          <legend>Ship type:</legend>
+          <input type="radio" id="Cargo" name="shipType" checked />
+          <label htmlFor="Cargo">Cargo</label>
+          <input type="radio" id="Passenger" name="shipType" />
+          <label htmlFor="Passenger">Passenger</label>
+          <input type="radio" id="Tanker" name="shipType"/>
+          <label htmlFor="Tanker">Tanker</label>
+        </fieldset>
+      </article>
     </main>
   </body>
   <script type="module" src="main.js">
