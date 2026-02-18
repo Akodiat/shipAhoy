@@ -11,13 +11,13 @@ for (const t of shipTypes) {
     // Read csv file
     const d = await parseCSVPath(`density${t}.csv`);
     // Parse values as floats
-    d.forEach(d=>d.value = parseFloat(d.value));
+    d.forEach(d=>d.count = parseFloat(d.count));
 
     data.set(t, d);
 }
 
 // Calculate max count for all ship types
-const maxVal = Math.max(...[...data.values()].flatMap(s=>s).map(s=>s.value));
+const maxVal = Math.max(...[...data.values()].flatMap(s=>s).map(s=>s.count));
 
 const deckGL = new DeckGL({
     container: mapContainer,
@@ -42,7 +42,7 @@ function renderLayer(shipType) {
         getHexagon: d => d.id,
         opacity: 0.5,
         filled: true,
-        getFillColor: d => [255, (1 - Math.log(d.value) / Math.log(maxVal)) * 255, 0]
+        getFillColor: d => [255, (1 - Math.log(d.count) / Math.log(maxVal)) * 255, 0]
     });
     deckGL.setProps({
         layers: [layer]
