@@ -6,18 +6,17 @@ const mapContainer = document.getElementById("mapContainer");
 
 const shipTypes = ["Cargo", "Passenger", "Tanker"];
 
-const data = new Map();
-for (const t of shipTypes) {
-    // Read csv file
-    const d = await parseCSVPath(`density${t}.csv`);
-    // Parse values as floats
-    d.forEach(d=>d.count = parseFloat(d.count));
-
-    data.set(t, d);
-}
+// Read csv file
+const data = await parseCSVPath("counts.csv");
+// Parse values as floats
+data.forEach(d=>{
+    for (const s of shipTypes) {
+        d[`count${s}`] = parseFloat(d[`count${s}`]);
+    }
+});
 
 // Calculate max count for all ship types
-const maxVal = Math.max(...[...data.values()].flatMap(s=>s).map(s=>s.count));
+const maxVal = Math.max(...data.flatMap(d=>shipTypes.map(s=>d[`count${s}`])));
 
 const deckGL = new DeckGL({
     container: mapContainer,
@@ -37,12 +36,12 @@ const deckGL = new DeckGL({
 function renderLayer(shipType) {
     const layer = new H3HexagonLayer({
         id: shipType,
-        data: data.get(shipType),
+        data: data,
         extruded: false,
         getHexagon: d => d.id,
         opacity: 0.5,
         filled: true,
-        getFillColor: d => [255, (1 - Math.log(d.count) / Math.log(maxVal)) * 255, 0]
+        getFillColor: d => [255, (1 - Math.log(d[`count${shipType}`]) / Math.log(maxVal)) * 255, 0]
     });
     deckGL.setProps({
         layers: [layer]
