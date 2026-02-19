@@ -14,7 +14,12 @@ const deckGL = new DeckGL({
         latitude: 55.244,
         zoom: 2
     },
-    controller: true
+    controller: true,
+    getTooltip: ({object: d}) => {
+        console.log(d);
+        const s = getShipType();
+        return d && `${d[`count${s}`].toLocaleString()} ${s.toLowerCase()} ships`
+    }
 });
 
 /**
@@ -33,7 +38,8 @@ function renderLayer(shipType) {
             255,
             (1 - Math.log(d[`count${shipType}`]) /
                 Math.log(dataMap.maxVal)) * 255,
-            0]
+            0],
+        pickable: true
     });
     deckGL.setProps({
         layers: [layer]
