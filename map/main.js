@@ -7,24 +7,29 @@ const mapContainer = document.getElementById("mapContainer");
 const shipTypes = ["Cargo", "Passenger", "Tanker"];
 
 // Read csv file
-const data = await parseCSVPath("counts.csv");
-// Parse values as floats
-data.forEach(d=>{
+const allCounts = await parseCSVPath("counts.csv");
+const dataMap = new Map();
+shipTypes.forEach(s=>dataMap.set(s, []));
+let maxVal = -Infinity;
+// Parse values as floats and calculate max value
+allCounts.forEach(d=>{
     for (const s of shipTypes) {
-        d[`count${s}`] = parseFloat(d[`count${s}`]);
+        const k = `count${s}`;
+        d[k] = parseFloat(d[k]);
+        maxVal = Math.max(maxVal, d[k]);
+        if (d[k] > 0) {
+            dataMap.get(s).push(d);
+        }
     }
 });
 
-// Calculate max count for all ship types
-const maxVal = Math.max(...data.flatMap(d=>shipTypes.map(s=>d[`count${s}`])));
-
 const deckGL = new DeckGL({
     container: mapContainer,
-    mapStyle: 'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json',
+    mapStyle: 'osm_water.json',
     initialViewState: {
         longitude: 11.126,
         latitude: 55.244,
-        zoom: 4
+        zoom: 2
     },
     controller: true
 });
@@ -36,11 +41,10 @@ const deckGL = new DeckGL({
 function renderLayer(shipType) {
     const layer = new H3HexagonLayer({
         id: shipType,
-        data: data,
+        data: dataMap.get(shipType),
         extruded: false,
-        // Hide hexagons where count is empty
-        getHexagon: d => d[`count${shipType}`] > 0 ? d.id : undefined,
-        opacity: 0.5,
+        getHexagon: d => d.id,
+        opacity: 0.3,
         filled: true,
         getFillColor: d => [255, (1 - Math.log(d[`count${shipType}`]) / Math.log(maxVal)) * 255, 0]
     });
