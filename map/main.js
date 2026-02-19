@@ -38,7 +38,8 @@ function renderLayer(shipType) {
         id: shipType,
         data: data,
         extruded: false,
-        getHexagon: d => d.id,
+        // Hide hexagons where count is empty
+        getHexagon: d => d[`count${shipType}`] > 0 ? d.id : undefined,
         opacity: 0.5,
         filled: true,
         getFillColor: d => [255, (1 - Math.log(d[`count${shipType}`]) / Math.log(maxVal)) * 255, 0]
