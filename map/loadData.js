@@ -1,4 +1,30 @@
 /**
+ * Load data from CSV
+ * @param {string} path URL to CSV file
+ * @param {string[]} shipTypes List of ship types
+ * @returns
+ */
+async function loadData(path, shipTypes) {
+    // Read csv file
+    const allCounts = await parseCSVPath(path);
+    const dataMap = new Map();
+    shipTypes.forEach(s=>dataMap.set(s, []));
+    dataMap.maxVal = -Infinity;
+    // Parse values as floats and calculate max value
+    allCounts.forEach(d=>{
+        for (const s of shipTypes) {
+            const k = `count${s}`;
+            d[k] = parseFloat(d[k]);
+            dataMap.maxVal = Math.max(dataMap.maxVal, d[k]);
+            if (d[k] > 0) {
+                dataMap.get(s).push(d);
+            }
+        }
+    });
+    return dataMap
+}
+
+/**
  * Parse CSV path with header, if you need to do anything fancier,
  * just use PapaParse instead (https://www.papaparse.com/)
  * @param {string} path URL
@@ -42,4 +68,4 @@ async function textFileFromPath(path) {
     return text;
 }
 
-export {parseCSVPath};
+export {loadData};
