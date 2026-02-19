@@ -16,7 +16,6 @@ const deckGL = new DeckGL({
     },
     controller: true,
     getTooltip: ({object: d}) => {
-        console.log(d);
         const s = getShipType();
         return d && `${d[`count${s}`].toLocaleString()} ${s.toLowerCase()} ships`
     }
@@ -26,7 +25,7 @@ const deckGL = new DeckGL({
  * Draw a provided ship type layer
  * @param {string} shipType
  */
-function renderLayer(shipType) {
+function renderLayer(shipType, highPrecision) {
     const layer = new H3HexagonLayer({
         id: shipType,
         data: dataMap.get(shipType),
@@ -39,7 +38,8 @@ function renderLayer(shipType) {
             (1 - Math.log(d[`count${shipType}`]) /
                 Math.log(dataMap.maxVal)) * 255,
             0],
-        pickable: true
+        pickable: true,
+        highPrecision: highPrecision
     });
     deckGL.setProps({
         layers: [layer]
@@ -54,12 +54,20 @@ function getShipType() {
     return document.querySelector('input[name="shipType"]:checked').id;
 }
 
+const highPrecision = document.getElementById("highPrecision");
+function getHighPrecision() {
+    return highPrecision.checked;
+}
+highPrecision.addEventListener("change", ()=>{
+    renderLayer(getShipType(), getHighPrecision());
+})
+
 // Draw currently selected ship type
-renderLayer(getShipType());
+renderLayer(getShipType(), getHighPrecision());
 
 // Update layes when selected ship type changes
 document.querySelectorAll('input[name="shipType"]').forEach(
     e=>e.addEventListener("change", ()=>{
-        renderLayer(getShipType());
+        renderLayer(getShipType(), getHighPrecision());
     })
 );
