@@ -187,7 +187,7 @@ function show(idx) {
     frame(current);
   });
 
-  nameBox.textContent = ships[idx].name ?? "—";
+  nameBox.textContent = ships[idx].displayName ?? "—";
   descBox.textContent = ships[idx].description ?? "No description available";
   updateBars(ships[idx]);
 

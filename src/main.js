@@ -71,14 +71,16 @@ const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
 const backBtn = document.getElementById("backButton");
 
-const shipKey = (name) => name?.toLowerCase();
-
 const ships = [
     {
-        name: "Container",
+        name: "container",
+        displayName: "Container ship",
         path: "resources/cargoship.glb",
         smokeStackPos: new THREE.Vector3(0.5, 45, -57),
-        defaultLookat: [75, 50, 150, -20, 5, 20],
+        defaultLookat: [
+            80, 50, 160, // Position
+            -20, 5, 20   // Target
+        ],
         description: "This is a container ship.",
         stats: {
             length: { value: "190 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
@@ -93,9 +95,13 @@ const ships = [
         }
     },
     {
-        name: "Cruise",
+        name: "cruise",
+        displayName: "Cruise ship",
         path: "resources/cruiseship.glb",
-        defaultLookat: [26, 24, 21, 0, 7, 0],
+        defaultLookat: [
+            75, 70, 230, // Position
+            -20, 5, 20   // Target
+        ],
         description: "This is a cruise ship.",
         stats: {
             length: { value: "110 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
@@ -110,9 +116,13 @@ const ships = [
         }
     },
     {
-        name: "Tanker",
+        name: "tanker",
+        displayName: "Chemical tanker",
         path: "resources/chemtanker.glb",
-        defaultLookat: [26, 24, 21, 0, 7, 0],
+        defaultLookat: [
+            80, 50, 160, // Position
+            -20, 5, 20   // Target
+        ],
         description: "This is a chemtanker ship.",
         stats: {
             length: { value: "164 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
@@ -187,12 +197,10 @@ function loadShip(name) {
         labelScene.remove(annotationSprites);
         annotationSprites = new THREE.Group();
 
-        const shipTypeKey = shipKey(name);
-
         for (const annotation of annotations) {
             if (annotation.spec.shipTypes === undefined ||
-                annotation.spec.shipTypes[shipTypeKey] === undefined ||
-                annotation.spec.shipTypes[shipTypeKey].labelPos === undefined
+                annotation.spec.shipTypes[name] === undefined ||
+                annotation.spec.shipTypes[name].labelPos === undefined
             ) {
                 continue;
             }
@@ -206,7 +214,7 @@ function loadShip(name) {
                 }
                 ));
             annotation.sprite.annotation = annotation;
-            annotation.sprite.position.copy(annotation.spec.shipTypes[shipTypeKey].labelPos);
+            annotation.sprite.position.copy(annotation.spec.shipTypes[name].labelPos);
             annotation.sprite.scale.setScalar(annotationSizeDefault);
             annotationSprites.add(annotation.sprite);
         }
@@ -221,7 +229,7 @@ function loadShip(name) {
             controls.setLookAt(...currentShip.defaultLookat, true);
         } else {
   const a = selectedAnnotation.annotation;
-  const p = a.spec.shipTypes?.[shipTypeKey];
+  const p = a.spec.shipTypes?.[name];
 
   if (p?.cameraPos && p?.labelPos) {
     controls.setLookAt(
@@ -535,11 +543,10 @@ window.selectAnnotationByName = (annotationName) => {
 }
 
 function selectAnnotation(a) {
-  const shipTypeKey = shipKey(currentShip.name);
-  const p = a.spec.shipTypes?.[shipTypeKey];
+  const p = a.spec.shipTypes?.[currentShip.name];
 
   if (!p?.cameraPos || !p?.labelPos) {
-    console.warn("Missing cameraPos/labelPos for shipType", shipTypeKey, a.spec?.name);
+    console.warn("Missing cameraPos/labelPos for shipType", currentShip.name, a.spec?.name);
     clearAnnotationSelection();
     return;
   }
@@ -572,9 +579,9 @@ function selectAnnotation(a) {
     if (a.spec.model !== undefined) {
         gltfLoader.load(a.spec.model, function (gltf) {
             detailModel = gltf.scene;
-            if (a.spec.shipTypes?.[shipTypeKey]?.modelTranslation) {
+            if (a.spec.shipTypes?.[currentShip.name]?.modelTranslation) {
                 detailModel.position.add(
-                    a.spec.shipTypes[shipTypeKey].modelTranslation
+                    a.spec.shipTypes[currentShip.name].modelTranslation
                 );
             }
             detailModel.scale.multiplyScalar(1);
@@ -593,9 +600,9 @@ function selectAnnotation(a) {
     water.visible = !a.spec.hideWater;
 
     modelGroup.remove(outputFlow);
-    if (a.spec.shipTypes[shipTypeKey].outletPos) {
+    if (a.spec.shipTypes[currentShip.name].outletPos) {
         outputFlow = new OutputFlow();
-        outputFlow.position.copy(a.spec.shipTypes[shipTypeKey].outletPos);
+        outputFlow.position.copy(a.spec.shipTypes[currentShip.name].outletPos);
         modelGroup.add(outputFlow);
     }
 
@@ -612,7 +619,7 @@ function selectAnnotation(a) {
     } else {
         style.height = "100%";
         style.position = "absolute";
-        const p = a.spec.shipTypes[shipTypeKey];
+        const p = a.spec.shipTypes[currentShip.name];
         const dist = p.cameraPos.distanceTo(p.labelPos);
         controls.setFocalOffset(0.25 * dist, 0, 0);
     }

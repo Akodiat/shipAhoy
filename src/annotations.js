@@ -1,5 +1,5 @@
-import { Vector3 } from "three";
-import { Annotation } from "./annotation.js"
+import {Vector3} from "three";
+import {Annotation} from "./annotation.js"
 
 
 /**
@@ -24,8 +24,7 @@ const annotations = [
         },
         sdgIcons: [12]
     },
-    {
-        name: "Propulsion momentum",
+    {name: "Propulsion momentum",
         description: "In 2023, the north-western Mediterranean Sea was designated a Particularly Sensitive Sea Area by the International Maritime Organization (IMO) with associated protective measures to reduce the number of ship strikes of whales (MEPC 380(80)).",
         environmentalImpact: `Ship strikes of marine mammals, groundings. For more information about ship strikes, see the <a target="_blank" href="https://iwc.int/management-and-conservation/ship-strikes">International Whaling Commision</a>`,
         images: [
@@ -359,7 +358,7 @@ const annotations = [
                 attribution: " Ytreberg, E., Hansson, K., Lunde Hermansson, A., Parsmo, R., Lagerström, M., Jalkanen, J.P., Hassellöv, I.M., 2022. [Metal and PAH loads from ships and boats, relative other sources, in the Baltic Sea](https://doi.org/10.1016/j.marpolbul.2022.113904). Mar. Pollut. Bull. 182, 113904."
             }
         ],
-        // mapLayer: "SCRUB_W_CLOSED",
+        mapLayer: "SCRUB_W_CLOSED",
         plotCaption: `Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from <a target="_blank" href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 20259.`,
         plotSpec: {
             $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -511,24 +510,22 @@ const annotations = [
         },
         plotSpec: {
             $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-            data: {
-                values: [
-                    { fuel: "Conventional fuel", percentage: 99.12 },
-                    { fuel: "LNG", percentage: 0.67 },
-                    { fuel: "LPG", percentage: 0.14 },
-                    { fuel: "Methanol", percentage: 0.06 },
-                    { fuel: "Hydrogen", percentage: 0.01 },
-                    { fuel: "Ammonia", percentage: 0 }
-                ]
-            },
+            data: {values: [
+                {fuel: "Conventional fuel", percentage: 99.12},
+                {fuel: "LNG", percentage: 0.67},
+                {fuel: "LPG", percentage: 0.14},
+                {fuel: "Methanol", percentage: 0.06},
+                {fuel: "Hydrogen", percentage: 0.01},
+                {fuel: "Ammonia", percentage: 0}
+            ]},
             height: 200,
             width: "container",
             encoding: {
-                x: { field: "percentage", type: "quantitative", title: "Fuel market share (%)", scale: { type: "symlog" } },
-                y: { field: "fuel", type: "ordinal", title: "Fuel type", sort: { field: "percentage", order: "descending" } },
+                x: {field: "percentage", type: "quantitative", title: "Fuel market share (%)", scale: {type: "symlog"}},
+                y: {field: "fuel", type: "ordinal", title: "Fuel type", sort: {field: "percentage", order: "descending"}},
                 tooltip: [
-                    { field: "fuel", type: "ordinal", title: "Fuel type" },
-                    { field: "percentage", title: "Fuel market share (%)" }
+                    {field: "fuel", type: "ordinal", title: "Fuel type"},
+                    {field: "percentage", title: "Fuel market share (%)"}
                 ]
             },
             layer: [
@@ -538,11 +535,11 @@ const annotations = [
                 {
                     mark: {
                         type: "text",
-                        align: { expr: "datum.percentage < 10 ? 'left' : 'right'" },
-                        dx: { expr: "datum.percentage < 10 ? 4 : -4" }
+                        align: {expr: "datum.percentage < 10 ? 'left' : 'right'"},
+                        dx: {expr: "datum.percentage < 10 ? 4 : -4"}
                     },
                     encoding: {
-                        text: { field: "percentage", type: "quantitative" }
+                        text: {field: "percentage", type: "quantitative"}
                     }
                 }
             ]
@@ -633,4 +630,4 @@ const annotations = [
 ].map((spec) => new Annotation(spec));
 
 
-export { annotations };
+export {annotations};
