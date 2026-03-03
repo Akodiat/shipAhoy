@@ -9,9 +9,39 @@ import { MapView } from "./map.js";
 import { PlotView } from "./plot.js";
 import { annotations } from "./annotations.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
-import { ParticleSystem } from "./particles.js";
-import { OutputFlow } from "./outputFlow.js";
-import { MapViewTiff } from "./map_tiff.js";
+import {ParticleSystem} from "./particles.js";
+import {OutputFlow} from "./outputFlow.js";
+import {createCameraAnimation, exportDomeVideo} from "./domeExport.js";
+
+window.exportDomeVideo = (
+    resolution=800, duration=5, framerate=60, preview=false, eyeSep=0.064, tilt=27, transitionTime=1
+) => {
+    scene.remove(water);
+
+    exportDomeVideo(
+        resolution, duration, framerate, eyeSep, tilt, renderer, scene,
+        annotations, ships, mixers, preview,
+        (timestamp, delta) => {
+            const t = timestamp / 1000;
+
+            smoke.update(delta);
+
+            if (modelGroup) {
+                modelGroup.position.y = Math.sin(t) * 0.01;
+                const e = new THREE.Euler(
+                    Math.sin(t)* .001,
+                    0,
+                    Math.cos(t)* .001
+                );
+                modelGroup.quaternion.setFromEuler(e);
+
+                for (const mixer of mixers) {
+                    mixer.update(delta);
+                }
+            }
+        }
+    )
+};
 
 CameraControls.install({ THREE: THREE });
 
@@ -141,8 +171,9 @@ function loadShip(name) {
 
         if (animations.length > 0) {
             const mixer = new THREE.AnimationMixer(model);
-            const action = mixer.clipAction(animations[0]);
-            action.play();
+            for (const a of animations) {
+                mixer.clipAction(a).play();
+            }
             mixers.push(mixer);
         }
 
@@ -194,17 +225,19 @@ function loadShip(name) {
         if (selectedAnnotation === undefined) {
             controls.setLookAt(...currentShip.defaultLookat, true);
         } else {
-            const a = selectedAnnotation.annotation;
-            if (a.spec.shipTypes[shipTypeKey] !== undefined) {
-                controls.setLookAt(
-                    ...a.spec.shipTypes[shipTypeKey].cameraPos.toArray(),
-                    ...a.spec.shipTypes[shipTypeKey].labelPos.toArray(),
-                    true
-                );
-            } else {
-                clearAnnotationSelection();
-            }
-        }
+  const a = selectedAnnotation.annotation;
+  const p = a.spec.shipTypes?.[shipTypeKey];
+
+  if (p?.cameraPos && p?.labelPos) {
+    controls.setLookAt(
+      ...p.cameraPos.toArray(),
+      ...p.labelPos.toArray(),
+      true
+    );
+  } else {
+    clearAnnotationSelection();
+  }
+}
     };
 
     if (ship.model !== undefined) {
@@ -256,7 +289,6 @@ function init() {
     // renderer
 
     renderer = new THREE.WebGPURenderer();
-    renderer.shadowMap.enabled = true;
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(
         threeContainer.offsetWidth,
@@ -382,6 +414,10 @@ function init() {
     // Don't move the camera further than 500 m away
     controls.maxDistance = 500;
 
+    // Restrict camera angles
+    controls.minAzimuthAngle = 0;
+    controls.maxAzimuthAngle = Math.PI;
+
     // Load ship
     // loadShip("container");
 
@@ -396,7 +432,6 @@ function init() {
     // Hide infobox until an annotation is clicked
     document.getElementById("infobox").style.display = "none";
 
-
     // Handle resizing
 
     window.addEventListener("resize", onWindowResize);
@@ -409,7 +444,6 @@ function init() {
                 // Don't do anyting until map data is loaded
                 return;
             }
-
 
             selectedAnnotation = highlightedAnnotation;
             selectAnnotation(a);
@@ -438,6 +472,7 @@ function init() {
 
     document.addEventListener("keydown", event => {
         switch (event.key) {
+            case "c": animateCamera(); break;
             case "q":
                 // FPS stats shown in upper-left corner
                 // Only relevant for debugging
@@ -454,6 +489,8 @@ function init() {
             case "ArrowRight": advanceAnnotation(1); break;
             case "ArrowUp": advanceShip(-1); break;
             case "ArrowDown": advanceShip(1); break;
+            case "PageUp": advanceShip(-1); break;
+            case "PageDown": advanceShip(1); break;
         }
     });
 }
@@ -466,6 +503,14 @@ function init() {
  */
 function mod(n, m) {
     return ((n % m) + m) % m;
+}
+
+function animateCamera() {
+    const cameraAnimation = createCameraAnimation(annotations, ships, 1);
+    const mixer = new THREE.AnimationMixer(camera);
+    const action = mixer.clipAction(cameraAnimation);
+    action.play();
+    mixers.push(mixer);
 }
 
 /**
@@ -495,13 +540,22 @@ window.selectAnnotationByName = (annotationName) => {
 }
 
 function selectAnnotation(a) {
-    const shipTypeKey = shipKey(currentShip.name);
+  const shipTypeKey = shipKey(currentShip.name);
+  const p = a.spec.shipTypes?.[shipTypeKey];
 
-    controls.setLookAt(
-        ...a.spec.shipTypes[shipTypeKey].cameraPos.toArray(),
-        ...a.spec.shipTypes[shipTypeKey].labelPos.toArray(),
-        true
-    );
+  if (!p?.cameraPos || !p?.labelPos) {
+    console.warn("Missing cameraPos/labelPos for shipType", shipTypeKey, a.spec?.name);
+    clearAnnotationSelection();
+    return;
+  }
+
+  controls.maxDistance = p.cameraPos.distanceTo(p.labelPos);
+
+  controls.setLookAt(
+    ...p.cameraPos.toArray(),
+    ...p.labelPos.toArray(),
+    true
+  );
 
     document.getElementById("textbox").innerHTML =
         `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
@@ -523,13 +577,19 @@ function selectAnnotation(a) {
     if (a.spec.model !== undefined) {
         gltfLoader.load(a.spec.model, function (gltf) {
             detailModel = gltf.scene;
+            if (a.spec.shipTypes[currentShip.name].modelTranslation) {
+                detailModel.position.add(
+                    a.spec.shipTypes[currentShip.name].modelTranslation
+                );
+            }
             detailModel.scale.multiplyScalar(1);
             modelGroup.add(detailModel);
 
             if (gltf.animations.length > 0) {
                 const mixer = new THREE.AnimationMixer(gltf.scene);
-                const action = mixer.clipAction(gltf.animations[0]);
-                action.play();
+                for (const a of gltf.animations) {
+                    mixer.clipAction(a).play();
+                }
                 mixers.push(mixer);
             }
         });
@@ -594,6 +654,7 @@ function selectAnnotation(a) {
 }
 
 function clearAnnotationSelection() {
+    controls.maxDistance = 500;
     controls.setLookAt(...currentShip.defaultLookat, true);
     document.getElementById("infobox").style.display = "none";
     selectedAnnotation = undefined;
@@ -665,18 +726,22 @@ function onWindowResize() {
     mapView.map.invalidateSize();
 }
 
-function animate() {
+/**
+ * Animation loop
+ * @param {number} timestamp Timestamp in milliseconds (not used here)
+ * @param {number} delta Time delta in seconds since last frame
+ */
+function animate(timestamp, delta=clock.getDelta()) {
     if (stats) {
         stats.update();
     }
 
-    const delta = clock.getDelta();
     controls.update(delta);
 
     smoke.update(delta);
 
     if (modelGroup) {
-        const t = clock.getElapsedTime();
+        const t = timestamp / 1000;
         modelGroup.position.y = Math.sin(t) * 0.01;
         const e = new THREE.Euler(
             Math.sin(t) * .001,
@@ -690,8 +755,11 @@ function animate() {
         }
 
         //Render scene
-        postProcessing.render();
-        //renderer.render(scene, camera);
+        if (water.visible) {
+            postProcessing.render();
+        } else {
+            renderer.render(scene, camera);
+        }
     }
 }
 

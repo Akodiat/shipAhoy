@@ -6,19 +6,16 @@ import { Annotation } from "./annotation.js"
  * Edit this to update the impact data
  */
 const annotations = [
-    {
-        name: "Anchorage",
+    {name: "Anchorage",
+        model: "resources/anchor.glb",
         environmentalImpact: "Underwater noise, destruction of seabed habitat",
         humanImpact: "Damage to underwater infrastructure (e.g. cables)",
         // At anchor:
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
-            },
-            cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(10, 13.3, 94.8),
+                cameraPos: new Vector3(20, 20, 95),
+                modelTranslation: new Vector3(-2, -5, -14.7)
             },
             container: {
                 labelPos: new Vector3(12, 19, 110),
@@ -112,12 +109,12 @@ const annotations = [
         // At the (bulbous) bow:
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 5, 100),
+                cameraPos: new Vector3(5.94, 6.95, 122.69)
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, -2, 140),
+                cameraPos: new Vector3(10, 2, 160)
             },
             container: {
                 labelPos: new Vector3(0, 5, 119),
@@ -125,8 +122,57 @@ const annotations = [
             }
         }
     },
-    {
-        name: "Antifouling",
+    {name: "Biofouling",
+        description: `
+        <p>
+            All structures in the marine environment are exposed to fouling pressure, where the ship hull, piping, and sea chests are subject to biological growth. The usual ecological succession order starts with microbial films, followed by algal mats and subsequent growth of barnacles, worms, and mussels that in turn can act as shelters for other species.
+        <p>
+            Biofouling results in the spread of invasive species and also a higher climate footprint due to the fuel penalty from increased roughness of the hull.
+        </p>
+        <p>
+            Measures against biofouling involves antifouling paints (see <a onclick="selectAnnotationByName('Antifouling')">Antifouling</a>), ballast water treatment systems (see <a onclick="selectAnnotationByName('Ballast water')">Ballast water</a>), and antifouling agents in sea chests (see <a onclick="selectAnnotationByName('Cooling water')">Cooling water</a>).
+        </p>
+        `,
+        environmentalImpact: "Spreading of invasive species and increased emissions of e.g. green house gases, particles and NOx due to higher fuel consumption resulting from increased drag, friction and manouverability. Increased air emissions impact air quality and global warming.",
+        humanImpact: "Higher emissions can reduce air quality and increase the risk of respiratory complications and adverse health effects.",
+
+        images: [
+            {
+                header: "Biofouling 1 - Australian tubeworm",
+                path: "resources/images/biofouling_1.jpg",
+                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+                attribution: "Photo: Magnus Dahlström"
+            },
+            {
+                header: "Biofouling 2 - Australian tubeworm",
+                path: "resources/images/biofouling_2.jpg",
+                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+                attribution: "Photo: Magnus Dahlström"
+            },
+            {
+                header: "Biofouling 3 - Australian tubeworm",
+                path: "resources/images/biofouling_3.jpg",
+                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+                attribution: "Photo: Magnus Dahlström"
+            }
+        ],
+        // Somewhere on the immersed part of the hull
+        shipTypes: {
+            tanker: {
+                labelPos: new Vector3(16, 5, -60),
+                cameraPos: new Vector3(47.05, 6.32, -58.12)
+            },
+            cruise: {
+                labelPos: new Vector3(15, 0, 80),
+                cameraPos: new Vector3(50, 5, 70)
+            },
+            container: {
+                labelPos: new Vector3(12, 3, -20),
+                cameraPos: new Vector3(40, 15, -20)
+            }
+        }
+    },
+    {name: "Antifouling",
         description: `
         <p>
             Antifouling coatings are applied to the ship hull to avoid attachment and growth of sessile species (see <a onclick="selectAnnotationByName('Biofouling')">Biofouling</a>) and reduce the fuel penalty, of increased surface roughness, to secure manoeuvring capabilities and also to prevent spreading of invasive species. Antifouling coatings are often biocide based, releasing toxic compounds (often copper) to the marine environment. Today, biocide free alternatives are also available on the market.
@@ -170,12 +216,12 @@ const annotations = [
         // Somewhere on the immersed part of the hull
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(16, 5, 20),
+                cameraPos: new Vector3(55.07, 7.27, 18.50)
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(12, 0, 90),
+                cameraPos: new Vector3(50, 5, 120)
             },
             container: {
                 labelPos: new Vector3(12, 3, 20),
@@ -185,66 +231,9 @@ const annotations = [
         mapLayer: "AFP_CuO",
         sdgIcons: [3, 6, 9, 14]
     },
-    {
-        name: "Biofouling",
-        description: `
-        <p>
-            All structures in the marine environment are exposed to fouling pressure, where the ship hull, piping, and sea chests are subject to biological growth. The usual ecological succession order starts with microbial films, followed by algal mats and subsequent growth of barnacles, worms, and mussels that in turn can act as shelters for other species.
-        <p>
-            Biofouling results in the spread of invasive species and also a higher climate footprint due to the fuel penalty from increased roughness of the hull.
-        </p>
-        <p>
-            Measures against biofouling involves antifouling paints (see <a onclick="selectAnnotationByName('Antifouling')">Biofouling</a>), ballast water treatment systems (see <a onclick="selectAnnotationByName('Ballast water')">Ballast water</a>), and antifouling agents in sea chests (see <a onclick="selectAnnotationByName('Cooling water')">Cooling water</a>).
-        </p>
-        `,
-        environmentalImpact: "Spreading of invasive species and increased emissions of e.g. green house gases, particles and NOx due to higher fuel consumption resulting from increased drag, friction and manouverability. Increased air emissions impact air quality and global warming.",
-        humanImpact: "Higher emissions can reduce air quality and increase the risk of respiratory complications and adverse health effects.",
-
-        images: [
-            {
-                header: "Biofouling 1 - Australian tubeworm",
-                path: "resources/images/biofouling_1.jpg",
-                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
-                attribution: "Photo: Magnus Dahlström"
-            },
-            {
-                header: "Biofouling 2 - Australian tubeworm",
-                path: "resources/images/biofouling_2.jpg",
-                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
-                attribution: "Photo: Magnus Dahlström"
-            },
-            {
-                header: "Biofouling 3 - Australian tubeworm",
-                path: "resources/images/biofouling_3.jpg",
-                description: "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
-                attribution: "Photo: Magnus Dahlström"
-            }
-        ],
-        // Somewhere on the immersed part of the hull
-        shipTypes: {
-            tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
-            },
-            cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
-            },
-            container: {
-                labelPos: new Vector3(12, 3, -20),
-                cameraPos: new Vector3(40, 15, -20)
-            },
-            sail: {
-                labelPos: new Vector3(2, 7, 4),
-                cameraPos: new Vector3(6.5, 5.7, 13)
-            }
-        }
+    {name: "Echo"
     },
-    {
-        name: "Echo"
-    },
-    {
-        name: "Ballast water",
+    {name: "Ballast water",
         description: `
         <p>
             Ballast water is used to ensure vessels stability and optimal vessel trim. Ballast water is pumped into ballast tanks when a ship has delivered cargo to a port and is departing with less cargo or no cargo. Ballast water is then transported and released at the next port-of-call where the ship picks up more cargo. When a ship is receiving or delivering cargo to a number of ports, it may release or take on a portion of ballast water at each port and the ship’s ballast water can contain a mix of waters from multiple ports.
@@ -267,12 +256,14 @@ const annotations = [
         mapTiff: "BALW_2018", 
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(16, 11, -86),
+                cameraPos: new Vector3(33.56, 12.07, -86.14),
+                outletPos: new Vector3(16, 10.65, -86)
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                outletPos: new Vector3(21.7601, 3.64208, -85.8984),
+                labelPos: new Vector3(21.7601, 3.64208, -85.8984),
+                cameraPos: new Vector3(30, 4, -86)
             },
             container: {
                 outletPos: new Vector3(13.479, 14.411, 91.698),
@@ -281,25 +272,21 @@ const annotations = [
             }
         }
     },
-    {
-        name: "Sewage (black water)"
+    {name: "Sewage (black water)"
     },
-    {
-        name: "Grey water"
+    {name: "Grey water"
     },
-    {
-        name: "Tank cleaning",
+    {name: "Tank cleaning",
         environmentalImpact: "Media coverage: tall oil discharge in Botthnian Sea.",
         // Discharge point/tank
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(-4, 18, -10),
+                cameraPos: new Vector3(3.82, 23.10, -24.08),
             }
         }
     },
-    {
-        name: "Cooling water",
+    {name: "Cooling water",
         description: `
         <p>
             Most vessels are dependent on water for cooling when the propulsion of ship generates excess heat in for example the engines, generators and compressors that must be diverted. Seawater is mostly used as cooling agent, being relatively low-tempered and constantly available.
@@ -314,12 +301,14 @@ const annotations = [
         // Seachest inlet
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                outletPos: new Vector3(16, 4.5, -43.6),
+                labelPos: new Vector3(16, 4, -44),
+                cameraPos: new Vector3(33.91, 5.82, -41.95)
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                outletPos: new Vector3(21.6058, -1.9977, 31.9649),
+                labelPos: new Vector3(22.3, -1.9977, 31.9649),
+                cameraPos: new Vector3(30, 2, 32)
             },
             container: {
                 outletPos: new Vector3(13.3245, 4.58666, -26.1653),
@@ -328,8 +317,7 @@ const annotations = [
             }
         }
     },
-    {
-        name: "Scrubber water",
+    {name: "Scrubber water",
         description: `
         <p>
             Scrubbers are installed on ships to enable the vessel to continue to run on conventional high sulfur fuels while still being compliant to stricter regulations limiting the sulfur oxide content in ships exhaust. In a scrubber, water is sprayed over the exhaust, reducing the concentration of SOx in the exhaust to compliant levels. The scrubber water is not only taking upp SOx, forming sulfuric acid and becoming highly acidic, but also scavenges other contaminants (e.g. metals and organic substances) that are instead discharged directly to the marine environment.
@@ -418,12 +406,12 @@ const annotations = [
         // Smokestack (end engine)
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 35, -105),
+                cameraPos: new Vector3(8.92, 46.55, -129.72)
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0.5, 45, -85),
+                cameraPos: new Vector3(45, 45, -85)
             },
             container: {
                 labelPos: new Vector3(0.5, 30, -57),
@@ -432,8 +420,7 @@ const annotations = [
         },
         sdgIcons: [3, 7, 9, 11, 12, 13, 14]
     },
-    {
-        name: "Bilge water",
+    {name: "Bilge water",
         description: `
         <p>
             Bilge water is a mixture of water, oily fluids, lubricants and grease, cleaning fluids and other waste that accumulate in the lowest part of the vessel. The different onboard sources include engines, piping and other constructions throughout the machinery space. The discharge of bilge water is generally allowed as long as the oily content has been reduced to compliant levels in accordance with MARPOL Annex I.
@@ -455,8 +442,7 @@ const annotations = [
             }
         }
     },
-    {
-        name: "Propeller shaft lubricants",
+    {name: "Propeller shaft lubricants",
         description: `
         <p>
             The propeller shaft connects the main engine and the propeller through the stern tube. The stern tube goes through the ship hull and contains bearings, sealing and a lubrication system that may leak due to imperfect sealing and/or damage.
@@ -464,12 +450,12 @@ const annotations = [
         `,
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 0, -115),
+                cameraPos: new Vector3(16.35, 4.74, -144.10),
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(5.5, -5.5, -125),
+                cameraPos: new Vector3(10, -5, -125),
             },
             container: {
                 labelPos: new Vector3(0, 2, -58),
@@ -478,11 +464,24 @@ const annotations = [
         },
         mapLayer: "STERN_TUBE"
     },
-    {
-        name: "Solid waste (food waste)"
+    {name: "Solid waste (food waste)",
+        model: "resources/burger.glb",
+        shipTypes: {
+            tanker: {
+                labelPos: undefined,
+                cameraPos: undefined
+            },
+            cruise: {
+                labelPos: new Vector3(20.93, 26.95, -130.49),
+                cameraPos: new Vector3(29, 34, -140),
+            },
+            container: {
+                labelPos: undefined,
+                cameraPos: undefined
+            }
+        },
     },
-    {
-        name: "Exhaust gas",
+    {name: "Exhaust gas",
         description: `
         <p>
             The majority of today's commercial fleet are still running on conventional fossil bunker fuels where heavy fuel oil (HFO), marine gas oil (MGO) and hybrid fuels (very low sulpfur fuel oils (VLSFO) and ultra-low sulfur fuel oils (ULSFO) holds >99% of the fuel market share of the operating fleet (see bar chart below, noting the non-linear scale).
@@ -500,12 +499,12 @@ const annotations = [
         // Exhaust
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0.5, 45, -105),
+                cameraPos: new Vector3(35, 45, -105)
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0.5, 65, -85),
+                cameraPos: new Vector3(45, 65, -85)
             },
             container: {
                 labelPos: new Vector3(0.5, 40, -58),
@@ -552,36 +551,31 @@ const annotations = [
         },
         plotCaption: `Bar chart showing the percent of fleet using conventional vs alternative fuels (LNG, LPG, methanol, hydrogen and ammonia). Data is collected from <a target="_blank" href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 2025).`
     },
-    {
-        name: "Illumination"
+    {name: "Illumination"
     },
-    {
-        name: "Waves and turbulence"
+    {name: "Waves and turbulence"
     },
-    {
-        name: "Powertrain",
+    {name: "Powertrain",
         description: "Burning fuel in engines produce mechnical power but have higher emissions. Fuel cell have lesser emissions and produce electricity through electrochemical reaction of different fuels. Battery-electric uses stored electricity and have zero emission but have limited energy capacity.",
-        model: "resources/engine.glb",
         hideWater: true,
         // Engine
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 3, -82),
+                cameraPos: new Vector3(4, 6, -86),
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, -5, -80),
+                cameraPos: new Vector3(4, -2, -87),
             },
             container: {
-                labelPos: new Vector3(0, 5, -47),
-                cameraPos: new Vector3(4.5, 9, -58),
+                labelPos: new Vector3(0, 5, -27),
+                cameraPos: new Vector3(4.5, 9, -30),
             }
         },
         sdgIcons: [7, 9, 11, 13, 14, 15]
     },
-    {
-        name: "Fueltank",
+    {name: "Fueltank",
         // Fuel tank
         shipTypes: {
             tanker: {
@@ -599,8 +593,7 @@ const annotations = [
         },
         sdgIcons: [7, 9, 11, 13, 14, 15]
     },
-    {
-        name: "Underwater radiated noise",
+    {name: "Underwater radiated noise",
         description: `
         <p>
             Underwater noise is considered a type of energy pollution. An overview of ship generated underwater noise, and the resulting environmental impacts was published by EMSA in 2022 <a target="_blank" href="https://www.emsa.europa.eu/protecting-the-marine-environment/underwater-noise/download/6881/4503/23.html">[1]</a>.
@@ -615,12 +608,12 @@ const annotations = [
         // Propeller
         shipTypes: {
             tanker: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(0, 0, -120),
+                cameraPos: new Vector3(-13.68, 3.06, -141.22),
             },
             cruise: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(5.5, -5.5, -130),
+                cameraPos: new Vector3(10, -5, -140),
             },
             container: {
                 labelPos: new Vector3(0, 3, -62),
@@ -629,13 +622,13 @@ const annotations = [
         },
         sdgIcons: [14]
     },
-    {
-        name: "Container loss",
+    {name: "Container loss",
+        model: "resources/lost_container.glb",
         // One of the containers
         shipTypes: {
             container: {
-                labelPos: undefined,
-                cameraPos: undefined
+                labelPos: new Vector3(12, 30, 20),
+                cameraPos: new Vector3(43, 46, 67),
             }
         }
     },
