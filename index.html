@@ -17,6 +17,11 @@
 	<script src="lib/vega-lite.5.21.0.js"></script>
 	<script src="lib/vega-embed.6.26.0.js"></script>
 
+	<script src="https://unpkg.com/h3-js@^4.0.0"></script>
+    <script src="https://unpkg.com/deck.gl@^9.0.0/dist.min.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -31,7 +36,8 @@
 			}
 		</script>
 
-	<div id="startScreen">
+		<div id="startScreen">
+		<div id="bgMapContainer"></div>
 		<article class="pico">
 			<div class="start-body">
 				<div class="selector-row">

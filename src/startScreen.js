@@ -1,8 +1,16 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ships, init, loadShip, registerSW } from "./main.js";
+import {ShipDensityMap} from "./shipDensityMap.js";
 
 registerSW?.();
+
+const bgMap = new ShipDensityMap(
+  document.getElementById("bgMapContainer"),
+  "resources/osm_water.json",
+  ships.map(s=>s.shipDensityDataName)
+);
+bgMap.setData("resources/shipDensityCounts.csv")
 
 let picked = 0;
 let appStarted = false;
@@ -190,6 +198,8 @@ function show(idx) {
   nameBox.textContent = ships[idx].displayName ?? "—";
   descBox.textContent = ships[idx].description ?? "No description available";
   updateBars(ships[idx]);
+
+  bgMap.updateShipType(ships[idx].shipDensityDataName);
 
   prevBtn.disabled = idx === 0;
   nextBtn.disabled = idx === ships.length - 1;

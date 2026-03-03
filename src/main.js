@@ -75,6 +75,7 @@ const ships = [
     {
         name: "container",
         displayName: "Container ship",
+        shipDensityDataName: "Cargo",
         path: "resources/cargoship.glb",
         smokeStackPos: new THREE.Vector3(0.5, 45, -57),
         defaultLookat: [
@@ -97,6 +98,7 @@ const ships = [
     {
         name: "cruise",
         displayName: "Cruise ship",
+        shipDensityDataName: "Passenger",
         path: "resources/cruiseship.glb",
         defaultLookat: [
             75, 70, 230, // Position
@@ -118,6 +120,7 @@ const ships = [
     {
         name: "tanker",
         displayName: "Chemical tanker",
+        shipDensityDataName: "Tanker",
         path: "resources/chemtanker.glb",
         defaultLookat: [
             80, 50, 160, // Position
