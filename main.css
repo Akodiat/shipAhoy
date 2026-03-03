@@ -197,8 +197,8 @@ a {
   background-color: white;
 }
 
-#map,
-#mapTiff {
+#map
+{
   margin-top: 20px;
   height: 500px;
   width: auto;
@@ -330,8 +330,8 @@ a {
     height: auto;
   }
 
-  #map,
-  #mapTiff {
+  #map
+  {
     width: 100%;
     height: 300px;
   }

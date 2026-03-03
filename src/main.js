@@ -56,7 +56,6 @@ let mapView, plotView;
 let postProcessing;
 let outputFlow;
 let annotationSprites = new THREE.Group();
-let tiffMapView = null;
 let highlightedAnnotation, selectedAnnotation;
 
 const mixers = [];
@@ -71,10 +70,6 @@ const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
 const backBtn = document.getElementById("backButton");
-const GEO_TIFFS = {
-    BALW_2018: "./resources/STEAM_BalW_2018.tif",
-    SCRUB_CLOSED_2018: "./resources/STEAM_SCRUB_W_CLOSED_2018.tif",
-};
 
 const shipKey = (name) => name?.toLowerCase();
 
@@ -604,30 +599,7 @@ function selectAnnotation(a) {
         modelGroup.add(outputFlow);
     }
 
-    const wantsTiff = !!a.spec.mapTiff;
-    const heatmapEl = document.getElementById("map");
-    const tiffEl = document.getElementById("mapTiff");
-
-    if (wantsTiff) {
-        tiffEl.style.display = "block";
-        heatmapEl.style.display = "none";
-
-        if (!tiffMapView) tiffMapView = new MapViewTiff("mapTiff");
-        const tiffKeyOrUrl = a.spec.mapTiff;
-        const tiffUrl = GEO_TIFFS[tiffKeyOrUrl] ?? tiffKeyOrUrl;
-        if (tiffUrl) {
-            tiffMapView.show(tiffUrl);
-        } else {
-            console.warn("No geotiff found for", a.spec.name, tiffKeyOrUrl);
-        }
-        setTimeout(() => tiffMapView.map.invalidateSize(), 0);
-    } else {
-        tiffEl.style.display = "none";
-
-        if (heatmapEl.style.display !== "none") {
-            setTimeout(() => mapView?.map?.invalidateSize(), 0);
-        }
-    }
+    setTimeout(() => mapView?.map?.invalidateSize(), 0);
 
     const style = document.getElementById("threeContainer").style;
     const smallScreen = window.matchMedia("(max-width: 768px)").matches;
@@ -645,9 +617,6 @@ function selectAnnotation(a) {
         controls.setFocalOffset(0.25 * dist, 0, 0);
     }
 
-    if (tiffMapView?.map) {
-        setTimeout(() => tiffMapView.map.invalidateSize(), 0);
-    }
     if (mapView?.map) {
         setTimeout(() => mapView.map.invalidateSize(), 0);
     }
