@@ -7,6 +7,7 @@ registerSW?.();
 let picked = 0;
 let appStarted = false;
 let current = null;
+let showRequestId = 0;
 
 const startScreen = document.getElementById("startScreen");
 const enterBtn = document.getElementById("enterButton");
@@ -87,7 +88,6 @@ await renderer.init();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(CAN_W, CAN_H, false);
 
-//functions
 function buildBars() {
   hudBars.innerHTML = "";
   for (const key of statKeys) {
@@ -175,9 +175,13 @@ function frame(obj, fit = .9) {
 }
 
 function show(idx) {
+  const requestId = ++showRequestId;
+
   if (current) scene.remove(current);
 
   loader.load(ships[idx].path, gltf => {
+    if (requestId !== showRequestId) return;
+
     current = gltf.scene;
     scene.add(current);
     frame(current);
@@ -192,7 +196,7 @@ function show(idx) {
 }
 
 renderer.setAnimationLoop(() => {
-  if (current) current.rotation.y += 0.004;
+  if (current) current.rotation.y += 0.001;
   renderer.render(scene, camera);
 });
 
