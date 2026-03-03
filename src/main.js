@@ -93,7 +93,7 @@ const ships = [
         }
     },
     {
-        name: "Sail",
+        name: "Cruise",
         path: "resources/cruiseship.glb",
         defaultLookat: [26, 24, 21, 0, 7, 0],
         description: "This is a cruise ship.",
@@ -110,7 +110,7 @@ const ships = [
         }
     },
     {
-        name: "Chemtanker",
+        name: "Tanker",
         path: "resources/chemtanker.glb",
         defaultLookat: [26, 24, 21, 0, 7, 0],
         description: "This is a chemtanker ship.",
