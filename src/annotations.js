@@ -1,5 +1,5 @@
-import {Vector3} from "three";
-import {Annotation} from "./annotation.js"
+import { Vector3 } from "three";
+import { Annotation } from "./annotation.js"
 
 
 /**
@@ -24,7 +24,8 @@ const annotations = [
         },
         sdgIcons: [12]
     },
-    {name: "Propulsion momentum",
+    {
+        name: "Propulsion momentum",
         description: "In 2023, the north-western Mediterranean Sea was designated a Particularly Sensitive Sea Area by the International Maritime Organization (IMO) with associated protective measures to reduce the number of ship strikes of whales (MEPC 380(80)).",
         environmentalImpact: `Ship strikes of marine mammals, groundings. For more information about ship strikes, see the <a target="_blank" href="https://iwc.int/management-and-conservation/ship-strikes">International Whaling Commision</a>`,
         images: [
@@ -53,6 +54,58 @@ const annotations = [
                 attribution: `CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)`
             }
         ],
+        plotCaption: `Ship strikes per ocean. Data from a 2022 analysis by the IWC. https://iwc.int/management-and-conservation/ship-strikes`,
+        plotSpec: {
+            $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+            description: "Ship strikes per ocean by assessment class",
+            data: {
+                values: [
+                    { ocean: "Atlantic", status: "Definite", count: 374 },
+                    { ocean: "Atlantic", status: "Probable", count: 99 },
+                    { ocean: "Atlantic", status: "Possible", count: 110 },
+                    { ocean: "Pacific", status: "Definite", count: 193 },
+                    { ocean: "Pacific", status: "Probable", count: 36 },
+                    { ocean: "Pacific", status: "Possible", count: 39 },
+                    { ocean: "Indian", status: "Definite", count: 14 },
+                    { ocean: "Indian", status: "Probable", count: 7 },
+                    { ocean: "Indian", status: "Possible", count: 13 },
+                    { ocean: "Southern", status: "Definite", count: 8 },
+                    { ocean: "Southern", status: "Probable", count: 3 },
+                    { ocean: "Southern", status: "Possible", count: 7 },
+                    { ocean: "Arctic", status: "Definite", count: 2 },
+                    { ocean: "Arctic", status: "Probable", count: 0 },
+                    { ocean: "Arctic", status: "Possible", count: 2 }
+                ]
+            },
+            height: 200,
+            width: "container",
+            mark: { type: "bar" },
+            encoding: {
+                y: {
+                    field: "ocean",
+                    type: "ordinal",
+                    title: "Ocean",
+                    sort: { field: "count", op: "sum", order: "descending" }
+                },
+                x: {
+                    aggregate: "sum",
+                    field: "count",
+                    type: "quantitative",
+                    title: "Cases"
+                },
+                color: {
+                    field: "status",
+                    type: "nominal",
+                    title: "Assessment",
+                    sort: ["Definite", "Probable", "Possible"]
+                },
+                tooltip: [
+                    { field: "ocean", type: "nominal", title: "Ocean" },
+                    { field: "status", type: "nominal", title: "Assessment" },
+                    { aggregate: "sum", field: "count", type: "quantitative", title: "Cases" }
+                ]
+            }
+        },
         // At the (bulbous) bow:
         shipTypes: {
             tanker: {
@@ -176,7 +229,7 @@ const annotations = [
             }
         },
         mapLayer: "AFP_CuO",
-        sdgIcons: [3,6,9,14]
+        sdgIcons: [3, 6, 9, 14]
     },
     {name: "Echo"
     },
@@ -200,6 +253,7 @@ const annotations = [
                 attribution: ""
             }
         ],
+        mapTiff: "BALW_2018", 
         shipTypes: {
             tanker: {
                 labelPos: new Vector3(16, 11, -86),
@@ -266,7 +320,7 @@ const annotations = [
     {name: "Scrubber water",
         description: `
         <p>
-            Scrubbers are installed on ships to enable the vessel to continue to run on conventional high sulfur fuels while still being compliant to stricter regulations limiting the sulfur oxide content in shipss exhaust. In a scrubber, water is sprayed over the exhaust, reducing the concentration of SOx in the exhaust to compliant levels. The scrubber water is not only taking upp SOx, forming sulfuric acid and becoming highly acidic, but also scavenges other contaminants (e.g. metals and organic substances) that are instead discharged directly to the marine environment.
+            Scrubbers are installed on ships to enable the vessel to continue to run on conventional high sulfur fuels while still being compliant to stricter regulations limiting the sulfur oxide content in ships exhaust. In a scrubber, water is sprayed over the exhaust, reducing the concentration of SOx in the exhaust to compliant levels. The scrubber water is not only taking upp SOx, forming sulfuric acid and becoming highly acidic, but also scavenges other contaminants (e.g. metals and organic substances) that are instead discharged directly to the marine environment.
         </p>
         <p>
             The use of scrubbers introduces a new contamination source to the marine environment with substantial adverse effects on marine organisms at very low concentrations. The use of a scrubber also implies a fuel penalty with 2-3%, with higher climate footprint compared to a ship without a scrubber.
@@ -306,43 +360,46 @@ const annotations = [
                 attribution: " Ytreberg, E., Hansson, K., Lunde Hermansson, A., Parsmo, R., Lagerström, M., Jalkanen, J.P., Hassellöv, I.M., 2022. [Metal and PAH loads from ships and boats, relative other sources, in the Baltic Sea](https://doi.org/10.1016/j.marpolbul.2022.113904). Mar. Pollut. Bull. 182, 113904."
             }
         ],
-        mapLayer: "SCRUB_W_CLOSED",
+        mapTiff: "SCRUB_CLOSED_2018",
+        // mapLayer: "SCRUB_W_CLOSED",
         plotCaption: `Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from <a target="_blank" href="https://afi.dnvgl.com/Statistics">Alternative Fuels Insights - DNV</a> (Accessed May 20259.`,
         plotSpec: {
             $schema: "https://vega.github.io/schema/vega-lite/v5.json",
             description: "Scrubber installed DNV AFI",
-            data: {values: [
-                {year: new Date("2007"), nShips: 2},
-                {year: new Date("2008"), nShips: 0},
-                {year: new Date("2009"), nShips: 5},
-                {year: new Date("2011"), nShips: 11},
-                {year: new Date("2012"), nShips: 24},
-                {year: new Date("2013"), nShips: 46},
-                {year: new Date("2014"), nShips: 122},
-                {year: new Date("2015"), nShips: 250},
-                {year: new Date("2016"), nShips: 321},
-                {year: new Date("2017"), nShips: 388},
-                {year: new Date("2018"), nShips: 693},
-                {year: new Date("2019"), nShips: 3139},
-                {year: new Date("2020"), nShips: 4337},
-                {year: new Date("2021"), nShips: 4564},
-                {year: new Date("2022"), nShips: 4859},
-                {year: new Date("2023"), nShips: 5353},
-                {year: new Date("2024"), nShips: 5998},
-                {year: new Date("2025"), nShips: 6456},
-                {year: new Date("2026"), nShips: 6585},
-                {year: new Date("2027"), nShips: 6633},
-                {year: new Date("2028"), nShips: 6634},
-            ]},
+            data: {
+                values: [
+                    { year: new Date("2007"), nShips: 2 },
+                    { year: new Date("2008"), nShips: 0 },
+                    { year: new Date("2009"), nShips: 5 },
+                    { year: new Date("2011"), nShips: 11 },
+                    { year: new Date("2012"), nShips: 24 },
+                    { year: new Date("2013"), nShips: 46 },
+                    { year: new Date("2014"), nShips: 122 },
+                    { year: new Date("2015"), nShips: 250 },
+                    { year: new Date("2016"), nShips: 321 },
+                    { year: new Date("2017"), nShips: 388 },
+                    { year: new Date("2018"), nShips: 693 },
+                    { year: new Date("2019"), nShips: 3139 },
+                    { year: new Date("2020"), nShips: 4337 },
+                    { year: new Date("2021"), nShips: 4564 },
+                    { year: new Date("2022"), nShips: 4859 },
+                    { year: new Date("2023"), nShips: 5353 },
+                    { year: new Date("2024"), nShips: 5998 },
+                    { year: new Date("2025"), nShips: 6456 },
+                    { year: new Date("2026"), nShips: 6585 },
+                    { year: new Date("2027"), nShips: 6633 },
+                    { year: new Date("2028"), nShips: 6634 },
+                ]
+            },
             height: 200,
             width: "container",
             mark: "bar",
             encoding: {
-                x: {field: "year", type: "temporal", title: "Year", timeUnit: "year"},
-                y: {field: "nShips", type: "quantitative", title: "Nr of ships (Data collected May 2025)"},
+                x: { field: "year", type: "temporal", title: "Year", timeUnit: "year" },
+                y: { field: "nShips", type: "quantitative", title: "Nr of ships (Data collected May 2025)" },
                 tooltip: [
-                    {field: "nShips", type: "quantitative", title: "Number of ships"},
-                    {field: "year", type: "temporal", title: "Year", timeUnit: "year"}
+                    { field: "nShips", type: "quantitative", title: "Number of ships" },
+                    { field: "year", type: "temporal", title: "Year", timeUnit: "year" }
                 ]
             }
         },
@@ -361,7 +418,7 @@ const annotations = [
                 cameraPos: new Vector3(25, 30, -57)
             }
         },
-        sdgIcons: [3,7,9,11,12,13,14]
+        sdgIcons: [3, 7, 9, 11, 12, 13, 14]
     },
     {name: "Bilge water",
         description: `
@@ -456,22 +513,24 @@ const annotations = [
         },
         plotSpec: {
             $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-            data: {values: [
-                {fuel: "Conventional fuel", percentage: 99.12},
-                {fuel: "LNG", percentage: 0.67},
-                {fuel: "LPG", percentage: 0.14},
-                {fuel: "Methanol", percentage: 0.06},
-                {fuel: "Hydrogen", percentage: 0.01},
-                {fuel: "Ammonia", percentage: 0}
-            ]},
+            data: {
+                values: [
+                    { fuel: "Conventional fuel", percentage: 99.12 },
+                    { fuel: "LNG", percentage: 0.67 },
+                    { fuel: "LPG", percentage: 0.14 },
+                    { fuel: "Methanol", percentage: 0.06 },
+                    { fuel: "Hydrogen", percentage: 0.01 },
+                    { fuel: "Ammonia", percentage: 0 }
+                ]
+            },
             height: 200,
             width: "container",
             encoding: {
-                x: {field: "percentage", type: "quantitative", title: "Fuel market share (%)", scale: {type: "symlog"}},
-                y: {field: "fuel", type: "ordinal", title: "Fuel type", sort: {field: "percentage", order: "descending"}},
+                x: { field: "percentage", type: "quantitative", title: "Fuel market share (%)", scale: { type: "symlog" } },
+                y: { field: "fuel", type: "ordinal", title: "Fuel type", sort: { field: "percentage", order: "descending" } },
                 tooltip: [
-                    {field: "fuel", type: "ordinal", title: "Fuel type"},
-                    {field: "percentage", title: "Fuel market share (%)"}
+                    { field: "fuel", type: "ordinal", title: "Fuel type" },
+                    { field: "percentage", title: "Fuel market share (%)" }
                 ]
             },
             layer: [
@@ -481,11 +540,11 @@ const annotations = [
                 {
                     mark: {
                         type: "text",
-                        align: {expr: "datum.percentage < 10 ? 'left' : 'right'"},
-                        dx: {expr: "datum.percentage < 10 ? 4 : -4"}
+                        align: { expr: "datum.percentage < 10 ? 'left' : 'right'" },
+                        dx: { expr: "datum.percentage < 10 ? 4 : -4" }
                     },
                     encoding: {
-                        text: {field: "percentage", type: "quantitative"}
+                        text: { field: "percentage", type: "quantitative" }
                     }
                 }
             ]
@@ -514,7 +573,7 @@ const annotations = [
                 cameraPos: new Vector3(4.5, 9, -30),
             }
         },
-        sdgIcons: [7,9,11,13,14,15]
+        sdgIcons: [7, 9, 11, 13, 14, 15]
     },
     {name: "Fueltank",
         // Fuel tank
@@ -532,7 +591,7 @@ const annotations = [
                 cameraPos: undefined
             }
         },
-        sdgIcons: [7,9,11,13,14,15]
+        sdgIcons: [7, 9, 11, 13, 14, 15]
     },
     {name: "Underwater radiated noise",
         description: `
@@ -576,4 +635,4 @@ const annotations = [
 ].map((spec) => new Annotation(spec));
 
 
-export {annotations};
+export { annotations };
