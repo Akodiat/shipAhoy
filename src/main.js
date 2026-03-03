@@ -99,7 +99,7 @@ const ships = [
     },
     {
         name: "Sail",
-        path: "resources/sailingship.glb",
+        path: "resources/cruiseship.glb",
         defaultLookat: [26, 24, 21, 0, 7, 0],
         description: "This is a cruise ship.",
         stats: {
@@ -116,7 +116,7 @@ const ships = [
     },
     {
         name: "Chemtanker",
-        path: "resources/sailingship.glb",
+        path: "resources/chemtanker.glb",
         defaultLookat: [26, 24, 21, 0, 7, 0],
         description: "This is a chemtanker ship.",
         stats: {
@@ -577,9 +577,9 @@ function selectAnnotation(a) {
     if (a.spec.model !== undefined) {
         gltfLoader.load(a.spec.model, function (gltf) {
             detailModel = gltf.scene;
-            if (a.spec.shipTypes[currentShip.name].modelTranslation) {
+            if (a.spec.shipTypes?.[shipTypeKey]?.modelTranslation) {
                 detailModel.position.add(
-                    a.spec.shipTypes[currentShip.name].modelTranslation
+                    a.spec.shipTypes[shipTypeKey].modelTranslation
                 );
             }
             detailModel.scale.multiplyScalar(1);
