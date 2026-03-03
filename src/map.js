@@ -1,7 +1,8 @@
-import * as leaflet from "../lib/leaflet/leaflet-src.esm.js";
 import shp from "../lib/shp.esm.js";
 
 import {annotations} from "./annotations.js";
+
+const leaflet = window.L;
 
 class MapView {
     constructor(elementId) {

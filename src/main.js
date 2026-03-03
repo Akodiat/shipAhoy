@@ -1,13 +1,13 @@
 import * as THREE from "three";
-import {color, pass, objectPosition, screenUV} from "three/tsl";
-import {gaussianBlur} from "three/addons/tsl/display/GaussianBlurNode.js";
-import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
-import {WaterMesh} from "three/addons/objects/WaterMesh.js";
-import {SkyMesh} from "three/addons/objects/SkyMesh.js";
+import { color, pass, objectPosition, screenUV } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { WaterMesh } from "three/addons/objects/WaterMesh.js";
+import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 import Stats from "three/addons/libs/stats.module.js";
-import {MapView} from "./map.js";
-import {PlotView} from "./plot.js";
-import {annotations} from "./annotations.js";
+import { MapView } from "./map.js";
+import { PlotView } from "./plot.js";
+import { annotations } from "./annotations.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
 import {ParticleSystem} from "./particles.js";
 import {OutputFlow} from "./outputFlow.js";
@@ -43,7 +43,7 @@ window.exportDomeVideo = (
     )
 };
 
-CameraControls.install({THREE: THREE});
+CameraControls.install({ THREE: THREE });
 
 let camera, scene, labelScene, renderer;
 const modelGroup = new THREE.Group();
@@ -56,13 +56,12 @@ let mapView, plotView;
 let postProcessing;
 let outputFlow;
 let annotationSprites = new THREE.Group();
+let highlightedAnnotation, selectedAnnotation;
 
 const mixers = [];
 
 const threeContainer = document.getElementById("threeContainer");
-
 const annotationLabel = document.getElementById("annotationLabel");
-let highlightedAnnotation, selectedAnnotation;
 const annotationSizeDefault = 0.03;
 const annotationSizeHighlight = 0.035;
 const clock = new THREE.Clock();
@@ -70,45 +69,86 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
+const backBtn = document.getElementById("backButton");
 
 const ships = [
     {
         name: "container",
+        displayName: "Container ship",
         path: "resources/cargoship.glb",
         smokeStackPos: new THREE.Vector3(0.5, 45, -57),
         defaultLookat: [
             80, 50, 160, // Position
             -20, 5, 20   // Target
-        ]
+        ],
+        description: "This is a container ship.",
+        stats: {
+            length: { value: "190 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
+            width: { value: "32 m", color: "#acc5dc", labelInfo: "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities", valueInfo: "Most commercial merchant vessels have L∕B ratios in the range of 5.5 to 7.0. Assume L/B of 6 for container vessels which results in 32 m." },
+            tonnage: { value: "36100 GT", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
+            crew: { value: 24, color: "#acc5dc", labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
+            passenger: { value: "N/A", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)" },
+            speed: { value: "25 kn", color: "#acc5dc", labelInfo: "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)" },
+            fuel: { value: "N/A", color: "#acc5dc" },
+            propellers: { value: 1, color: "#acc5dc", labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
+            propellerSize: { value: "N/A", color: "#acc5dc" },
+        }
     },
     {
-        name: "tanker",
-        path: "resources/chemtanker.glb",
-        smokeStackPos: new THREE.Vector3(0.5, 45, -105),
-        defaultLookat: [
-            80, 50, 160, // Position
-            -20, 5, 20   // Target
-        ]
-    },{
         name: "cruise",
+        displayName: "Cruise ship",
         path: "resources/cruiseship.glb",
-        smokeStackPos: new THREE.Vector3(0.5, 65, -85),
         defaultLookat: [
             75, 70, 230, // Position
             -20, 5, 20   // Target
-        ]
+        ],
+        description: "This is a cruise ship.",
+        stats: {
+            length: { value: "110 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
+            width: { value: "40 m", color: "#acc5dc", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478", valueInfo: "In the article the authors model a reference ship and the same width is assumed here. Note that the authors assumed a much longer vessel (350 m) so the ratio might not be correct as two different sources were used for the length and width." },
+            tonnage: { value: "17300 GT", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
+            crew: { value: 35, color: "#acc5dc", labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
+            passenger: { value: 1865, color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)", valueInfo: "In 2014, cruise ships had a median capacity of ca 1900 people including staff and passengers" },
+            speed: { value: "22 kn", color: "#acc5dc", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478 In the article the authors model" },
+            fuel: { value: "N/A", color: "#acc5dc" },
+            propellers: { value: 2, color: "#acc5dc", labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
+            propellerSize: { value: "N/A", color: "#acc5dc" },
+        }
+    },
+    {
+        name: "tanker",
+        displayName: "Chemical tanker",
+        path: "resources/chemtanker.glb",
+        defaultLookat: [
+            80, 50, 160, // Position
+            -20, 5, 20   // Target
+        ],
+        description: "This is a chemtanker ship.",
+        stats: {
+            length: { value: "164 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
+            width: { value: "27 m", color: "#acc5dc", labelInfo: "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities", valueInfo: "Tankers vary considerably in their dimensional ratios, but the larger vessels tend to have a moderate L∕B in the range of 5.5 to 6.5”. Assume an L/B ratio of 6, which gives 27 m." },
+            tonnage: { value: "25500 GT", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
+            crew: { value: 27, color: "#acc5dc", labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
+            passenger: { value: "N/A", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)" },
+            speed: { value: "14 kn", color: "#acc5dc", labelInfo: "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)" },
+            fuel: { value: "N/A", color: "#acc5dc" },
+            propellers: { value: 1, color: "#acc5dc", labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
+            propellerSize: { value: "N/A", color: "#acc5dc" },
+        },
+        statInfoLabel: { crew: "Crew headcount incl. officers" },
+
     }
 ];
 
 function advanceShip(step) {
     const name = currentShip ? currentShip.name : ships[0].name;
-    const i = ships.findIndex(s=>s.name === name);
-    const iNew = mod(i+step, ships.length);
+    const i = ships.findIndex(s => s.name === name);
+    const iNew = mod(i + step, ships.length);
     loadShip(ships[iNew].name);
 }
 
 function loadShip(name) {
-    const ship = ships.find(s=>s.name === name);
+    const ship = ships.find(s => s.name === name);
 
     // Remove previous model (if any)
     if (currentShip && currentShip.model) {
@@ -127,6 +167,13 @@ function loadShip(name) {
         modelGroup.name = name;
         currentShip.model.name = name;
 
+        currentShip.model.traverse(child => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
         if (animations.length > 0) {
             const mixer = new THREE.AnimationMixer(model);
             for (const a of animations) {
@@ -136,10 +183,7 @@ function loadShip(name) {
         }
 
         // Setup annotations
-        const spriteTexture = textureLoader.load(
-            "resources/label.png",
-            texture => texture.colorSpace = THREE.SRGBColorSpace
-        );
+        const spriteTexture = loadShip._labelTexture ??= (() => { const t = textureLoader.load("resources/label.png"); t.colorSpace = THREE.SRGBColorSpace; return t; })();
 
         // Position smoke
         if (ship.smokeStackPos !== undefined) {
@@ -168,7 +212,7 @@ function loadShip(name) {
                     sizeAttenuation: false,
                     alphaTest: 0.5
                 }
-            ));
+                ));
             annotation.sprite.annotation = annotation;
             annotation.sprite.position.copy(annotation.spec.shipTypes[name].labelPos);
             annotation.sprite.scale.setScalar(annotationSizeDefault);
@@ -184,20 +228,19 @@ function loadShip(name) {
         if (selectedAnnotation === undefined) {
             controls.setLookAt(...currentShip.defaultLookat, true);
         } else {
-            const a = selectedAnnotation.annotation;
-            if (a.spec.shipTypes[name] !== undefined &&
-                a.spec.shipTypes[name].cameraPos !== undefined &&
-                a.spec.shipTypes[name].labelPos !== undefined
-            ) {
-                controls.setLookAt(
-                    ...a.spec.shipTypes[name].cameraPos.toArray(),
-                    ...a.spec.shipTypes[name].labelPos.toArray(),
-                    true
-                );
-            } else {
-                clearAnnotationSelection();
-            }
-        }
+  const a = selectedAnnotation.annotation;
+  const p = a.spec.shipTypes?.[name];
+
+  if (p?.cameraPos && p?.labelPos) {
+    controls.setLookAt(
+      ...p.cameraPos.toArray(),
+      ...p.labelPos.toArray(),
+      true
+    );
+  } else {
+    clearAnnotationSelection();
+  }
+}
     };
 
     if (ship.model !== undefined) {
@@ -212,7 +255,7 @@ function loadShip(name) {
             gltf => setModel(gltf.scene, gltf.animations),
             xhr => {
                 // Update progress bar
-                document.getElementById("loaderProgress").value = ( xhr.loaded / xhr.total * 100 );
+                document.getElementById("loaderProgress").value = (xhr.loaded / xhr.total * 100);
             }
         );
     }
@@ -233,9 +276,9 @@ async function registerSW() {
     }
 };
 
-registerSW();
+// registerSW();
 
-init();
+// init();
 
 function init() {
     const waterLevel = 8;
@@ -269,10 +312,10 @@ function init() {
 
     sun = new THREE.Vector3();
 
-    smoke = new ParticleSystem(10, 25, undefined, new THREE.Vector3(0,1,-0.5), textureLoader);
+    smoke = new ParticleSystem(10, 25, undefined, new THREE.Vector3(0, 1, -0.5), textureLoader);
     scene.add(smoke);
 
-    const waterGeometry =  new THREE.CircleGeometry( 5000, 3 );
+    const waterGeometry = new THREE.CircleGeometry(5000, 3);
     const waterNormals = textureLoader.load("resources/waternormals.jpg");
     waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 
@@ -360,10 +403,10 @@ function init() {
 
     const waterMask = objectPosition(camera).y.greaterThan(screenUV.y.mul(camera.near).add(waterLevel));
 
-    const scenePassColorBlurred = gaussianBlur( scenePassColor );
-    scenePassColorBlurred.directionNode = waterMask.select( scenePassDepth, scenePass.getLinearDepthNode().mul(5));
+    const scenePassColorBlurred = gaussianBlur(scenePassColor);
+    scenePassColorBlurred.directionNode = waterMask.select(scenePassDepth, scenePass.getLinearDepthNode().mul(5));
 
-    const vignette = screenUV.distance( .5 ).mul( 1.35 ).oneMinus();
+    const vignette = screenUV.distance(.5).mul(1.35).oneMinus();
 
     postProcessing = new THREE.PostProcessing(renderer);
     postProcessing.outputNode = waterMask.select(scenePassColorBlurred, scenePassColorBlurred.mul(color(0x7E95A5)).mul(vignette)).add(labelPass);
@@ -379,10 +422,10 @@ function init() {
     controls.maxAzimuthAngle = Math.PI;
 
     // Load ship
-    loadShip("container");
+    // loadShip("container");
 
     // Set initial camera view
-    controls.setLookAt(...currentShip.defaultLookat);
+    // controls.setLookAt(...currentShip.defaultLookat);
 
     window.controls = controls;
 
@@ -397,7 +440,7 @@ function init() {
     window.addEventListener("resize", onWindowResize);
 
     document.addEventListener("pointermove", onPointerMove);
-    renderer.domElement.addEventListener("click", event=>{
+    renderer.domElement.addEventListener("click", event => {
         if (highlightedAnnotation) {
             const a = highlightedAnnotation.annotation;
             if (!mapView.fullyLoaded) {
@@ -425,7 +468,7 @@ function init() {
     // Sometimes, the user might click the label itself, rather
     // than the sprite, so this makes sure the label is clickable
     // too. (useful on mobile in particular)
-    annotationLabel.addEventListener("click", ()=>{
+    annotationLabel.addEventListener("click", () => {
         selectAnnotation(highlightedAnnotation.annotation);
         annotationLabel.style.display = "none";
     })
@@ -462,7 +505,7 @@ function init() {
  * @returns {number} n % m
  */
 function mod(n, m) {
-  return ((n % m) + m) % m;
+    return ((n % m) + m) % m;
 }
 
 function animateCamera() {
@@ -486,31 +529,40 @@ function advanceAnnotation(step) {
     if (selectedAnnotation === undefined) {
         selectedAnnotation = as[0];
     } else {
-        const currentIdx = as.findIndex(v=>v===selectedAnnotation);
-        selectedAnnotation = as[mod(currentIdx+step, as.length)];
+        const currentIdx = as.findIndex(v => v === selectedAnnotation);
+        selectedAnnotation = as[mod(currentIdx + step, as.length)];
     }
     selectAnnotation(selectedAnnotation.annotation);
 }
 
 window.selectAnnotationByName = (annotationName) => {
     const sprite = annotationSprites.children.find(
-        a=>a.annotation.spec.name === annotationName
+        a => a.annotation.spec.name === annotationName
     );
     selectAnnotation(sprite.annotation);
 }
 
 function selectAnnotation(a) {
-    const cameraPos = a.spec.shipTypes[currentShip.name].cameraPos;
-    const labelPos = a.spec.shipTypes[currentShip.name].labelPos;
-    controls.maxDistance = cameraPos.distanceTo(labelPos);
+  const p = a.spec.shipTypes?.[currentShip.name];
 
-    controls.setLookAt(
-        ...cameraPos.toArray(),
-        ...labelPos.toArray(),
-        true
-    );
-    document.getElementById("textbox").innerHTML = `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
+  if (!p?.cameraPos || !p?.labelPos) {
+    console.warn("Missing cameraPos/labelPos for shipType", currentShip.name, a.spec?.name);
+    clearAnnotationSelection();
+    return;
+  }
+
+  controls.maxDistance = p.cameraPos.distanceTo(p.labelPos);
+
+  controls.setLookAt(
+    ...p.cameraPos.toArray(),
+    ...p.labelPos.toArray(),
+    true
+  );
+
+    document.getElementById("textbox").innerHTML =
+        `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
     document.getElementById("infobox").style.display = "flex";
+
     a.onSelect();
 
     plotView.plot(a);
@@ -525,9 +577,9 @@ function selectAnnotation(a) {
 
     modelGroup.remove(detailModel);
     if (a.spec.model !== undefined) {
-        gltfLoader.load(a.spec.model, function(gltf) {
+        gltfLoader.load(a.spec.model, function (gltf) {
             detailModel = gltf.scene;
-            if (a.spec.shipTypes[currentShip.name].modelTranslation) {
+            if (a.spec.shipTypes?.[currentShip.name]?.modelTranslation) {
                 detailModel.position.add(
                     a.spec.shipTypes[currentShip.name].modelTranslation
                 );
@@ -548,12 +600,13 @@ function selectAnnotation(a) {
     water.visible = !a.spec.hideWater;
 
     modelGroup.remove(outputFlow);
-
     if (a.spec.shipTypes[currentShip.name].outletPos) {
         outputFlow = new OutputFlow();
         outputFlow.position.copy(a.spec.shipTypes[currentShip.name].outletPos);
         modelGroup.add(outputFlow);
     }
+
+    setTimeout(() => mapView?.map?.invalidateSize(), 0);
 
     const style = document.getElementById("threeContainer").style;
     const smallScreen = window.matchMedia("(max-width: 768px)").matches;
@@ -566,16 +619,13 @@ function selectAnnotation(a) {
     } else {
         style.height = "100%";
         style.position = "absolute";
-        // Keep camera pivot slightly to the left
-        // of the screen center.
         const p = a.spec.shipTypes[currentShip.name];
-        const dist = p.cameraPos.distanceTo(
-            p.labelPos
-        );
-        controls.setFocalOffset(
-            //0.25 * controls.distance, 0, 0
-            0.25 * dist, 0, 0
-        );
+        const dist = p.cameraPos.distanceTo(p.labelPos);
+        controls.setFocalOffset(0.25 * dist, 0, 0);
+    }
+
+    if (mapView?.map) {
+        setTimeout(() => mapView.map.invalidateSize(), 0);
     }
 }
 
@@ -670,9 +720,9 @@ function animate(timestamp, delta=clock.getDelta()) {
         const t = timestamp / 1000;
         modelGroup.position.y = Math.sin(t) * 0.01;
         const e = new THREE.Euler(
-            Math.sin(t)* .001,
+            Math.sin(t) * .001,
             0,
-            Math.cos(t)* .001
+            Math.cos(t) * .001
         );
         modelGroup.quaternion.setFromEuler(e);
 
@@ -688,3 +738,36 @@ function animate(timestamp, delta=clock.getDelta()) {
         }
     }
 }
+
+backBtn.addEventListener("click", () => {
+    backBtn.style.display = "none";
+    document.getElementById("acknowledgementButton").style.display = "none";
+
+    document.getElementById("startScreen").style.display = "flex";
+});
+
+//reset page afte 5 minutes of inactivity
+(() => {
+    const IDLE_MS = 5 * 60 * 1000; //5 minutes
+    let timer;
+
+    const refresh = () => location.reload();
+
+    const reset = () => {
+        clearTimeout(timer);
+        timer = setTimeout(refresh, IDLE_MS);
+    };
+
+    ["pointermove", "pointerdown", "click", "keydown", "wheel", "touchstart"].forEach(ev =>
+        addEventListener(ev, reset, { passive: true })
+    );
+
+    addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") reset();
+        else clearTimeout(timer);
+    });
+
+    reset();
+})();
+
+export { ships, init, loadShip, registerSW };
