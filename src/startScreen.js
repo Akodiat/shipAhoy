@@ -173,10 +173,12 @@ function updateBars(ship) {
 
 function frame(obj, fit = .9) {
   const sphere = new THREE.Sphere();
-  new THREE.Box3().setFromObject(obj).getBoundingSphere(sphere);
+  const box = new THREE.Box3().setFromObject(obj)
+  box.getBoundingSphere(sphere);
+  obj.position.sub((box.max.clone().add(box.min)).divideScalar(2));
   const dist = sphere.radius / (Math.sin(THREE.MathUtils.degToRad(camera.fov * .5)) * fit);
   camera.position.set(0, 0, dist);
-  camera.lookAt(sphere.center);
+  //camera.lookAt(sphere.center);
   camera.near = dist * .01;
   camera.far = dist * 10;
   camera.updateProjectionMatrix();
