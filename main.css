@@ -516,7 +516,7 @@ a {
 .view-toggle {
   position: absolute;
   left: 50%;
-  top: 1rem;
+  top: 1.5rem;
   transform: translate(-50%, -100%);
   z-index: 8;
   width: auto;
@@ -593,15 +593,12 @@ a {
 }
 
 #shipName {
-  position: absolute;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 0 0 1.25rem;
   font-family: var(--font-main);
-  font-size: 1.3rem;
+  font-size: 1.8rem;
+  line-height: 1.1;
   color: black;
-  z-index: 3;
-  pointer-events: none;
+  text-align: center;
 }
 
 .arrow-row {
