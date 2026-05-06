@@ -21,7 +21,10 @@ const startScreen = document.getElementById("startScreen");
 const enterBtn = document.getElementById("enterButton");
 const prevBtn = document.getElementById("prevShip");
 const nextBtn = document.getElementById("nextShip");
+const toggleViewBtn = document.getElementById("toggleStartView");
 const canvas = document.getElementById("previewCanvas");
+const previewPane = document.querySelector(".preview-wrap");
+const mapPane = document.getElementById("bgMapContainer");
 const nameBox = document.getElementById("shipName");
 const descBox = document.getElementById("shipDesc");
 const backBtn = document.getElementById("backButton");
@@ -215,7 +218,17 @@ renderer.setAnimationLoop(() => {
 prevBtn.onclick = () => { if (picked) show(--picked); };
 nextBtn.onclick = () => { if (picked < ships.length - 1) show(++picked); };
 
+toggleViewBtn.onclick = () => {
+  const showingMap = mapPane.classList.toggle("is-active");
+  previewPane.classList.toggle("is-active", !showingMap);
+  toggleViewBtn.textContent = showingMap ? "Show ship" : "Show map";
+  toggleViewBtn.setAttribute("aria-pressed", String(showingMap));
+  window.dispatchEvent(new Event("resize"));
+};
+
 window.addEventListener("keydown", e => {
+  if (e.target.closest?.("button, a, input, select, textarea")) return;
+
   if (e.key === "ArrowLeft") prevBtn.onclick();
   if (e.key === "ArrowRight") nextBtn.onclick();
   else if (e.key === "Enter" || e.code === "NumpadEnter" || e.key === " ") {

@@ -42,14 +42,19 @@
 				<div class="selector-row">
 
 
-					<div class="preview-wrap">
-						<button id="prevShip" class="arrow" aria-label="Previous ship" type="button"></button>
-						<canvas id="previewCanvas"></canvas>
-						<div id="shipName"></div>
-						<button id="nextShip" class="arrow" aria-label="Next ship" type="button"></button>
-						<button id="enterButton" class="primary enter-button" disabled>Enter</button>
+					<div class="visual-wrap">
+						<div class="visual-stage">
+							<div class="preview-wrap visual-pane is-active">
+								<button id="prevShip" class="arrow" aria-label="Previous ship" type="button"></button>
+								<canvas id="previewCanvas"></canvas>
+								<div id="shipName"></div>
+								<button id="nextShip" class="arrow" aria-label="Next ship" type="button"></button>
+								<button id="enterButton" class="primary enter-button" disabled>Enter</button>
+							</div>
+							<div id="bgMapContainer" class="visual-pane"></div>
+						</div>
+						<button id="toggleStartView" class="view-toggle" type="button" aria-pressed="false">Show map</button>
 					</div>
-					<div id="bgMapContainer"></div>
 					<div class="stats-wrap">
 						<div id="hudBars" class="hud-bars" aria-label="Ship stats"></div>
 					</div>
