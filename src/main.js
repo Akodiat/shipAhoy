@@ -70,6 +70,7 @@ const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
 const backBtn = document.getElementById("backButton");
+const oceanOnlyLookAt = [80, 80, 180, -20, 14, 20];
 
 const ships = [
     {
@@ -316,6 +317,7 @@ function init() {
     sun = new THREE.Vector3();
 
     smoke = new ParticleSystem(10, 25, undefined, new THREE.Vector3(0, 1, -0.5), textureLoader);
+    smoke.visible = false;
     scene.add(smoke);
 
     const waterGeometry = new THREE.CircleGeometry(5000, 3);
@@ -429,6 +431,7 @@ function init() {
 
     // Set initial camera view
     // controls.setLookAt(...currentShip.defaultLookat);
+    controls.setLookAt(...oceanOnlyLookAt, false);
 
     window.controls = controls;
 
@@ -745,6 +748,21 @@ function animate(timestamp, delta=clock.getDelta()) {
 backBtn.addEventListener("click", () => {
     backBtn.style.display = "none";
     document.getElementById("acknowledgementButton").style.display = "none";
+    document.getElementById("titleboxWrapper").style.display = "none";
+
+    if (currentShip?.model) {
+        modelGroup.remove(currentShip.model);
+        currentShip = undefined;
+    }
+    labelScene.remove(annotationSprites);
+    annotationSprites = new THREE.Group();
+    selectedAnnotation = undefined;
+    highlightedAnnotation = undefined;
+    document.getElementById("infobox").style.display = "none";
+    annotationLabel.style.display = "none";
+    smoke.visible = false;
+    water.visible = true;
+    controls.setLookAt(...oceanOnlyLookAt, false);
 
     document.getElementById("startScreen").style.display = "flex";
 });

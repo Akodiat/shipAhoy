@@ -363,7 +363,7 @@ a {
 #startScreen {
   position: fixed;
   inset: 0;
-  background: var(--pico-background-color, #fff);
+  background: transparent;
   z-index: 9999;
   overflow-x: hidden;
   overflow-y: auto;
@@ -383,9 +383,10 @@ a {
 .start-body {
   margin-top: 1rem;
   padding: 2.5rem 3rem 1.5rem;
-  background: linear-gradient(145deg, #ffffff 0%, #f4f6fb 100%);
+  background: rgba(255, 255, 255, 0.72);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(6px);
   position: relative;
   width: 100%;
 }
@@ -762,7 +763,7 @@ a {
   }
 
   .stat-bar {
-    right: 42px !important;
+    right: 0 !important;
   }
 
   .enter-button {
@@ -889,11 +890,12 @@ a {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  padding: 6px 2.2rem 6px 0;
+  padding: 6px 0;
   font-family: var(--font-main);
   font-weight: 500;
   gap: 8px;
   overflow: hidden;
+  border-radius: 12px;
 }
 
 .stat-row>* {
@@ -905,7 +907,7 @@ a {
   position: absolute;
   top: 3px;
   left: 0px;
-  right: 50px;
+  right: 0;
   bottom: 3px;
   border-radius: 12px;
   background: rgba(0, 85, 170, 0.05);
@@ -932,40 +934,14 @@ a {
   justify-self: end;
 }
 
-.stat-info-button {
-  display: none;
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  border: none !important;
-  background-color: rgba(0, 0, 0, 0) !important;
-  background-image: url("resources/info.svg") !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: 25px 25px !important;
-  box-shadow: none !important;
-  outline: none !important;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 1;
+.stat-row.has-info {
   cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: all 0.15s ease;
 }
 
-.stat-info-button:hover {
-  transform: translateY(-50%) scale(1.08);
-  border: none !important;
-  color: inherit !important;
-  background-image: url("resources/info.svg") !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: 26px 26px !important;
+.stat-row.has-info:hover,
+.stat-row.has-info:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.22);
+  outline-offset: 2px;
 }
 
 .stat-info-primary {

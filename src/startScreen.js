@@ -29,6 +29,7 @@ const nameBox = document.getElementById("shipName");
 const descBox = document.getElementById("shipDesc");
 const backBtn = document.getElementById("backButton");
 const acknowledgementButton = document.getElementById("acknowledgementButton");
+const titleboxWrapper = document.getElementById("titleboxWrapper");
 const hudBars = document.getElementById("hudBars");
 const infoClickHandler = ({ valueInfo, labelInfo }) => {
   descBox.innerHTML = "";
@@ -94,10 +95,13 @@ const toLabel = (key) =>
 //initial UI
 backBtn.style.display = "none";
 acknowledgementButton.style.display = "none";
+titleboxWrapper.style.display = "none";
 enterBtn.disabled = false;
 await renderer.init();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(CAN_W, CAN_H, false);
+init();
+appStarted = true;
 
 function buildBars() {
   hudBars.innerHTML = "";
@@ -109,7 +113,6 @@ function buildBars() {
       <div class="stat-bar"><div class="stat-bar-fill"></div></div>
       <span class="stat-label">${toLabel(key)}</span>
       <span class="stat-value">—</span>
-      <button class="stat-info-button stat-info" aria-label="More info on ${toLabel(key)}" data-key="${key}" type="button"></button>
     `;
     hudBars.appendChild(row);
   }
@@ -159,22 +162,24 @@ function updateBars(ship) {
       }
     }
 
-    const infoBtn = row.querySelector(".stat-info-button");
     const hasInfo = !!(labelInfo || valueInfo);
 
-    if (infoBtn) {
-      if (hasInfo) {
-        infoBtn.style.display = "inline-flex";
-        infoBtn.onclick = () => infoClickHandler({ valueInfo, labelInfo });
-      } else {
-        infoBtn.style.display = "none";
-        infoBtn.onclick = null;
-      }
-    }
+    row.classList.toggle("has-info", hasInfo);
+    row.tabIndex = hasInfo ? 0 : -1;
+    row.setAttribute("aria-label", hasInfo ? `More info on ${toLabel(key)}` : toLabel(key));
+    row.onclick = hasInfo ? () => infoClickHandler({ valueInfo, labelInfo }) : null;
+    row.onkeydown = hasInfo
+      ? (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            infoClickHandler({ valueInfo, labelInfo });
+          }
+        }
+      : null;
   }
 }
 
-function frame(obj, fit = .9) {
+function frame(obj, fit = 1.25) {
   const sphere = new THREE.Sphere();
   const box = new THREE.Box3().setFromObject(obj)
   box.getBoundingSphere(sphere);
@@ -241,6 +246,7 @@ enterBtn.addEventListener("click", () => {
   startScreen.style.display = "none";
   backBtn.style.display = "";
   acknowledgementButton.style.display = "";
+  titleboxWrapper.style.display = "";
   if (!appStarted) {
     init();
     appStarted = true;
