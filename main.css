@@ -375,20 +375,22 @@ a {
 
 #startScreen article.pico {
   width: 100%;
-  max-width: 80vw;
+  max-width: min(86vw, 3400px);
   margin: 0 auto;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
 }
 
 .start-body {
-  margin-top: 1rem;
-  padding: 2.5rem 3rem 1.5rem;
+  margin-top: clamp(1rem, 2vh, 2.5rem);
+  margin-bottom: clamp(1.25rem, 3vh, 4rem);
+  padding: clamp(2.5rem, 4vw, 7rem) clamp(2rem, 4vw, 7rem) clamp(1.5rem, 3vw, 5rem);
   background: rgba(255, 255, 255, 0.72);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(6px);
   position: relative;
   width: 100%;
+  font-size: clamp(1rem, 0.95vw, 1.8rem);
 }
 
 .start-footer {
@@ -474,7 +476,7 @@ a {
 .visual-wrap {
   position: relative;
   aspect-ratio: 1 / 1;
-  width: min(92vw, 420px);
+  width: clamp(360px, 28vw, 1150px);
   margin: 0 auto;
 }
 
@@ -508,6 +510,12 @@ a {
   overflow: hidden;
 }
 
+#bgMapContainer canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
 .preview-wrap {
   border-radius: inherit;
   background: transparent;
@@ -521,14 +529,14 @@ a {
   z-index: 8;
   width: auto;
   margin: 0;
-  padding: 6px 12px !important;
-  border-radius: 10px !important;
+  padding: clamp(6px, 0.45vw, 18px) clamp(12px, 0.9vw, 34px) !important;
+  border-radius: clamp(10px, 0.65vw, 24px) !important;
   background: rgba(255, 255, 255, 0.82) !important;
   color: #000 !important;
   border: 1px solid rgba(0, 0, 0, 0.12) !important;
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12) !important;
   font-family: var(--font-main);
-  font-size: 0.82rem;
+  font-size: clamp(0.82rem, 0.9vw, 2rem);
   line-height: 1.2;
 }
 
@@ -536,8 +544,8 @@ a {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  width: clamp(48px, 3.2vw, 132px);
+  height: clamp(48px, 3.2vw, 132px);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -551,7 +559,7 @@ a {
   padding: 0;
   background-repeat: no-repeat !important;
   background-position: center !important;
-  background-size: 28px 28px !important;
+  background-size: clamp(28px, 1.9vw, 78px) clamp(28px, 1.9vw, 78px) !important;
 }
 
 .arrow#prevShip {
@@ -580,11 +588,11 @@ a {
 @media (min-width:1025px) {
   .selector-row {
     display: grid;
-    grid-template-columns: minmax(320px, 420px) 1fr;
-    column-gap: 1.25rem;
+    grid-template-columns: minmax(360px, clamp(420px, 28vw, 1150px)) minmax(520px, 1fr);
+    column-gap: clamp(1.25rem, 3vw, 7rem);
     align-items: center;
     position: relative;
-    min-height: 400px;
+    min-height: clamp(400px, 31vw, 1260px);
   }
 
   .info-col {
@@ -595,7 +603,7 @@ a {
 #shipName {
   margin: 0 0 1.25rem;
   font-family: var(--font-main);
-  font-size: 1.8rem;
+  font-size: clamp(1.8rem, 2vw, 5rem);
   line-height: 1.1;
   color: black;
   text-align: center;
@@ -706,11 +714,12 @@ a {
 
 #enterButton {
   margin: 0;
-  bottom: 25px;
+  bottom: clamp(25px, 2vw, 82px);
   display: block;
-  border-radius: 10px !important;
-  padding: 6px 4px !important;
+  border-radius: clamp(10px, 0.7vw, 28px) !important;
+  padding: clamp(6px, 0.55vw, 22px) clamp(4px, 1vw, 40px) !important;
   background-color: black;
+  font-size: clamp(1rem, 1.05vw, 2.6rem);
 }
 
 #shipChooser {
@@ -740,15 +749,19 @@ a {
   width: 100%;
   display: grid;
   align-items: start;
-  grid-template-columns: minmax(320px, 420px) 1fr;
-  column-gap: 2rem;
-  row-gap: 1.25rem;
+  grid-template-columns: minmax(360px, clamp(420px, 28vw, 1150px)) minmax(520px, 1fr);
+  column-gap: clamp(1.5rem, 3vw, 7rem);
+  row-gap: clamp(1.25rem, 2vw, 4rem);
 }
 
 @media (max-width: 1024px) {
   #startScreen {
     overflow-y: auto;
     padding-top: 1rem;
+  }
+
+  #startScreen article.pico {
+    max-width: calc(100vw - 2rem);
   }
 
   .start-body {
@@ -845,7 +858,7 @@ a {
   bottom: 12px;
   transform: translateX(-50%);
   width: 30%;
-  max-width: 260px;
+  max-width: clamp(260px, 12vw, 500px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
 }
 
@@ -853,7 +866,7 @@ a {
   width: 100%;
   align-self: stretch;
   border-radius: .75rem;
-  padding-right: 1rem;
+  padding-right: clamp(1rem, 1.2vw, 3rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -861,17 +874,18 @@ a {
 
 .ship-desc {
   font-family: var(--font-main);
+  font-size: clamp(1rem, 1.05vw, 2.6rem);
   line-height: 1.4;
   background: #fff;
   border-radius: .75rem;
   box-sizing: border-box;
   overflow: visible;
-  padding: 1.25rem 1.5rem;
+  padding: clamp(1.25rem, 1.5vw, 4rem) clamp(1.5rem, 2vw, 5rem);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
 }
 
 .info-row {
-  margin-top: 1.5rem;
+  margin-top: clamp(1.5rem, 2vw, 5rem);
 }
 
 .hud-bars {
@@ -879,7 +893,7 @@ a {
   width: 100%;
   box-sizing: border-box;
   display: grid;
-  row-gap: 3px;
+  row-gap: clamp(3px, 0.45vw, 18px);
 }
 
 .stat-row {
@@ -887,12 +901,14 @@ a {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  padding: 6px 0;
+  min-height: clamp(34px, 2.5vw, 104px);
+  padding: clamp(6px, 0.5vw, 20px) 0;
   font-family: var(--font-main);
+  font-size: clamp(1rem, 1.05vw, 2.6rem);
   font-weight: 500;
-  gap: 8px;
+  gap: clamp(8px, 0.75vw, 32px);
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: clamp(12px, 0.8vw, 32px);
 }
 
 .stat-row>* {
@@ -902,11 +918,11 @@ a {
 
 .stat-bar {
   position: absolute;
-  top: 3px;
+  top: clamp(3px, 0.25vw, 12px);
   left: 0px;
   right: 0;
-  bottom: 3px;
-  border-radius: 12px;
+  bottom: clamp(3px, 0.25vw, 12px);
+  border-radius: clamp(12px, 0.8vw, 32px);
   background: rgba(0, 85, 170, 0.05);
   z-index: 1;
 }
@@ -920,14 +936,14 @@ a {
 }
 
 .stat-label {
-  padding-left: 5px;
+  padding-left: clamp(5px, 0.55vw, 24px);
   opacity: 0.9;
   justify-self: start;
 }
 
 .stat-value {
   opacity: 0.9;
-  padding-right: 10px;
+  padding-right: clamp(10px, 0.75vw, 32px);
   justify-self: end;
 }
 
@@ -942,12 +958,13 @@ a {
 }
 
 .stat-info-primary {
+  font-size: clamp(1.15rem, 1.3vw, 3.2rem);
   font-weight: 400;
   margin-bottom: 4px;
 }
 
 .stat-citation {
-  font-size: 0.7em;
+  font-size: clamp(1rem, 1.05vw, 2.5rem);
   color: #444;
   line-height: 1.5;
   font-style: italic;
