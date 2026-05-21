@@ -192,6 +192,10 @@ function frame(obj, fit = 1.25) {
   camera.updateProjectionMatrix();
 }
 
+function mod(n, m) {
+  return ((n % m) + m) % m;
+}
+
 function show(idx) {
   const requestId = ++showRequestId;
 
@@ -210,9 +214,6 @@ function show(idx) {
   updateBars(ships[idx]);
 
   bgMap.updateShipType(ships[idx].shipDensityDataName);
-
-  prevBtn.disabled = idx === 0;
-  nextBtn.disabled = idx === ships.length - 1;
 }
 
 renderer.setAnimationLoop(() => {
@@ -220,8 +221,15 @@ renderer.setAnimationLoop(() => {
   renderer.render(scene, camera);
 });
 
-prevBtn.onclick = () => { if (picked) show(--picked); };
-nextBtn.onclick = () => { if (picked < ships.length - 1) show(++picked); };
+prevBtn.onclick = () => {
+  picked = mod(picked - 1, ships.length);
+  show(picked);
+};
+
+nextBtn.onclick = () => {
+  picked = mod(picked + 1, ships.length);
+  show(picked);
+};
 
 toggleViewBtn.onclick = () => {
   const showingMap = mapPane.classList.toggle("is-active");
