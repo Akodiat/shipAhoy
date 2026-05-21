@@ -37,21 +37,28 @@
 		</script>
 
 		<div id="startScreen">
-		<div id="bgMapContainer"></div>
 		<article class="pico">
 			<div class="start-body">
+				<div id="shipName"></div>
 				<div class="selector-row">
-					<div class="preview-wrap">
-						<button id="prevShip" class="arrow" aria-label="Previous ship" type="button"></button>
-						<canvas id="previewCanvas"></canvas>
-						<div id="shipName"></div>
-						<button id="nextShip" class="arrow" aria-label="Next ship" type="button"></button>
-						<button id="enterButton" class="primary enter-button" disabled>Enter</button>
-					</div>
 
+
+					<div class="visual-wrap">
+						<div class="visual-stage">
+							<div class="preview-wrap visual-pane is-active">
+								<canvas id="previewCanvas"></canvas>
+								<button id="enterButton" class="primary enter-button" disabled>Enter</button>
+							</div>
+							<div id="bgMapContainer" class="visual-pane"></div>
+							<button id="prevShip" class="arrow" aria-label="Previous ship" type="button"></button>
+							<button id="nextShip" class="arrow" aria-label="Next ship" type="button"></button>
+						</div>
+						<button id="toggleStartView" class="view-toggle" type="button" aria-pressed="false">Show map</button>
+					</div>
 					<div class="stats-wrap">
 						<div id="hudBars" class="hud-bars" aria-label="Ship stats"></div>
 					</div>
+
 				</div>
 
 				<div class="info-row">
@@ -61,24 +68,6 @@
 				<div id="shipChooser"></div>
 			</div>
 		</article>
-		<footer class="action-row start-footer">
-			<div class="footer-links" aria-label="Helpful links">
-				<div class="footer-col">
-					<a class="footer-link" href="https://infravis.se/" target="_blank" rel="noreferrer noopener">
-						About the Infrastructure
-					</a>
-					<a class="footer-link" href="https://github.com/infravis/shipAhoy/" target="_blank" rel="noreferrer noopener">
-						GitHub repository and development
-					</a>
-				</div>
-			</div>
-			<div class="footer-divider" aria-hidden="true"></div>
-			<div class="footer-brand" aria-label="Project partners">
-				<span>INFRAVIS</span>
-				<span class="brand-sep">+</span>
-				<span>CHALMERS</span>
-			</div>
-		</footer>
 	</div>
 
 	<div id="main">

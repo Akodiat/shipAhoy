@@ -1,22 +1,26 @@
-const {DeckGL, H3HexagonLayer} = deck;
+const {DeckGL, H3HexagonLayer, _GlobeView} = deck;
 
 class ShipDensityMap {
     constructor(
         bgMapContainer,
         mapStylePath,
         shipTypes = ["Cargo", "Passenger", "Tanker"],
-        highPrecision=false,
+        highPrecision=true,
     ) {
         this.shipTypes = shipTypes;
         this.shipType = shipTypes[0];
         this.highPrecision = highPrecision;
         this.deckGL = new DeckGL({
             container: bgMapContainer,
-            mapStyle: mapStylePath, // Edit with https://maplibre.org/maputnik/
+            views: new _GlobeView(),
+            //mapStyle: mapStylePath, // Edit with https://maplibre.org/maputnik/
             initialViewState: {
                 longitude: 11.126,
                 latitude: 55.244,
-                zoom: 2
+                zoom: 1
+            },
+            parameters: {
+                cull: true
             },
             controller: true,
             getTooltip: ({object: d}) => {
