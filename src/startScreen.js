@@ -207,6 +207,10 @@ function show(idx) {
     current = gltf.scene;
     scene.add(current);
     frame(current);
+
+    if (ships[idx].name === "container") {
+      current.position.x -= 25;
+    }
   });
 
   nameBox.textContent = ships[idx].displayName ?? "—";
