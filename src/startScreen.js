@@ -9,15 +9,19 @@ let picked = 0;
 let current = null;
 let showRequestId = 0;
 let selectorInit;
+let selectorResizeObserver;
 let bgMap, loader, renderer, scene, camera;
 
 const startScreen = document.getElementById("startScreen");
+const loaderElement = document.getElementById("loader");
+const loaderProgress = document.getElementById("loaderProgress");
 const enterBtn = document.getElementById("enterButton");
 const prevBtn = document.getElementById("prevShip");
 const nextBtn = document.getElementById("nextShip");
 const toggleViewBtn = document.getElementById("toggleStartView");
 const canvas = document.getElementById("previewCanvas");
 const previewPane = document.querySelector(".preview-wrap");
+const visualStage = document.querySelector(".visual-stage");
 const mapPane = document.getElementById("bgMapContainer");
 const nameBox = document.getElementById("shipName");
 const descBox = document.getElementById("shipDesc");
@@ -42,8 +46,6 @@ const infoClickHandler = ({ valueInfo, labelInfo }) => {
     descBox.appendChild(citation);
   }
 };
-
-const CAN_W = 500, CAN_H = 500;
 
 const statKeys = Array.from(new Set(ships.flatMap(s => Object.keys(s.stats ?? {}))));
 const statMax = {};
@@ -183,39 +185,46 @@ function show(idx) {
 
   if (current) scene.remove(current);
 
-  const setPreview = model => {
-    if (requestId !== showRequestId) return;
+  const previewReady = new Promise(resolve => {
+    const setPreview = model => {
+      if (requestId !== showRequestId) return resolve();
 
-    current = model;
-    scene.add(current);
-    frame(current);
-    enterBtn.disabled = false;
-  };
+      current = model;
+      scene.add(current);
+      frame(current);
+      enterBtn.disabled = false;
+      resolve();
+    };
 
-  if (ship.previewModel) {
-    setPreview(ship.previewModel);
-  } else {
-    loader.load(
-      ship.path,
-      gltf => {
-        ship.previewModel = gltf.scene;
-        setPreview(ship.previewModel);
-      },
-      undefined,
-      () => {
-        if (requestId === showRequestId) {
-          descBox.textContent = "Unable to load the selected ship.";
-          enterBtn.disabled = false;
+    if (ship.previewModel) {
+      setPreview(ship.previewModel);
+    } else {
+      loader.load(
+        ship.path,
+        gltf => {
+          ship.previewModel = gltf.scene;
+          setPreview(ship.previewModel);
+        },
+        xhr => {
+          if (xhr.total) loaderProgress.value = xhr.loaded / xhr.total * 100;
+        },
+        () => {
+          if (requestId === showRequestId) {
+            descBox.textContent = "Unable to load the selected ship.";
+            enterBtn.disabled = false;
+          }
+          resolve();
         }
-      }
-    );
-  }
+      );
+    }
+  });
 
   nameBox.textContent = ship.displayName ?? "—";
   descBox.textContent = ship.description ?? "No description available";
   updateBars(ship);
 
   bgMap.updateShipType(ship.shipDensityDataName);
+  return previewReady;
 }
 
 prevBtn.onclick = () => {
@@ -252,30 +261,33 @@ function initSelector() {
   if (selectorInit) return selectorInit;
 
   selectorInit = (async () => {
+    let dataReady = Promise.resolve();
     if (!bgMap) {
       bgMap = new ShipDensityMap(
         mapPane,
         "resources/osm_water.json",
         ships.map(s => s.shipDensityDataName)
       );
-      bgMap.setData("resources/shipDensityCounts.csv");
+      dataReady = bgMap.setData("resources/shipDensityCounts.csv");
     }
 
     loader = new GLTFLoader();
     renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(30, CAN_W / CAN_H, 0.1, 100);
+    camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
     scene.add(
       new THREE.AmbientLight(0xffffff, 0.6),
       (() => { const d = new THREE.DirectionalLight(0xffffff, 0.8); d.position.set(0.3, 0.4, 1); return d; })()
     );
 
     await renderer.init();
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(CAN_W, CAN_H, false);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    selectorResizeObserver ??= new ResizeObserver(resizeSelector);
+    selectorResizeObserver.observe(visualStage);
+    resizeSelector();
 
     buildBars();
-    show(picked);
+    await Promise.all([dataReady, show(picked)]);
   })().catch(error => {
     selectorInit = undefined;
     renderer = undefined;
@@ -292,10 +304,42 @@ function renderSelector() {
   renderer.render(scene, camera);
 }
 
+function resizeSelector() {
+  if (!renderer || !camera) return;
+
+  const width = visualStage.clientWidth;
+  const height = visualStage.clientHeight;
+  if (!width || !height) return;
+
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(width, height, false);
+  bgMap?.resize();
+}
+
 function openSelector() {
+  const needsLoading = !selectorInit;
+  if (needsLoading) {
+    startScreen.classList.remove("is-ready");
+    loaderProgress.value = 0;
+    loaderElement.style.display = "";
+  }
+
   initSelector()
-    .then(() => renderer.setAnimationLoop(renderSelector))
-    .catch(() => {});
+    .then(() => {
+      resizeSelector();
+      renderer.setAnimationLoop(renderSelector);
+      if (needsLoading) {
+        requestAnimationFrame(() => {
+          startScreen.classList.add("is-ready");
+          loaderElement.style.display = "none";
+        });
+      }
+    })
+    .catch(() => {
+      startScreen.classList.add("is-ready");
+      loaderElement.style.display = "none";
+    });
 }
 
 function openShip() {

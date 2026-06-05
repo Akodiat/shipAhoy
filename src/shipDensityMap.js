@@ -1,4 +1,5 @@
 const {DeckGL, H3HexagonLayer, _GlobeView} = deck;
+const GLOBE_FILL_ZOOM = 1.5;
 
 class ShipDensityMap {
     constructor(
@@ -10,14 +11,21 @@ class ShipDensityMap {
         this.shipTypes = shipTypes;
         this.shipType = shipTypes[0];
         this.highPrecision = highPrecision;
+        this.container = bgMapContainer;
+        this.containerSize = Math.min(bgMapContainer.clientWidth, bgMapContainer.clientHeight) || 500;
+        this.viewState = {
+            longitude: 11.126,
+            latitude: 55.244,
+            zoom: GLOBE_FILL_ZOOM + Math.log2(this.containerSize / 500)
+        };
         this.deckGL = new DeckGL({
             container: bgMapContainer,
             views: new _GlobeView(),
             //mapStyle: mapStylePath, // Edit with https://maplibre.org/maputnik/
-            initialViewState: {
-                longitude: 11.126,
-                latitude: 55.244,
-                zoom: 1
+            viewState: this.viewState,
+            onViewStateChange: ({viewState}) => {
+                this.viewState = viewState;
+                this.deckGL.setProps({viewState});
             },
             parameters: {
                 cull: true
@@ -28,6 +36,17 @@ class ShipDensityMap {
                 return d && `${d[`count${s}`].toLocaleString()} ${s.toLowerCase()} ships`
             }
         });
+    }
+    resize() {
+        const size = Math.min(this.container.clientWidth, this.container.clientHeight);
+        if (!size || size === this.containerSize) return;
+
+        this.viewState = {
+            ...this.viewState,
+            zoom: this.viewState.zoom + Math.log2(size / this.containerSize)
+        };
+        this.containerSize = size;
+        this.deckGL.setProps({viewState: this.viewState});
     }
     async setData(path) {
         this.dataMap = await loadData(path, this.shipTypes);

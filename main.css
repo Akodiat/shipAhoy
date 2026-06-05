@@ -37,7 +37,7 @@ body {
 
 #loader {
   position: fixed;
-  z-index: 9999;
+  z-index: 10000;
   top: 0;
   left: 0;
   width: 100%;
@@ -380,7 +380,12 @@ a {
   flex: 0 0 auto;
 }
 
+#startScreen:not(.is-ready) article.pico {
+  visibility: hidden;
+}
+
 .start-body {
+  --selector-visual-size: clamp(360px, 34vw, 1400px);
   margin-top: clamp(1rem, 2vh, 2.5rem);
   margin-bottom: clamp(1.25rem, 3vh, 4rem);
   padding: clamp(2.5rem, 4vw, 7rem) clamp(2rem, 4vw, 7rem) clamp(1.5rem, 3vw, 5rem);
@@ -476,7 +481,7 @@ a {
 .visual-wrap {
   position: relative;
   aspect-ratio: 1 / 1;
-  width: clamp(360px, 28vw, 1150px);
+  width: var(--selector-visual-size);
   margin: 0 auto;
 }
 
@@ -588,7 +593,7 @@ a {
 @media (min-width:1025px) {
   .selector-row {
     display: grid;
-    grid-template-columns: minmax(360px, clamp(420px, 28vw, 1150px)) minmax(520px, 1fr);
+    grid-template-columns: var(--selector-visual-size) minmax(520px, 1fr);
     column-gap: clamp(1.25rem, 3vw, 7rem);
     align-items: center;
     position: relative;
@@ -749,7 +754,7 @@ a {
   width: 100%;
   display: grid;
   align-items: start;
-  grid-template-columns: minmax(360px, clamp(420px, 28vw, 1150px)) minmax(520px, 1fr);
+  grid-template-columns: var(--selector-visual-size) minmax(520px, 1fr);
   column-gap: clamp(1.5rem, 3vw, 7rem);
   row-gap: clamp(1.25rem, 2vw, 4rem);
 }
