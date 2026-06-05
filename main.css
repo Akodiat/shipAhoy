@@ -390,7 +390,6 @@ a {
   background: rgba(255, 255, 255, 0.5);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
-  backdrop-filter: blur(6px);
   position: relative;
   width: 100%;
   font-size: clamp(1rem, 0.95vw, 1.8rem);
@@ -544,8 +543,8 @@ a {
 }
 
 .arrow {
-  position: absolute;
-  top: 50%;
+  position: fixed;
+  top: 50vh;
   transform: translateY(-50%);
   width: clamp(64px, 4.5vw, 180px);
   height: clamp(64px, 4.5vw, 180px);
@@ -567,13 +566,11 @@ a {
 
 .arrow#prevShip {
   left: 0;
-  transform: translate(-100%, -50%);
   background-image: url("resources/arrow_back.svg") !important;
 }
 
 .arrow#nextShip {
   right: 0;
-  transform: translate(100%, -50%);
   background-image: url("resources/arrow_forward.svg") !important;
 }
 
@@ -800,12 +797,15 @@ a {
   }
 
   .arrow#prevShip {
-    left: 6px;
+    position: absolute;
+    top: 50%;
     transform: translateY(-50%);
   }
 
   .arrow#nextShip {
-    right: 6px;
+    position: absolute;
+    top: 50%;
+    right: -8px;
     transform: translateY(-50%);
   }
 
@@ -958,10 +958,26 @@ a {
   cursor: pointer;
 }
 
-.stat-row.has-info:hover,
-.stat-row.has-info:focus-visible {
-  outline: 2px solid rgba(0, 0, 0, 0.22);
-  outline-offset: 2px;
+.stat-row.has-info::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: clamp(8px, 0.65vw, 28px);
+  z-index: 3;
+  width: clamp(24px, 1.6vw, 64px);
+  height: clamp(24px, 1.6vw, 64px);
+  transform: translateY(-50%);
+  background: url("resources/label.svg") center / contain no-repeat;
+  transition: transform 0.15s ease;
+}
+
+.stat-row.has-info .stat-value {
+  padding-right: clamp(42px, 3.2vw, 128px);
+}
+
+.stat-row.has-info:hover::after,
+.stat-row.has-info:focus-visible::after {
+  transform: translateY(-50%) scale(1.12);
 }
 
 .stat-info-primary {
