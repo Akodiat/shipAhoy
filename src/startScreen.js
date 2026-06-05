@@ -5,17 +5,11 @@ import {ShipDensityMap} from "./shipDensityMap.js";
 
 registerSW?.();
 
-const bgMap = new ShipDensityMap(
-  document.getElementById("bgMapContainer"),
-  "resources/osm_water.json",
-  ships.map(s=>s.shipDensityDataName)
-);
-bgMap.setData("resources/shipDensityCounts.csv")
-
 let picked = 0;
-let appStarted = false;
 let current = null;
 let showRequestId = 0;
+let selectorInit;
+let bgMap, loader, renderer, scene, camera;
 
 const startScreen = document.getElementById("startScreen");
 const enterBtn = document.getElementById("enterButton");
@@ -49,16 +43,7 @@ const infoClickHandler = ({ valueInfo, labelInfo }) => {
   }
 };
 
-const loader = new GLTFLoader();
-const renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
 const CAN_W = 500, CAN_H = 500;
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(30, CAN_W / CAN_H, 0.1, 100);
-scene.add(
-  new THREE.AmbientLight(0xffffff, 0.6),
-  (() => { const d = new THREE.DirectionalLight(0xffffff, 0.8); d.position.set(0.3, 0.4, 1); return d; })()
-);
 
 const statKeys = Array.from(new Set(ships.flatMap(s => Object.keys(s.stats ?? {}))));
 const statMax = {};
@@ -96,12 +81,7 @@ const toLabel = (key) =>
 backBtn.style.display = "none";
 acknowledgementButton.style.display = "none";
 titleboxWrapper.style.display = "none";
-enterBtn.disabled = false;
-await renderer.init();
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(CAN_W, CAN_H, false);
 init();
-appStarted = true;
 
 function buildBars() {
   hudBars.innerHTML = "";
@@ -198,32 +178,45 @@ function mod(n, m) {
 
 function show(idx) {
   const requestId = ++showRequestId;
+  const ship = ships[idx];
+  enterBtn.disabled = true;
 
   if (current) scene.remove(current);
 
-  loader.load(ships[idx].path, gltf => {
+  const setPreview = model => {
     if (requestId !== showRequestId) return;
 
-    current = gltf.scene;
+    current = model;
     scene.add(current);
     frame(current);
+    enterBtn.disabled = false;
+  };
 
-    if (ships[idx].name === "container") {
-      current.position.x -= 25;
-    }
-  });
+  if (ship.previewModel) {
+    setPreview(ship.previewModel);
+  } else {
+    loader.load(
+      ship.path,
+      gltf => {
+        ship.previewModel = gltf.scene;
+        setPreview(ship.previewModel);
+      },
+      undefined,
+      () => {
+        if (requestId === showRequestId) {
+          descBox.textContent = "Unable to load the selected ship.";
+          enterBtn.disabled = false;
+        }
+      }
+    );
+  }
 
-  nameBox.textContent = ships[idx].displayName ?? "—";
-  descBox.textContent = ships[idx].description ?? "No description available";
-  updateBars(ships[idx]);
+  nameBox.textContent = ship.displayName ?? "—";
+  descBox.textContent = ship.description ?? "No description available";
+  updateBars(ship);
 
-  bgMap.updateShipType(ships[idx].shipDensityDataName);
+  bgMap.updateShipType(ship.shipDensityDataName);
 }
-
-renderer.setAnimationLoop(() => {
-  if (current) current.rotation.y += 0.001;
-  renderer.render(scene, camera);
-});
 
 prevBtn.onclick = () => {
   picked = mod(picked - 1, ships.length);
@@ -244,6 +237,7 @@ toggleViewBtn.onclick = () => {
 };
 
 window.addEventListener("keydown", e => {
+  if (startScreen.style.display === "none") return;
   if (e.target.closest?.("button, a, input, select, textarea")) return;
 
   if (e.key === "ArrowLeft") prevBtn.onclick();
@@ -254,17 +248,73 @@ window.addEventListener("keydown", e => {
   }
 });
 
-enterBtn.addEventListener("click", () => {
-  startScreen.style.display = "none";
-  backBtn.style.display = "";
-  acknowledgementButton.style.display = "";
-  titleboxWrapper.style.display = "";
-  if (!appStarted) {
-    init();
-    appStarted = true;
-  }
-  loadShip(ships[picked].name);
-});
+function initSelector() {
+  if (selectorInit) return selectorInit;
 
-buildBars();
-show(picked);
+  selectorInit = (async () => {
+    if (!bgMap) {
+      bgMap = new ShipDensityMap(
+        mapPane,
+        "resources/osm_water.json",
+        ships.map(s => s.shipDensityDataName)
+      );
+      bgMap.setData("resources/shipDensityCounts.csv");
+    }
+
+    loader = new GLTFLoader();
+    renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(30, CAN_W / CAN_H, 0.1, 100);
+    scene.add(
+      new THREE.AmbientLight(0xffffff, 0.6),
+      (() => { const d = new THREE.DirectionalLight(0xffffff, 0.8); d.position.set(0.3, 0.4, 1); return d; })()
+    );
+
+    await renderer.init();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(CAN_W, CAN_H, false);
+
+    buildBars();
+    show(picked);
+  })().catch(error => {
+    selectorInit = undefined;
+    renderer = undefined;
+    descBox.textContent = "Unable to initialize the ship selector.";
+    console.error(error);
+    throw error;
+  });
+
+  return selectorInit;
+}
+
+function renderSelector() {
+  if (current) current.rotation.y += 0.001;
+  renderer.render(scene, camera);
+}
+
+function openSelector() {
+  initSelector()
+    .then(() => renderer.setAnimationLoop(renderSelector))
+    .catch(() => {});
+}
+
+function openShip() {
+  startScreen.style.display = "none";
+  renderer?.setAnimationLoop(null);
+  loadShip(ships[picked].name, () => {
+    backBtn.style.display = "";
+    acknowledgementButton.style.display = "";
+    titleboxWrapper.style.display = "";
+  }, () => {
+    startScreen.style.display = "flex";
+    openSelector();
+    initSelector().then(() => {
+      descBox.textContent = "Unable to load the selected ship.";
+    }).catch(() => {});
+  });
+}
+
+enterBtn.addEventListener("click", openShip);
+window.addEventListener("shipselectoropen", openSelector);
+
+openShip();

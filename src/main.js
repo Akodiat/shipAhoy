@@ -48,7 +48,8 @@ CameraControls.install({ THREE: THREE });
 let camera, scene, labelScene, renderer;
 const modelGroup = new THREE.Group();
 let currentShip;
-let detailModel;
+let detailModel, detailMixer;
+let detailModelRequestId = 0;
 let controls;
 let stats;
 let water, sun, smoke;
@@ -57,6 +58,7 @@ let postProcessing;
 let outputFlow;
 let annotationSprites = new THREE.Group();
 let highlightedAnnotation, selectedAnnotation;
+let loadShipRequestId = 0;
 
 const mixers = [];
 
@@ -151,20 +153,25 @@ function advanceShip(step) {
     loadShip(ships[iNew].name);
 }
 
-function loadShip(name) {
+function loadShip(name, onLoad, onError) {
+    const requestId = ++loadShipRequestId;
     const ship = ships.find(s => s.name === name);
-
-    // Remove previous model (if any)
-    if (currentShip && currentShip.model) {
-        modelGroup.remove(currentShip.model);
+    if (!ship) {
+        onError?.(new Error(`Unknown ship: ${name}`));
+        return;
     }
 
-    currentShip = ship;
     const loaderElement = document.getElementById("loader");
 
     // This is called either when a model has been loaded,
     // or one already found in "ship.model"
     const setModel = (model, animations) => {
+        if (requestId !== loadShipRequestId) return;
+
+        detailModelRequestId++;
+        clearDetailModel();
+        if (currentShip?.model) modelGroup.remove(currentShip.model);
+        currentShip = ship;
         currentShip.model = model;
         currentShip.animations = animations;
         modelGroup.add(currentShip.model);
@@ -178,12 +185,12 @@ function loadShip(name) {
             }
         });
 
-        if (animations.length > 0) {
-            const mixer = new THREE.AnimationMixer(model);
+        if (animations.length > 0 && !ship.mixer) {
+            ship.mixer = new THREE.AnimationMixer(model);
             for (const a of animations) {
-                mixer.clipAction(a).play();
+                ship.mixer.clipAction(a).play();
             }
-            mixers.push(mixer);
+            mixers.push(ship.mixer);
         }
 
         // Setup annotations
@@ -245,6 +252,7 @@ function loadShip(name) {
     clearAnnotationSelection();
   }
 }
+        onLoad?.();
     };
 
     if (ship.model !== undefined) {
@@ -258,9 +266,16 @@ function loadShip(name) {
             ship.path,
             gltf => setModel(gltf.scene, gltf.animations),
             xhr => {
+                if (requestId !== loadShipRequestId) return;
                 // Update progress bar
                 document.getElementById("loaderProgress").value = (xhr.loaded / xhr.total * 100);
-            }
+            },
+            error => {
+                if (requestId !== loadShipRequestId) return;
+                loaderElement.style.display = "none";
+                console.error(error);
+                onError?.(error);
+            },
         );
     }
 }
@@ -439,7 +454,9 @@ function init() {
     document.getElementById("overviewReturnButton").addEventListener("click", clearAnnotationSelection);
 
     // Hide infobox until an annotation is clicked
-    document.getElementById("infobox").style.display = "none";
+    const infobox = document.getElementById("infobox");
+    infobox.style.display = "none";
+    infobox.style.visibility = "";
 
     // Handle resizing
 
@@ -449,11 +466,6 @@ function init() {
     renderer.domElement.addEventListener("click", event => {
         if (highlightedAnnotation) {
             const a = highlightedAnnotation.annotation;
-            if (!mapView.fullyLoaded) {
-                // Don't do anyting until map data is loaded
-                return;
-            }
-
             selectedAnnotation = highlightedAnnotation;
             selectAnnotation(a);
 
@@ -475,11 +487,13 @@ function init() {
     // than the sprite, so this makes sure the label is clickable
     // too. (useful on mobile in particular)
     annotationLabel.addEventListener("click", () => {
-        selectAnnotation(highlightedAnnotation.annotation);
+        if (highlightedAnnotation) selectAnnotation(highlightedAnnotation.annotation);
         annotationLabel.style.display = "none";
     })
 
     document.addEventListener("keydown", event => {
+        if (document.getElementById("startScreen").style.display !== "none") return;
+
         switch (event.key) {
             case "c": animateCamera(); break;
             case "q":
@@ -527,16 +541,14 @@ function animateCamera() {
  * @param {number} step
  */
 function advanceAnnotation(step) {
-    if (!mapView.fullyLoaded) {
-        // Don't do anyting until map data is loaded
-        return;
-    }
     const as = annotationSprites.children;
+    if (!currentShip || as.length === 0) return;
+
     if (selectedAnnotation === undefined) {
         selectedAnnotation = as[0];
     } else {
         const currentIdx = as.findIndex(v => v === selectedAnnotation);
-        selectedAnnotation = as[mod(currentIdx + step, as.length)];
+        selectedAnnotation = as[mod(Math.max(currentIdx, 0) + step, as.length)];
     }
     selectAnnotation(selectedAnnotation.annotation);
 }
@@ -545,10 +557,14 @@ window.selectAnnotationByName = (annotationName) => {
     const sprite = annotationSprites.children.find(
         a => a.annotation.spec.name === annotationName
     );
-    selectAnnotation(sprite.annotation);
+    if (sprite) selectAnnotation(sprite.annotation);
 }
 
 function selectAnnotation(a) {
+  if (!currentShip || !a) return;
+
+  const requestId = ++detailModelRequestId;
+  const shipName = currentShip.name;
   const p = a.spec.shipTypes?.[currentShip.name];
 
   if (!p?.cameraPos || !p?.labelPos) {
@@ -581,9 +597,11 @@ function selectAnnotation(a) {
         legend.style.display = "none";
     }
 
-    modelGroup.remove(detailModel);
+    clearDetailModel();
     if (a.spec.model !== undefined) {
         gltfLoader.load(a.spec.model, function (gltf) {
+            if (requestId !== detailModelRequestId || currentShip?.name !== shipName) return;
+
             detailModel = gltf.scene;
             if (a.spec.shipTypes?.[currentShip.name]?.modelTranslation) {
                 detailModel.position.add(
@@ -594,11 +612,11 @@ function selectAnnotation(a) {
             modelGroup.add(detailModel);
 
             if (gltf.animations.length > 0) {
-                const mixer = new THREE.AnimationMixer(gltf.scene);
+                detailMixer = new THREE.AnimationMixer(gltf.scene);
                 for (const a of gltf.animations) {
-                    mixer.clipAction(a).play();
+                    detailMixer.clipAction(a).play();
                 }
-                mixers.push(mixer);
+                mixers.push(detailMixer);
             }
         });
     }
@@ -636,12 +654,16 @@ function selectAnnotation(a) {
 }
 
 function clearAnnotationSelection() {
+    if (!currentShip) return;
+
+    detailModelRequestId++;
     controls.maxDistance = 500;
     controls.setLookAt(...currentShip.defaultLookat, true);
     document.getElementById("infobox").style.display = "none";
     selectedAnnotation = undefined;
+    mapView.clearSelection();
 
-    modelGroup.remove(detailModel);
+    clearDetailModel();
     modelGroup.remove(outputFlow);
     water.visible = true;
 
@@ -652,7 +674,21 @@ function clearAnnotationSelection() {
     onWindowResize();
 }
 
+function clearDetailModel() {
+    modelGroup.remove(detailModel);
+    detailModel = undefined;
+
+    if (detailMixer) {
+        detailMixer.stopAllAction();
+        const mixerIndex = mixers.indexOf(detailMixer);
+        if (mixerIndex !== -1) mixers.splice(mixerIndex, 1);
+        detailMixer = undefined;
+    }
+}
+
 function onPointerMove(event) {
+    if (document.getElementById("startScreen").style.display !== "none") return;
+
     if (highlightedAnnotation) {
         highlightedAnnotation.material.color.set("#ffffff");
         highlightedAnnotation.scale.setScalar(annotationSizeDefault);
@@ -746,6 +782,10 @@ function animate(timestamp, delta=clock.getDelta()) {
 }
 
 backBtn.addEventListener("click", () => {
+    loadShipRequestId++;
+    detailModelRequestId++;
+    clearDetailModel();
+    document.getElementById("loader").style.display = "none";
     backBtn.style.display = "none";
     document.getElementById("acknowledgementButton").style.display = "none";
     document.getElementById("titleboxWrapper").style.display = "none";
@@ -759,12 +799,14 @@ backBtn.addEventListener("click", () => {
     selectedAnnotation = undefined;
     highlightedAnnotation = undefined;
     document.getElementById("infobox").style.display = "none";
+    mapView.clearSelection();
     annotationLabel.style.display = "none";
     smoke.visible = false;
     water.visible = true;
     controls.setLookAt(...oceanOnlyLookAt, false);
 
     document.getElementById("startScreen").style.display = "flex";
+    window.dispatchEvent(new Event("shipselectoropen"));
 });
 
 //reset page afte 5 minutes of inactivity
