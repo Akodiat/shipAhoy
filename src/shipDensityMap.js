@@ -25,7 +25,18 @@ class ShipDensityMap {
             controller: true,
             getTooltip: ({object: d}) => {
                 const s = this.shipType;
-                return d && `${d[`count${s}`].toLocaleString()} ${s.toLowerCase()} ships`
+                // Use temporal API for pretty printing if available,
+                // Otherwise just use minutes
+                return d && `${s}: ${
+                    Temporal ?
+                    Temporal.Duration.from({
+                        minutes: d[`count${s}`]
+                    }).round({
+                        largestUnit:"years",
+                        relativeTo: Temporal.Now.plainDateTimeISO()
+                    }).toLocaleString() :
+                    d[`count${s}`] + " minutes"
+                }`
             }
         });
     }
