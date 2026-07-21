@@ -267,8 +267,9 @@ function loadShip(name, onLoad, onError) {
             gltf => setModel(gltf.scene, gltf.animations),
             xhr => {
                 if (requestId !== loadShipRequestId) return;
-                // Update progress bar
-                document.getElementById("loaderProgress").value = (xhr.loaded / xhr.total * 100);
+                if (xhr.total) {
+                    document.getElementById("loaderProgress").value = xhr.loaded / xhr.total * 100;
+                }
             },
             error => {
                 if (requestId !== loadShipRequestId) return;

@@ -155,6 +155,7 @@ function parseCSV(csvStr, sep=",") {
 
 async function textFileFromPath(path) {
     const res = await fetch(path);
+    if (!res.ok) throw new Error(`Unable to load ${path}: ${res.status}`);
     const text = await res.text();
     return text;
 }

@@ -290,6 +290,10 @@ function initSelector() {
     await Promise.all([dataReady, show(picked)]);
   })().catch(error => {
     selectorInit = undefined;
+    bgMap?.deckGL.finalize();
+    bgMap = undefined;
+    renderer?.setAnimationLoop(null);
+    renderer?.dispose();
     renderer = undefined;
     descBox.textContent = "Unable to initialize the ship selector.";
     console.error(error);
