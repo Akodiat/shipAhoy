@@ -604,8 +604,9 @@ a {
 
 #shipName {
   margin: 0 0 1.25rem;
-  font-family: var(--font-main);
+  font-family: system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: clamp(1.8rem, 2vw, 5rem);
+  font-weight: 700;
   line-height: 1.1;
   color: black;
   text-align: center;
