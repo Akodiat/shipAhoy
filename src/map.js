@@ -8,6 +8,7 @@ class MapView {
     constructor(elementId) {
         const element = document.getElementById(elementId);
         this.fullyLoaded = false;
+        this.pendingAnnotation = undefined;
 
         // Use https://github.com/uber/h3-js to make grid and heatmap?
         this.map = leaflet.map(elementId, {
@@ -39,20 +40,32 @@ class MapView {
         // Setup annotations to toggle corresponding heatmaps
         for (const annotation of annotations) {
             annotation.onSelect = () => {
-                for (const key of this.propertyNames) {
-                    if (annotation.spec.mapLayer === key) {
-                        this.heatmaps[key].addTo(this.map);
-                    } else {
-                        this.heatmaps[key].removeFrom(this.map);
-                    }
-                }
-                if (annotation.spec.mapLayer === undefined) {
+                this.pendingAnnotation = annotation;
+                if (!this.fullyLoaded) {
                     element.style.display = "none";
-                } else {
-                    element.style.display = "block";
+                    return;
                 }
+
+                this.showAnnotation(annotation);
             };
         }
+    }
+
+    showAnnotation(annotation) {
+        const element = this.map.getContainer();
+        for (const key of this.propertyNames) {
+            if (annotation.spec.mapLayer === key) {
+                this.heatmaps[key].addTo(this.map);
+            } else {
+                this.heatmaps[key].removeFrom(this.map);
+            }
+        }
+        element.style.display = annotation.spec.mapLayer === undefined ? "none" : "block";
+    }
+
+    clearSelection() {
+        this.pendingAnnotation = undefined;
+        this.map.getContainer().style.display = "none";
     }
 
     /**
@@ -136,6 +149,7 @@ class MapView {
                     this.layerControl.addOverlay(heatmap, prop);
                 }
                 this.fullyLoaded = true;
+                if (this.pendingAnnotation) this.showAnnotation(this.pendingAnnotation);
             });
         });
         avscWorker.postMessage(heatmapDataPath);

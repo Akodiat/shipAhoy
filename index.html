@@ -36,10 +36,18 @@
 			}
 		</script>
 
-		<div id="startScreen">
+		<div class="pico" id="loader" aria-busy="true">
+			<div>
+				<h1>Ship Ahoy!</h1>
+				<img id="loaderLogo" src="favicon.png"><br>
+				Loading: <progress id="loaderProgress" value="0" max="100" />
+			</div>
+		</div>
+
+		<div id="startScreen" style="display:none">
 		<article class="pico">
 			<div class="start-body">
-				<div id="shipName"></div>
+				<h1 id="shipName"></h1>
 				<div class="selector-row">
 
 
@@ -71,10 +79,10 @@
 	</div>
 
 	<div id="main">
-		<button id="backButton" class="pico secondary">↩︎ Change ship</button>
+		<button id="backButton" class="pico secondary" style="display:none">↩︎ Change ship</button>
 		<div id="threeContainer"></div>
 		<div id="annotationLabel" class="annotation"></div>
-		<div id="infobox">
+		<div id="infobox" style="visibility:hidden">
 			<div class="pico">
 				<button id="overviewReturnButton"></button>
 				<div id="textbox"></div>
@@ -86,7 +94,7 @@
 	</div>
 
 	<div class="pico">
-		<div id="titleboxWrapper">
+		<div id="titleboxWrapper" style="display:none">
 			<article id="titlebox">
 				<h1>Ship Ahoy!</h1>
 				<p>
@@ -157,13 +165,6 @@
 
 	<!-- <script type="module" src="src/main.js"></script> -->
 	<script type="module" src="src/startScreen.js"></script>
-	<div class="pico" id="loader" aria-busy="true" style="display:none">
-		<div>
-			<h1>Ship Ahoy!</h1>
-			<img id="loaderLogo" src="favicon.png"><br>
-			Loading: <progress id="loaderProgress" value="0" max="100" />
-		</div>
-	</div>
 </body>
 
 </html>

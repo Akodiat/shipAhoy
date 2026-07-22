@@ -4,24 +4,25 @@
 class PlotView {
     constructor(elementId) {
         this.elementId = elementId;
+        this.requestId = 0;
         const avscWorkerPath = "src/avscWorker.js";
         const heatmapDataPath = "../resources/timeSeries.avro";
         const avscWorker = new Worker(avscWorkerPath, {type: "module"});
-        avscWorker.addEventListener("message", e => {
-            avscWorker.terminate();
-
-            this.data = e.data.data.map(v=>{
-                return {
+        this.dataReady = new Promise(resolve => {
+            avscWorker.addEventListener("message", e => {
+                avscWorker.terminate();
+                this.data = e.data.data.map(v => ({
                     ...v,
-                    // Convert string to Date
                     date: new Date(v.date)
-                };
+                }));
+                resolve();
             });
         });
         avscWorker.postMessage(heatmapDataPath);
     }
 
-    plot(annotation) {
+    async plot(annotation) {
+        const requestId = ++this.requestId;
         const spec = annotation.spec.plotSpec;
         const element = document.getElementById(this.elementId);
         if (spec === undefined) {
@@ -31,7 +32,8 @@ class PlotView {
         }
         element.style.display = "block";
         if (spec.data === undefined) {
-            // Append data to specification
+            await this.dataReady;
+            if (requestId !== this.requestId) return;
             spec.data = {values: this.data};
         }
         // Embed the visualization in the container with id `vis`
