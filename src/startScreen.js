@@ -10,7 +10,7 @@ let current = null;
 let showRequestId = 0;
 let selectorInit;
 let selectorResizeObserver;
-let bgMap, loader, renderer, scene, camera;
+let bgMap, loader, renderer, scene, camera, horizonGrid;
 
 const startScreen = document.getElementById("startScreen");
 const loaderElement = document.getElementById("loader");
@@ -161,17 +161,25 @@ function updateBars(ship) {
   }
 }
 
-function frame(obj, fit = 1.25) {
+function frame(obj, fit = 1.8) {
   const sphere = new THREE.Sphere();
   const box = new THREE.Box3().setFromObject(obj)
   box.getBoundingSphere(sphere);
   obj.position.sub((box.max.clone().add(box.min)).divideScalar(2));
+  obj.position.z -= sphere.radius * 0.8;
   const dist = sphere.radius / (Math.sin(THREE.MathUtils.degToRad(camera.fov * .5)) * fit);
-  camera.position.set(0, 0, dist);
-  //camera.lookAt(sphere.center);
+  camera.position.set(0, sphere.radius * 0.4, dist);
+  camera.lookAt(0, 0, 0);
   camera.near = dist * .01;
-  camera.far = dist * 10;
+  camera.far = sphere.radius * 14;
   camera.updateProjectionMatrix();
+
+  horizonGrid.scale.setScalar(sphere.radius);
+  horizonGrid.position.set(
+    0,
+    -(box.max.y - box.min.y) * 0.5 - sphere.radius * 0.02,
+    -sphere.radius * 90
+  );
 }
 
 function mod(n, m) {
@@ -275,6 +283,12 @@ function initSelector() {
     renderer = new THREE.WebGPURenderer({ canvas, alpha: true, antialias: true });
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+    horizonGrid = new THREE.GridHelper(200, 400, 0x000000, 0x000000);
+    horizonGrid.material.transparent = true;
+    horizonGrid.material.opacity = 0.55;
+    horizonGrid.material.depthWrite = false;
+    horizonGrid.renderOrder = -1;
+    scene.add(horizonGrid);
     scene.add(
       new THREE.AmbientLight(0xffffff, 0.6),
       (() => { const d = new THREE.DirectionalLight(0xffffff, 0.8); d.position.set(0.3, 0.4, 1); return d; })()
@@ -304,7 +318,6 @@ function initSelector() {
 }
 
 function renderSelector() {
-  if (current) current.rotation.y += 0.001;
   renderer.render(scene, camera);
 }
 
