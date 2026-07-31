@@ -119,10 +119,6 @@ function updateBars(ship) {
       ship.statInfoValue?.[key] ??
       ship.statInfo?.[key];
 
-    const barColor =
-      (statEntry && typeof statEntry === "object" && statEntry.color) ??
-      ship.statColors?.[key];
-
     row.querySelector(".stat-value").textContent = value ?? "—";
     const fill = row.querySelector(".stat-bar-fill");
     const maxVal = statMax[key];
@@ -135,12 +131,6 @@ function updateBars(ship) {
       } else {
         fill.style.width = "0%";
         fill.style.opacity = 0.15;
-      }
-
-      if (barColor) {
-        fill.style.background = barColor;
-      } else {
-        fill.style.background = "";
       }
     }
 
@@ -190,7 +180,6 @@ function show(idx) {
   const requestId = ++showRequestId;
   const ship = ships[idx];
   enterBtn.disabled = true;
-
   if (current) scene.remove(current);
 
   const previewReady = new Promise(resolve => {
@@ -200,8 +189,8 @@ function show(idx) {
       current = model;
       scene.add(current);
       frame(current);
-      enterBtn.disabled = false;
-      resolve();
+          enterBtn.disabled = false;
+        resolve();
     };
 
     if (ship.previewModel) {

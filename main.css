@@ -488,7 +488,7 @@ a {
   height: 100%;
   overflow: hidden;
   border-radius: 50%;
-  background: #f4f4f4;
+  background: #a2b2be;
 }
 
 .visual-pane {
@@ -904,7 +904,7 @@ a {
 .stat-bar-fill {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, rgba(0, 122, 255, 0.28), rgba(0, 122, 255, 0.6));
+  background: #a2b2be;
   border-radius: inherit;
   transition: width 0.2s ease;
 }
