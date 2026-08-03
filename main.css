@@ -387,7 +387,7 @@ a {
   margin-top: clamp(1rem, 2vh, 2.5rem);
   margin-bottom: clamp(1.25rem, 3vh, 4rem);
   padding: clamp(2.5rem, 4vw, 7rem) clamp(2rem, 4vw, 7rem) clamp(1.5rem, 3vw, 5rem);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.60);
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
   position: relative;
@@ -510,6 +510,7 @@ a {
 #bgMapContainer {
   border-radius: inherit;
   overflow: hidden;
+  background: white;
 }
 
 #bgMapContainer canvas {
@@ -554,7 +555,7 @@ a {
 }
 
 .view-toggle:hover {
-  background: #e7edf2 !important;
+  background: #d3d8dc !important;
 }
 
 .view-toggle:active {
@@ -832,7 +833,7 @@ a {
 }
 
 .enter-button:hover:not(:disabled) {
-  background: #e7edf2 !important;
+  background: #d3d8dc !important;
 }
 
 .enter-button:active:not(:disabled) {
