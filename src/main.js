@@ -102,7 +102,7 @@ const ships = [
         name: "cruise",
         displayName: "Cruise ship",
         shipDensityDataName: "Passenger",
-        path: "resources/cruiseship.glb",
+        path: "resources/cruiseship.1k.glb",
         defaultLookat: [
             75, 70, 230, // Position
             -20, 5, 20   // Target
@@ -312,7 +312,7 @@ function init() {
     // renderer
 
     renderer = new THREE.WebGPURenderer();
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(
         threeContainer.offsetWidth,
         threeContainer.offsetHeight
@@ -719,8 +719,8 @@ function onPointerMove(event) {
 
             const p = highlightedAnnotation.position.clone().project(camera);
 
-            const w = renderer.domElement.width / window.devicePixelRatio;
-            const h = renderer.domElement.height / window.devicePixelRatio;
+            const w = renderer.domElement.clientWidth;
+            const h = renderer.domElement.clientHeight;
             p.x = Math.round((0.5 + p.x / 2) * w);
             p.y = Math.round((0.5 - p.y / 2) * h);
 
