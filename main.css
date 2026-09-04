@@ -936,7 +936,7 @@ a {
   width: clamp(24px, 1.6vw, 64px);
   height: clamp(24px, 1.6vw, 64px);
   transform: translateY(-50%);
-  background: url("resources/label.svg") center / contain no-repeat;
+  background: url("resources/info.svg") center / contain no-repeat;
   transition: transform 0.15s ease;
 }
 
