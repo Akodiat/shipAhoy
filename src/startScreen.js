@@ -187,6 +187,7 @@ function show(idx) {
       if (requestId !== showRequestId) return resolve();
 
       current = model;
+      current.rotation.y = THREE.MathUtils.degToRad(30);
       scene.add(current);
       frame(current);
           enterBtn.disabled = false;
