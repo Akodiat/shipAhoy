@@ -71,6 +71,9 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
+const dummyModel = new Promise(resolve =>
+    gltfLoader.load("resources/dummy.glb", gltf => resolve(gltf.scene))
+);
 const backBtn = document.getElementById("backButton");
 const oceanOnlyLookAt = [80, 80, 180, -20, 14, 20];
 
@@ -80,6 +83,7 @@ const ships = [
         displayName: "Container ship",
         shipDensityDataName: "Cargo",
         path: "resources/cargoship.glb",
+        dummyPosition: new THREE.Vector3(9.009280334525352, 30.399663925170902, 92.04434157642898),
         smokeStackPos: new THREE.Vector3(0.5, 45, -57),
         defaultLookat: [
             80, 50, 160, // Position
@@ -103,6 +107,7 @@ const ships = [
         displayName: "Cruise ship",
         shipDensityDataName: "Passenger",
         path: "resources/cruiseship.1k.glb",
+        dummyPosition: new THREE.Vector3(-0.7476845712329316, 25.5747184753418, 138.30462720218242),
         defaultLookat: [
             75, 70, 230, // Position
             -20, 5, 20   // Target
@@ -125,6 +130,7 @@ const ships = [
         displayName: "Chemical tanker",
         shipDensityDataName: "Tanker",
         path: "resources/chemtanker.glb",
+        dummyPosition: new THREE.Vector3(-0.046705809572519456, 17.849744992083682, 72.862765165738),
         defaultLookat: [
             80, 50, 160, // Position
             -20, 5, 20   // Target
@@ -177,6 +183,19 @@ function loadShip(name, onLoad, onError) {
         modelGroup.add(currentShip.model);
         modelGroup.name = name;
         currentShip.model.name = name;
+
+        if (!model.getObjectByName("dummy")) {
+            const dummy = new THREE.Group();
+            dummy.name = "dummy";
+            dummy.position.copy(ship.dummyPosition);
+            model.add(dummy);
+            dummyModel.then(source => {
+                const person = source.clone();
+                person.scale.setScalar(0.2);
+                person.position.y = 1.154;
+                dummy.add(person);
+            });
+        }
 
         currentShip.model.traverse(child => {
             if (child.isMesh) {
