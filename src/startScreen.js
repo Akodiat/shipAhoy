@@ -23,6 +23,7 @@ const canvas = document.getElementById("previewCanvas");
 const previewPane = document.querySelector(".preview-wrap");
 const visualStage = document.querySelector(".visual-stage");
 const mapPane = document.getElementById("bgMapContainer");
+const mapInfoBtn = document.getElementById("mapInfoButton");
 const nameBox = document.getElementById("shipName");
 const descBox = document.getElementById("shipDesc");
 const backBtn = document.getElementById("backButton");
@@ -46,6 +47,10 @@ const infoClickHandler = ({ valueInfo, labelInfo }) => {
     descBox.appendChild(citation);
   }
 };
+
+mapInfoBtn.onclick = () => infoClickHandler({
+  valueInfo: "The map shows the amount of time vessels of the selected type spent in each cell."
+});
 
 const statKeys = Array.from(new Set(ships.flatMap(s => Object.keys(s.stats ?? {}))));
 const statMax = {};
@@ -238,6 +243,7 @@ nextBtn.onclick = () => {
 toggleViewBtn.onclick = () => {
   const showingMap = mapPane.classList.toggle("is-active");
   previewPane.classList.toggle("is-active", !showingMap);
+  mapInfoBtn.hidden = !showingMap;
   toggleViewBtn.textContent = showingMap ? "Show ship" : "Show map";
   toggleViewBtn.setAttribute("aria-pressed", String(showingMap));
   window.dispatchEvent(new Event("resize"));

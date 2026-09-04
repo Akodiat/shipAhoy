@@ -520,6 +520,28 @@ a {
   display: block;
 }
 
+.map-info-button {
+  position: absolute;
+  top: 1.5rem;
+  left: calc(50% + clamp(70px, 5.5vw, 180px));
+  z-index: 8;
+  width: clamp(24px, 1.6vw, 64px);
+  height: clamp(24px, 1.6vw, 64px);
+  margin: 0;
+  padding: 0;
+  border: 0 !important;
+  background: transparent url("resources/info.svg") center / contain no-repeat !important;
+  box-shadow: none !important;
+  transform: translateY(-100%);
+  transition: transform 0.15s ease;
+}
+
+.map-info-button:hover,
+.map-info-button:focus-visible,
+.map-info-button:active {
+  transform: translateY(-100%) scale(1.12);
+}
+
 .preview-wrap {
   border-radius: inherit;
   background: transparent;
