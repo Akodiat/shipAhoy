@@ -365,6 +365,7 @@ a {
   z-index: 9999;
   overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-gutter: stable;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -374,7 +375,7 @@ a {
 #startScreen article.pico {
   width: 100%;
   max-width: min(86vw, 3400px);
-  margin: auto;
+  margin: 0 auto;
   flex: 0 0 auto;
 }
 
