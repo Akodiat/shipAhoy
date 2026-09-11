@@ -275,7 +275,40 @@ const annotations = [
     {name: "Grey water"
     },
     {name: "Tank cleaning",
-        environmentalImpact: "Media coverage: tall oil discharge in Botthnian Sea.",
+        description: `
+        <p>
+            Discharges of tank cleaning residues to the marine environment stem from chemical tankers washing their tanks to avoid cross contamination between cargos. Current regulations on liquid bulk products (excluding mineral oils) often allow discharge of these cargo residues to sea. Common substances transported in the Baltic Sea entail sodium hydroxide, methanol and biofuels such as fatty acid methyl esters and tall oil.
+        </p>
+        `,
+        environmentalImpact: "The environmental impact of tank cleaning effluents is challenging to assess, partly due to the large heterogeneities among the discharged substances, but mainly because lack of available data on when, where, what products and how large volumes that are discharged. It is, however, evident that these effluents are regularly discharged to marine protected areas (Larsson et al., 2024). Moreover, there are indications that tank cleaning residues from some of these liquid bulk products may exceed levels that are considered safe for the marine environment (Lunde Hermansson & Hassellöv, 2022).",
+        images: [
+            {
+                header: "Underwater outlet",
+                path: "resources/images/Under water outlet .jpg",
+                description: "Underwater outlet",
+                attribution: ""
+            },
+            {
+                header: "Tall oil tanker tank cleaning operation",
+                path: "resources/images/Tall Oil tanker Tank Cleaning Operation.jpg",
+                description: "Tall oil tanker tank cleaning operation",
+                attribution: ""
+            },
+            {
+                header: "Tall oil tank cleaning operation",
+                path: "resources/images/Tall Oil Tank Cleaning Operation.jpg",
+                description: "Tall oil tank cleaning operation",
+                attribution: ""
+            }
+        ],
+        references: `
+        <p>
+            Larsson, K., Carlson, U., &amp; Stålnacke, E. (2024). Recurrent discharges of non-petroleum substances from chemical tankers in Swedish marine Natura 2000 sites are against the aims of EU Directives. <em>Ambio</em>. <a target="_blank" href="https://doi.org/10.1007/s13280-024-02103-7">https://doi.org/10.1007/s13280-024-02103-7</a>
+        </p>
+        <p>
+            Lunde Hermansson, A., &amp; Hassellöv, I.-M. (2022). <em>Tank cleaning and its impact on the marine environment. Report No. 2022:06. Swedish Institute for the Marine Environment</em>. <a target="_blank" href="https://havsmiljoinstitutet.se/publikationer/rapportserie/2022/2022-6-tank-cleaning-and-its-impact-on-the-marine-environment">https://havsmiljoinstitutet.se/publikationer/rapportserie/2022/2022-6-tank-cleaning-and-its-impact-on-the-marine-environment</a>
+        </p>
+        `,
         // Discharge point/tank
         shipTypes: {
             tanker: {

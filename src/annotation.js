@@ -57,6 +57,10 @@ class Annotation {
             }
         }
 
+        if (spec.references) {
+            this.content += `<h3>References</h3>${spec.references}`;
+        }
+
         this.onSelect = ()=>{};
     }
 }
