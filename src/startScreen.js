@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { ships, init, loadShip, registerSW } from "./main.js";
-import {ShipDensityMap} from "./shipDensityMap.js";
+import { ShipDensityMap } from "./shipDensityMap.js";
 
 registerSW?.();
 
@@ -48,9 +48,21 @@ const infoClickHandler = ({ valueInfo, labelInfo }) => {
   }
 };
 
-mapInfoBtn.onclick = () => infoClickHandler({
-  valueInfo: "The map shows the amount of time vessels of the selected type spent in each cell."
-});
+function showShipInfo() {
+  const ship = ships[picked];
+  infoClickHandler({ valueInfo: ship.description ?? "No description available" });
+  if (ship.descriptionSource) descBox.insertAdjacentHTML("beforeend", ship.descriptionSource);
+}
+
+mapInfoBtn.onclick = () => {
+  if (mapPane.classList.contains("is-active")) {
+    infoClickHandler({
+      valueInfo: "The map shows the amount of time vessels of the selected type spent in each cell."
+    });
+  } else {
+    showShipInfo();
+  }
+};
 
 const statKeys = Array.from(new Set(ships.flatMap(s => Object.keys(s.stats ?? {}))));
 const statMax = {};
@@ -147,11 +159,11 @@ function updateBars(ship) {
     row.onclick = hasInfo ? () => infoClickHandler({ valueInfo, labelInfo }) : null;
     row.onkeydown = hasInfo
       ? (event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            infoClickHandler({ valueInfo, labelInfo });
-          }
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          infoClickHandler({ valueInfo, labelInfo });
         }
+      }
       : null;
   }
 }
@@ -195,8 +207,8 @@ function show(idx) {
       current.rotation.y = THREE.MathUtils.degToRad(30);
       scene.add(current);
       frame(current);
-          enterBtn.disabled = false;
-        resolve();
+      enterBtn.disabled = false;
+      resolve();
     };
 
     if (ship.previewModel) {
@@ -223,8 +235,7 @@ function show(idx) {
   });
 
   nameBox.textContent = ship.displayName ?? "—";
-  infoClickHandler({ valueInfo: ship.description ?? "No description available" });
-  if (ship.descriptionSource) descBox.insertAdjacentHTML("beforeend", ship.descriptionSource);
+  showShipInfo();
   updateBars(ship);
 
   bgMap.updateShipType(ship.shipDensityDataName);
@@ -244,7 +255,7 @@ nextBtn.onclick = () => {
 toggleViewBtn.onclick = () => {
   const showingMap = mapPane.classList.toggle("is-active");
   previewPane.classList.toggle("is-active", !showingMap);
-  mapInfoBtn.hidden = !showingMap;
+  mapInfoBtn.title = showingMap ? "Map information" : "Ship information";
   toggleViewBtn.textContent = showingMap ? "Show ship" : "Show map";
   toggleViewBtn.setAttribute("aria-pressed", String(showingMap));
   window.dispatchEvent(new Event("resize"));
@@ -368,7 +379,7 @@ function openShip() {
     openSelector();
     initSelector().then(() => {
       descBox.textContent = "Unable to load the selected ship.";
-    }).catch(() => {});
+    }).catch(() => { });
   });
 }
 
