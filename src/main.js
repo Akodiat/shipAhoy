@@ -77,6 +77,11 @@ const dummyModel = new Promise(resolve =>
 const backBtn = document.getElementById("backButton");
 const oceanOnlyLookAt = [80, 80, 180, -20, 14, 20];
 
+const merchantFleetSource = `
+    <div class="stat-citation">Marine Flottenkommando. (November 21, 2023). Number of ships in the world merchant fleet as of January 1, 2023, by type [Graph]. In <em>Statista</em>. Retrieved September 09, 2026, from <a href="https://www.statista.com/statistics/264024/number-of-merchant-ships-worldwide-by-type/" target="_blank" rel="noopener noreferrer">https://www.statista.com/statistics/264024/number-of-merchant-ships-worldwide-by-type/</a></div>
+    <img src="resources/images/image001.png" alt="Number of ships in the world merchant fleet by type as of January 1, 2023">
+`;
+
 const ships = [
     {
         name: "container",
@@ -89,7 +94,8 @@ const ships = [
             80, 50, 160, // Position
             -20, 5, 20   // Target
         ],
-        description: "This is a container ship.",
+        description: "Container vessels transport all types of goods around the world. In 2023, there were 5800 container vessels in the global merchant fleet.",
+        descriptionSource: merchantFleetSource,
         stats: {
             length: { value: "190 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
             width: { value: "32 m", color: "#acc5dc", labelInfo: "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities", valueInfo: "Most commercial merchant vessels have L/B ratios in the range of 5.5 to 7.0. Assume L/B of 6 for container vessels which results in 32 m." },
@@ -112,7 +118,7 @@ const ships = [
             75, 70, 230, // Position
             -20, 5, 20   // Target
         ],
-        description: "This is a cruise ship.",
+        description: "Cruise ships can be compared to small floating towns, sometimes carrying many thousand passengers. According to Wikipedia, as of November 2022, there were 302 cruise ships operating worldwide, with a combined capacity of 664,602 passengers.",
         stats: {
             length: { value: "110 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
             width: { value: "40 m", color: "#acc5dc", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478", valueInfo: "In the article the authors model a reference ship and the same width is assumed here. Note that the authors assumed a much longer vessel (350 m) so the ratio might not be correct as two different sources were used for the length and width." },
@@ -135,7 +141,8 @@ const ships = [
             80, 50, 160, // Position
             -20, 5, 20   // Target
         ],
-        description: "This is a chemtanker ship.",
+        description: "Chemical tankers transport liquid substances, chemical products and biofuels. In 2023, there were 6259 chemical tankers in the global merchant fleet.",
+        descriptionSource: merchantFleetSource,
         stats: {
             length: { value: "164 m", color: "#acc5dc", labelInfo: "HELCOM maritime assessment 2018" },
             width: { value: "27 m", color: "#acc5dc", labelInfo: "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities", valueInfo: "Tankers vary considerably in their dimensional ratios, but the larger vessels tend to have a moderate L∕B in the range of 5.5 to 6.5”. Assume an L/B ratio of 6, which gives 27 m." },

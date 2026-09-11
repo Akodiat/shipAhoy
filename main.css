@@ -977,6 +977,18 @@ a {
   margin-bottom: 4px;
 }
 
+.ship-desc img {
+  display: block;
+  width: 50%;
+  max-width: 579.5px;
+  height: auto;
+  margin: 20px auto;
+}
+
+.ship-desc a {
+  overflow-wrap: anywhere;
+}
+
 .stat-citation {
   font-size: clamp(1rem, 1.05vw, 2.5rem);
   color: #444;

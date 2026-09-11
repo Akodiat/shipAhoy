@@ -223,7 +223,8 @@ function show(idx) {
   });
 
   nameBox.textContent = ship.displayName ?? "—";
-  descBox.textContent = ship.description ?? "No description available";
+  infoClickHandler({ valueInfo: ship.description ?? "No description available" });
+  if (ship.descriptionSource) descBox.insertAdjacentHTML("beforeend", ship.descriptionSource);
   updateBars(ship);
 
   bgMap.updateShipType(ship.shipDensityDataName);
