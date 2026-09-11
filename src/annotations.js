@@ -283,19 +283,19 @@ const annotations = [
         environmentalImpact: "The environmental impact of tank cleaning effluents is challenging to assess, partly due to the large heterogeneities among the discharged substances, but mainly because lack of available data on when, where, what products and how large volumes that are discharged. It is, however, evident that these effluents are regularly discharged to marine protected areas (Larsson et al., 2024). Moreover, there are indications that tank cleaning residues from some of these liquid bulk products may exceed levels that are considered safe for the marine environment (Lunde Hermansson & Hassellöv, 2022).",
         images: [
             {
-                header: "Underwater outlet",
+                header: "Underwater outlet. Courtesy of the Swedish Coastguard.",
                 path: "resources/images/Under water outlet .jpg",
                 description: "Underwater outlet",
                 attribution: ""
             },
             {
-                header: "Tall oil tanker tank cleaning operation",
+                header: "Tall oil tanker tank cleaning operation. Courtesy of the Swedish Coastguard.",
                 path: "resources/images/Tall Oil tanker Tank Cleaning Operation.jpg",
                 description: "Tall oil tanker tank cleaning operation",
                 attribution: ""
             },
             {
-                header: "Tall oil tank cleaning operation",
+                header: "Tall oil tank cleaning operation. Courtesy of the Swedish Coastguard.",
                 path: "resources/images/Tall Oil Tank Cleaning Operation.jpg",
                 description: "Tall oil tank cleaning operation",
                 attribution: ""

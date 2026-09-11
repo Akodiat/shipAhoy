@@ -79,7 +79,6 @@ const oceanOnlyLookAt = [80, 80, 180, -20, 14, 20];
 
 const merchantFleetSource = `
     <div class="stat-citation">Marine Flottenkommando. (November 21, 2023). Number of ships in the world merchant fleet as of January 1, 2023, by type [Graph]. In <em>Statista</em>. Retrieved September 09, 2026, from <a href="https://www.statista.com/statistics/264024/number-of-merchant-ships-worldwide-by-type/" target="_blank" rel="noopener noreferrer">https://www.statista.com/statistics/264024/number-of-merchant-ships-worldwide-by-type/</a></div>
-    <img src="resources/images/image001.png" alt="Number of ships in the world merchant fleet by type as of January 1, 2023">
 `;
 
 const ships = [
