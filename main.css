@@ -702,29 +702,6 @@ a {
   font-size: clamp(1rem, 1.05vw, 2.6rem);
 }
 
-#shipChooser {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .75rem
-}
-
-.ship-button {
-  min-width: 7rem;
-  aspect-ratio: 1/1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid transparent;
-  border-radius: .5rem;
-  cursor: pointer;
-  background: var(--pico-muted-border-color, #ececec);
-  transition: border-color .15s ease;
-}
-
-.ship-button.selected {
-  border-color: var(--pico-primary, #0d6efd);
-}
-
 .selector-row {
   width: 100%;
   display: grid;
@@ -987,6 +964,13 @@ a {
 
 .ship-desc a {
   overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .ship-desc img {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 .stat-citation {

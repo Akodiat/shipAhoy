@@ -21,8 +21,6 @@ self.addEventListener("install", async event => {
     cache.add("../lib/avsc.5.7.7.esm.js");
     cache.add("../lib/camera-controls.module.min.js");
     cache.add("../lib/pico.conditional.min.css");
-    cache.add("../lib/resizable-style.css");
-    cache.add("../lib/resizable.js");
     cache.add("../lib/shp.esm.js");
     cache.add("../lib/three.core.min.js");
     cache.add("../lib/three.tsl.min.js");
