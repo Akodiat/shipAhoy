@@ -87,7 +87,7 @@ const ships = [
         displayName: "Container ship",
         shipDensityDataName: "Cargo",
         path: "resources/cargoship.glb",
-        dummyPosition: new THREE.Vector3(9.009280334525352, 30.399663925170902, 92.04434157642898),
+        dummyPosition: new THREE.Vector3(0.03046760852235187, 19.541751861572273, 110.10362384348201),
         smokeStackPos: new THREE.Vector3(0.5, 45, -57),
         defaultLookat: [
             80, 50, 160, // Position
