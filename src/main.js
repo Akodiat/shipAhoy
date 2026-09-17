@@ -78,7 +78,7 @@ const backBtn = document.getElementById("backButton");
 const oceanOnlyLookAt = [80, 80, 180, -20, 14, 20];
 
 const merchantFleetSource = `
-    <div class="stat-citation">Marine Flottenkommando. (November 21, 2023). Number of ships in the world merchant fleet as of January 1, 2023, by type [Graph]. In <em>Statista</em>. Retrieved September 09, 2026, from <a href="https://www.statista.com/statistics/264024/number-of-merchant-ships-worldwide-by-type/" target="_blank" rel="noopener noreferrer">https://www.statista.com/statistics/264024/number-of-merchant-ships-worldwide-by-type/</a></div>
+    <div class="stat-citation">IMO register analytics by Marine Benchmark using source data from S&P Global</div>
 `;
 
 const ships = [
@@ -93,7 +93,7 @@ const ships = [
             80, 50, 160, // Position
             -20, 5, 20   // Target
         ],
-        description: "Container vessels transport all types of goods around the world. In 2023, there were 5800 container vessels in the global merchant fleet.",
+        description: "Container vessels transport all types of goods around the world. In 2026, there were 6767 container vessels registered at the International Maritime Organization.",
         descriptionSource: merchantFleetSource,
         stats: {
             length: { value: "190 m", labelInfo: "HELCOM maritime assessment 2018" },
@@ -117,7 +117,8 @@ const ships = [
             75, 70, 230, // Position
             -20, 5, 20   // Target
         ],
-        description: "Cruise ships can be compared to small floating towns, sometimes carrying many thousand passengers. According to Wikipedia, as of November 2022, there were 302 cruise ships operating worldwide, with a combined capacity of 664,602 passengers.",
+        description: "Cruise ships can be compared to small floating towns, sometimes carrying many thousand passengers. In 2026, there were 1137 cruise ships registered at the International Maritime Organization.",
+        descriptionSource: merchantFleetSource,
         stats: {
             length: { value: "110 m", labelInfo: "HELCOM maritime assessment 2018" },
             width: { value: "40 m", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478", valueInfo: "In the article the authors model a reference ship and the same width is assumed here. Note that the authors assumed a much longer vessel (350 m) so the ratio might not be correct as two different sources were used for the length and width." },
@@ -140,7 +141,7 @@ const ships = [
             80, 50, 160, // Position
             -20, 5, 20   // Target
         ],
-        description: "Chemical tankers transport liquid substances, chemical products and biofuels. In 2023, there were 6259 chemical tankers in the global merchant fleet.",
+        description: "Chemical tankers transport liquid substances, chemical products and biofuels. In 2026, there were 7687 vessels registered at the International Maritime Organization as pure chemical or product/chemical tankers.",
         descriptionSource: merchantFleetSource,
         stats: {
             length: { value: "164 m", labelInfo: "HELCOM maritime assessment 2018" },
