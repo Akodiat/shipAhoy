@@ -22,7 +22,7 @@ const annotations = [
                 cameraPos: new Vector3(20, 20, 110)
             }
         },
-        sdgIcons: [12]
+        sdgIcons: [12, 14, 15]
     },
     {name: "Propulsion momentum",
         description: "In 2023, the north-western Mediterranean Sea was designated a Particularly Sensitive Sea Area by the International Maritime Organization (IMO) with associated protective measures to reduce the number of ship strikes of whales (MEPC 380(80)).",
@@ -238,7 +238,7 @@ const annotations = [
             Ballast water is used to ensure vessels stability and optimal vessel trim. Ballast water is pumped into ballast tanks when a ship has delivered cargo to a port and is departing with less cargo or no cargo. Ballast water is then transported and released at the next port-of-call where the ship picks up more cargo. When a ship is receiving or delivering cargo to a number of ports, it may release or take on a portion of ballast water at each port and the ship’s ballast water can contain a mix of waters from multiple ports.
         </p>
         <p>
-            Ballast water discharge has been identified as a main vector in spreading of invasive species.
+            Ballast water discharge has been identified as a main vector in spreading of non-indigenous species that under some circumstances may become invasive causing disruptive changes of local ecosystems. Since 2017 the Ballast Water Management Convention entered into force, implying that ships today must install ballast water treatment systems to reduce the risk of spreading invasive species across the globe. One example is shore crabs, and while the European shore crab is posing a problem in Asia and the American west coast, the Asian shore crab is posing a problem in European waters.
         </p>
         <p>
             The recent global requirements to treat the water at ballasting and/or de-ballasting can contribute to contaminant load of (often halogenated) disinfection by-products.
@@ -250,8 +250,25 @@ const annotations = [
                 path: "resources/images/BalW_discharge_hotspot_EU_2018.png",
                 description: "Ballast water discharge in European seas in 2018. Bar height indicate the magnitude of discharge. Bars are calculated for 0.5×0.5 deg grid cells. [Dataset metadata](https://metadata.helcom.fi/geonetwork/srv/eng/catalog.search#/metadata/df0b81ff-824a-4550-8948-fb71221baacd).",
                 attribution: ""
+            },
+            {
+                header: "Female Asian shore crab with newly hatched larvae in a glass beaker. Foto: Björn Källström. Reproduced with permission from Granhag et al. 2026.",
+                path: "resources/images/penselkrabba.png",
+                description: "Female Asian shore crab with newly hatched larvae in a glass beaker.",
+                attribution: "Foto: Björn Källström. Reproduced with permission from [Granhag et al. 2026](https://www.naturvardsverket.se/4a1e5d/globalassets/media/publikationer-pdf/7200/978-91-620-7214-8.pdf)."
             }
         ],
+        references: `
+        <p>
+            Granhag, L., Källström, B., Fredriksson, S., Gren, I.-M., Brunnabend, S.-E. and Arneborg, L. (2026). <a target="_blank" href="https://www.naturvardsverket.se/4a1e5d/globalassets/media/publikationer-pdf/7200/978-91-620-7214-8.pdf">Handlingsplan för invasiva arter i akvatisk miljö</a>. Rapport 7412. 79 pp. ISBN: 978-91-620-7214-8.
+        </p>
+        <p>
+            Bailey, S. A., Brown, L., Campbell, M. L., Canning-Clode, J., Carlton, J. T., Castro, N., Chainho, P., Chan, F. T., Creed, J. C., Curd, A., Darling, J., Fofonoff, P., Galil, B. S., Hewitt, C. L., Inglis, G. J., Keith, I., Mandrak, N. E., Marchini, A., McKenzie, C. H.,…Zhan, A. B. (2020). <a target="_blank" href="https://doi.org/10.1111/ddi.13167">Trends in the detection of aquatic non-indigenous species across global marine, estuarine and freshwater ecosystems: A 50-year perspective</a>. Diversity and Distributions, 26(12), 1780-1797.
+        </p>
+        <p>
+            Bailey, S. A., Henein, C. M., Gorgula, S., Barton, D. P., Hayes, B., Abeysekara, S., Drake, L. A., Hernandez, M. R., MacIsaac, H. J., Merksamer, M., Omura, T., Outinen, O., Reavie, E. D., Riggio, M., Subramanian, M., Takahashi, N., Wang, Z., Lee, K., &amp; Shon, M. (2025). <a target="_blank" href="https://doi.org/10.3391/mbi.2025.16.3.02">Implementation of the Ballast Water Management Convention: taking stock of progress and remaining challenges</a>. Management of Biological Invasions, 16(3), 601-614.
+        </p>
+        `,
         shipTypes: {
             tanker: {
                 labelPos: new Vector3(16, 11, -86),
@@ -268,7 +285,8 @@ const annotations = [
                 labelPos: new Vector3(13, 14, 92),
                 cameraPos: new Vector3(20, 14, 92)
             }
-        }
+        },
+        sdgIcons: [14, 15]
     },
     {name: "Sewage (black water)"
     },
