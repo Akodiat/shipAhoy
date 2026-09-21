@@ -25,6 +25,7 @@ const annotations = [
         sdgIcons: [12, 14, 15]
     },
     {name: "Propulsion momentum",
+        sdgIcons: [14, 15],
         description: "In 2023, the north-western Mediterranean Sea was designated a Particularly Sensitive Sea Area by the International Maritime Organization (IMO) with associated protective measures to reduce the number of ship strikes of whales (MEPC 380(80)).",
         environmentalImpact: `Ship strikes of marine mammals, groundings. For more information about ship strikes, see the <a target="_blank" href="https://iwc.int/management-and-conservation/ship-strikes">International Whaling Commision</a>`,
         images: [
@@ -336,6 +337,7 @@ const annotations = [
         }
     },
     {name: "Cooling water",
+        sdgIcons: [9, 14],
         description: `
         <p>
             Most vessels are dependent on water for cooling when the propulsion of ship generates excess heat in for example the engines, generators and compressors that must be diverted. Seawater is mostly used as cooling agent, being relatively low-tempered and constantly available.
@@ -491,6 +493,7 @@ const annotations = [
         }
     },
     {name: "Propeller shaft lubricants",
+        sdgIcons: [14, 15],
         description: `
         <p>
             The propeller shaft connects the main engine and the propeller through the stern tube. The stern tube goes through the ship hull and contains bearings, sealing and a lubrication system that may leak due to imperfect sealing and/or damage.
@@ -530,6 +533,7 @@ const annotations = [
         },
     },
     {name: "Exhaust gas",
+        sdgIcons: [13, 14, 15],
         description: `
         <p>
             The majority of today's commercial fleet are still running on conventional fossil bunker fuels where heavy fuel oil (HFO), marine gas oil (MGO) and hybrid fuels (very low sulpfur fuel oils (VLSFO) and ultra-low sulfur fuel oils (ULSFO) holds >99% of the fuel market share of the operating fleet (see bar chart below, noting the non-linear scale).
