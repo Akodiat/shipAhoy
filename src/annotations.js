@@ -652,13 +652,56 @@ const annotations = [
     },
     {name: "Container loss",
         model: "resources/lost_container.glb",
+        description: `
+        <p>
+            During rough conditions at sea, containers may fall overboard and sink to the sea floor. The estimates on the annual number of containers lost at sea vary greatly, but the World Shipping Council (WSC) has estimated the average number to be 1,629 containers lost per year between 2008 and 2021, but these casualties are unevenly distributed. Recovery rates are estimated to be low, 2.6% between 1994 and 2019, according to the Surfrider Foundation Europe.
+        </p>
+        <p>
+            One of the most famous losses occurred in 1992, when a container with 28,000 rubber ducks was lost in the North Pacific. The rubber ducks have since been utilised as tracers providing oceanographers information about global current patterns.
+        </p>
+        <p>
+            Fisheries and Oceans Canada has undertaken a systematic approach to map and inspect containers on the seafloor. In addition, oceanographic modelling can be a valuable tool to predict where debris and chemical substances from the container cargo may end up in the marine environment over time.
+        </p>
+        `,
+        images: [
+            {
+                header: "Figure 2. Examples of drifting shipping containers. (A,B) Examples of adrift rafted container stacks. (C) Single adrift container immersed longitudinally (source: U.S. Coast Guard). Figure reproduced with permission from McNabb et al. 2025.",
+                path: "resources/images/container1.png",
+                description: "Examples of drifting shipping containers: adrift rafted container stacks and a single adrift container immersed longitudinally.",
+                attribution: "U.S. Coast Guard. Figure reproduced with permission from [McNabb et al. 2025](https://publications.gc.ca/collections/collection_2026/mpo-dfo/fs97-18/Fs97-18-408-eng.pdf)."
+            },
+            {
+                header: "Figure 4. Remotely operated vehicle (ROV) imagery of damaged sunken containers from the 2021 M/V Zim Kingston incident (source: DFO). Figure reproduced with permission from McNabb et al. 2025.",
+                path: "resources/images/container2.png",
+                description: "Remotely operated vehicle (ROV) imagery of damaged sunken containers from the 2021 M/V Zim Kingston incident.",
+                attribution: "DFO. Figure reproduced with permission from [McNabb et al. 2025](https://publications.gc.ca/collections/collection_2026/mpo-dfo/fs97-18/Fs97-18-408-eng.pdf)."
+            }
+        ],
+        references: `
+        <p>
+            McNabb, B.J., Blanken, H.C., Herborg, L.-M., Gillespie, K., Murray, C.C., Bigg, M., and Dunham, A. 2025. <a target="_blank" href="https://publications.gc.ca/collections/collection_2026/mpo-dfo/fs97-18/Fs97-18-408-eng.pdf">Current Status of Modelling Trajectories of Lost Shipping Containers in the Oceans</a>. Can. Tech. Rep. Hydrogr. Ocean Sci. 408: vi + 68 p.
+        </p>
+        <p>
+            Clyde, G., Gartner, H., Herborg, L.-M., Bigg, M., Barrett, P., Stanley, C., Detering, J., Norgard, T., Du Preez, C. 2025. <a target="_blank" href="https://doi.org/10.60825/wxw5-d071">NorthEast Pacific Deep-sea Exploration Project (NEPDEP) Expedition Report (PAC2023-034): Cold Seeps and the MV Zim Kingston Shipping Incident</a>. Can. Tech. Rep. Fish. Aquat. Sci. 3660: x + 121 p.
+        </p>
+        <p>
+            Saliba, M., Frantzi, S., &amp; van Beukering, P. (2022). <a target="_blank" href="https://doi.org/10.1016/j.marpolbul.2022.113939">Shipping spills and plastic pollution: A review of maritime governance in the North Sea</a>. Marine Pollution Bulletin, 181, 113939.
+        </p>
+        <p>
+            World Shipping Council (2022). <a target="_blank" href="https://www.worldshipping.org/s/Containers_Lost_at_Sea_2022.pdf">Containers lost at sea – 2022 update</a>.
+        </p>
+        <p>
+            Hohn, D. 2012. <em>Moby-Duck: The True Story of 28,800 Bath Toys Lost at Sea &amp; of the Beachcombers, Oceanographers, Environmentalists &amp; Fools Including the Author Who Went in Search of Them</em>. 416 pp. ISBN: 978-0143120506.
+        </p>
+        `,
         // One of the containers
         shipTypes: {
             container: {
                 labelPos: new Vector3(12, 30, 20),
                 cameraPos: new Vector3(43, 46, 67),
             }
-        }
+        },
+        sdgIcons: [12, 14]
     },
 ].map((spec) => new Annotation(spec));
 
