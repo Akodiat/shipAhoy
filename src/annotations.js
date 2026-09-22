@@ -289,7 +289,43 @@ const annotations = [
         },
         sdgIcons: [14, 15]
     },
-    {name: "Sewage (black water)"
+    {name: "Sewage",
+        shipTypes: {
+            cruise: {
+                labelPos: new Vector3(21.816, -0.749, 0.909),
+                outletPos: new Vector3(21.816, -0.749, 0.909),
+                cameraPos: new Vector3(31.816, 3.251, 0.909)
+            },
+            container: {
+                labelPos: new Vector3(12.31, 4.667, -37.304),
+                outletPos: new Vector3(12.229, 4.857, -37.272),
+                cameraPos: new Vector3(22.31, 6.667, -37.304)
+            },
+            tanker: {
+                labelPos: new Vector3(16.127, 6.934, -34.903),
+                outletPos: new Vector3(16.02, 6.867, -35.203),
+                cameraPos: new Vector3(30.127, 7.5, -35.203)
+            }
+        }
+    },
+    {name: "Blackwater",
+        shipTypes: {
+            cruise: {
+                labelPos: new Vector3(21.816, -0.765, -0.964),
+                outletPos: new Vector3(21.816, -0.765, -0.964),
+                cameraPos: new Vector3(31.816, 3.235, -0.964)
+            },
+            container: {
+                labelPos: new Vector3(14.472, 5.873, 4.888),
+                outletPos: new Vector3(14.472, 5.873, 4.888),
+                cameraPos: new Vector3(24.472, 7.873, 4.888)
+            },
+            tanker: {
+                labelPos: new Vector3(16.125, 5.93, -71.661),
+                outletPos: new Vector3(16, 5.664, -71.747),
+                cameraPos: new Vector3(26.125, 7.93, -71.661)
+            }
+        }
     },
     {name: "Grey water"
     },
