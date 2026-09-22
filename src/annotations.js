@@ -330,7 +330,7 @@ const annotations = [
             }
         }
     },
-    {name: "Blackwater",
+    {name: "Grey water",
         description: `
         <p>
             The volume of grey water, i.e. effluents from laundry, galley (kitchen), sinks and showers, will depend on the number of persons, both crew and passengers, onboard the ship. Grey water is generally produced in large volumes per day, yet there is no regulation in place with respect to discharge. Sampling of grey water onboard ships is challenging, and different ships may have different solutions for how to handle the grey water: as separate waste streams for laundry, galley etc., partly mixed with sewage, and there are ships that discharge grey water in port reception facilities. An increasing number of reports have pointed at grey water as a source of microplastics to the marine environment.
