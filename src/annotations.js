@@ -290,6 +290,28 @@ const annotations = [
         sdgIcons: [14, 15]
     },
     {name: "Sewage",
+        description: `
+        <p>
+            The generation of sewage onboard will depend on the number of persons onboard, both crew and passengers. Large cruise vessels can be compared to small floating towns and often have sewage treatment plants onboard, to be able to meet discharge limits that may apply in sensitive sea areas, such as the Baltic Sea. Analogous with sewage generated from households and public facilities, the onboard generated sewage contains organic matter and nutrients such as nitrogen and phosphorus that contribute to eutrophication. In severely eutrophied areas, the excess nutrients cause intensive algal blooms, and subsequently spreading of anoxic zones in the bottom water during degradation of the large volumes of algal biomass. Eutrophication and anoxic zones may in turn reduce the possibilities for e.g. commercially important fish to reproduce (Moldanova et al. 2021). In addition to nutrients, sewage may also contain pharmaceutical residues that may affect marine organisms negatively. Sewage discharges are regulated through MARPOL Annex IV.
+        </p>
+        `,
+        images: [
+            {
+                header: "Figure reproduced with permission from Jalkanen et al. 2021.",
+                path: "resources/images/sewage.png",
+                description: "Sewage discharges from shipping.",
+                attribution: "Figure reproduced with permission from [Jalkanen et al. 2021](https://doi.org/10.5194/os-17-699-2021)."
+            }
+        ],
+        references: `
+        <p>
+            Jalkanen, J. P., Johansson, L., Wilewska-Bien, M., Granhag, L., Ytreberg, E., Eriksson, K. M., Yngsell, D., Hassellöv, I.-M., Magnusson, K., Raudsepp, U., Maljutenko, I., Winnes, H., &amp; Moldanova, J. (2021). <a target="_blank" href="https://doi.org/10.5194/os-17-699-2021">Modelling of discharges from Baltic Sea shipping</a>. <em>Ocean Science, 17</em>(3), 699-728.
+        </p>
+        <p>
+            Moldanová, J., Hassellöv, I.-M., Matthias, V., Fridell, E., Jalkanen, J.-P., Ytreberg, E., Quante, M., Tröltzsch, J., Maljutenko, I., Raudsepp, U., &amp; Eriksson, K. M. (2021). <a target="_blank" href="https://doi.org/10.1007/s13280-021-01597-9">Framework for the environmental impact assessment of operational shipping</a>. <em>Ambio</em>.
+        </p>
+        `,
+        sdgIcons: [6, 14, 15],
         shipTypes: {
             cruise: {
                 labelPos: new Vector3(21.816, -0.749, 0.909),
