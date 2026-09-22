@@ -9,12 +9,12 @@ import { MapView } from "./map.js";
 import { PlotView } from "./plot.js";
 import { annotations } from "./annotations.js";
 import CameraControls from "../lib/camera-controls.module.min.js";
-import {ParticleSystem} from "./particles.js";
-import {OutputFlow} from "./outputFlow.js";
-import {createCameraAnimation, exportDomeVideo} from "./domeExport.js";
+import { ParticleSystem } from "./particles.js";
+import { OutputFlow } from "./outputFlow.js";
+import { createCameraAnimation, exportDomeVideo } from "./domeExport.js";
 
 window.exportDomeVideo = (
-    resolution=800, duration=5, framerate=60, preview=false, eyeSep=0.064, tilt=27
+    resolution = 800, duration = 5, framerate = 60, preview = false, eyeSep = 0.064, tilt = 27
 ) => {
     scene.remove(water);
 
@@ -29,9 +29,9 @@ window.exportDomeVideo = (
             if (modelGroup) {
                 modelGroup.position.y = Math.sin(t) * 0.01;
                 const e = new THREE.Euler(
-                    Math.sin(t)* .001,
+                    Math.sin(t) * .001,
                     0,
-                    Math.cos(t)* .001
+                    Math.cos(t) * .001
                 );
                 modelGroup.quaternion.setFromEuler(e);
 
@@ -66,6 +66,7 @@ const threeContainer = document.getElementById("threeContainer");
 const annotationLabel = document.getElementById("annotationLabel");
 const annotationSizeDefault = 0.03;
 const annotationSizeHighlight = 0.035;
+const annotationVisitedColor = '#f00';
 const clock = new THREE.Clock();
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
@@ -265,19 +266,19 @@ function loadShip(name, onLoad, onError) {
         if (selectedAnnotation === undefined) {
             controls.setLookAt(...currentShip.defaultLookat, true);
         } else {
-  const a = selectedAnnotation.annotation;
-  const p = a.spec.shipTypes?.[name];
+            const a = selectedAnnotation.annotation;
+            const p = a.spec.shipTypes?.[name];
 
-  if (p?.cameraPos && p?.labelPos) {
-    controls.setLookAt(
-      ...p.cameraPos.toArray(),
-      ...p.labelPos.toArray(),
-      true
-    );
-  } else {
-    clearAnnotationSelection();
-  }
-}
+            if (p?.cameraPos && p?.labelPos) {
+                controls.setLookAt(
+                    ...p.cameraPos.toArray(),
+                    ...p.labelPos.toArray(),
+                    true
+                );
+            } else {
+                clearAnnotationSelection();
+            }
+        }
         onLoad?.();
     };
 
@@ -494,7 +495,7 @@ function init() {
 
             // Neccesary in case we have a touch device
             // where pointer is never moved.
-            highlightedAnnotation.material.color.set('#ffffff');
+            highlightedAnnotation.material.color.set(highlightedAnnotation.visited ? annotationVisitedColor : '#ffffff');
             highlightedAnnotation.scale.setScalar(annotationSizeDefault);
             renderer.domElement.style.cursor = "";
             annotationLabel.style.display = "none";
@@ -584,25 +585,30 @@ window.selectAnnotationByName = (annotationName) => {
 }
 
 function selectAnnotation(a) {
-  if (!currentShip || !a) return;
+    if (!currentShip || !a) return;
 
-  const requestId = ++detailModelRequestId;
-  const shipName = currentShip.name;
-  const p = a.spec.shipTypes?.[currentShip.name];
+    const requestId = ++detailModelRequestId;
+    const shipName = currentShip.name;
+    const p = a.spec.shipTypes?.[currentShip.name];
 
-  if (!p?.cameraPos || !p?.labelPos) {
-    console.warn("Missing cameraPos/labelPos for shipType", currentShip.name, a.spec?.name);
-    clearAnnotationSelection();
-    return;
-  }
+    if (!p?.cameraPos || !p?.labelPos) {
+        console.warn("Missing cameraPos/labelPos for shipType", currentShip.name, a.spec?.name);
+        clearAnnotationSelection();
+        return;
+    }
 
-  controls.maxDistance = p.cameraPos.distanceTo(p.labelPos);
+    if (a.sprite && document.getElementById("startScreen").style.display === "none") {
+        a.sprite.visited = true;
+        a.sprite.material.color.set(annotationVisitedColor);
+    }
 
-  controls.setLookAt(
-    ...p.cameraPos.toArray(),
-    ...p.labelPos.toArray(),
-    true
-  );
+    controls.maxDistance = p.cameraPos.distanceTo(p.labelPos);
+
+    controls.setLookAt(
+        ...p.cameraPos.toArray(),
+        ...p.labelPos.toArray(),
+        true
+    );
 
     document.getElementById("textbox").innerHTML =
         `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
@@ -713,7 +719,7 @@ function onPointerMove(event) {
     if (document.getElementById("startScreen").style.display !== "none") return;
 
     if (highlightedAnnotation) {
-        highlightedAnnotation.material.color.set("#ffffff");
+        highlightedAnnotation.material.color.set(highlightedAnnotation.visited ? annotationVisitedColor : '#ffffff');
         highlightedAnnotation.scale.setScalar(annotationSizeDefault);
         renderer.domElement.style.cursor = "";
         annotationLabel.style.display = "none";
@@ -772,7 +778,7 @@ function onWindowResize() {
  * @param {number} timestamp Timestamp in milliseconds (not used here)
  * @param {number} delta Time delta in seconds since last frame
  */
-function animate(timestamp, delta=clock.getDelta()) {
+function animate(timestamp, delta = clock.getDelta()) {
     if (stats) {
         stats.update();
     }
