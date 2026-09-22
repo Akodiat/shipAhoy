@@ -331,6 +331,40 @@ const annotations = [
         }
     },
     {name: "Blackwater",
+        description: `
+        <p>
+            The volume of grey water, i.e. effluents from laundry, galley (kitchen), sinks and showers, will depend on the number of persons, both crew and passengers, onboard the ship. Grey water is generally produced in large volumes per day, yet there is no regulation in place with respect to discharge. Sampling of grey water onboard ships is challenging, and different ships may have different solutions for how to handle the grey water: as separate waste streams for laundry, galley etc., partly mixed with sewage, and there are ships that discharge grey water in port reception facilities. An increasing number of reports have pointed at grey water as a source of microplastics to the marine environment.
+        </p>
+        `,
+        images: [
+            {
+                header: "Samples of grey water from one vessel, for continued chemical analysis in lab. Photo reproduced with permission from Mujingni et al. 2024.",
+                path: "resources/images/greywater1.png",
+                description: "Samples of grey water from one vessel, for continued chemical analysis in lab.",
+                attribution: "Photo reproduced with permission from [Mujingni et al. 2024](https://doi.org/10.1016/j.marpolbul.2024.116993)."
+            },
+            {
+                header: "Sampling grey water. Photo reproduced with permission from Mujingni et al. 2024.",
+                path: "resources/images/greywater2.png",
+                description: "Sampling grey water.",
+                attribution: "Photo reproduced with permission from [Mujingni et al. 2024](https://doi.org/10.1016/j.marpolbul.2024.116993)."
+            },
+            {
+                header: "Photo reproduced with permission from Mujingni et al. 2026.",
+                path: "resources/images/greywater3.png",
+                description: "Photo reproduced with permission from Mujingni et al. 2026.",
+                attribution: "Photo reproduced with permission from [Mujingni et al. 2026](https://doi.org/10.1016/j.envpol.2026.127810)."
+            }
+        ],
+        references: `
+        <p>
+            Mujingni, J. T., Ytreberg, E., Hassellöv, I. M., Rathnamali, G. B. M., Hassellöv, M., &amp; Salo, K. (2024). <a target="_blank" href="https://doi.org/10.1016/j.marpolbul.2024.116993">Sampling strategy, quantification, characterization and hazard potential assessment of greywater from ships in the Baltic Sea</a>. <em>Marine Pollution Bulletin, 208</em>, 116993.
+        </p>
+        <p>
+            Mujingni, J. T., Ytreberg, E., Hassellöv, I. M., Rathnamali, G. B. M., Hassellöv, M., &amp; Salo, K. (2026). <a target="_blank" href="https://doi.org/10.1016/j.envpol.2026.127810">Quantification of microplastics in ship-generated greywater and their contribution to Baltic marine pollution</a>. <em>Environmental Pollution, 395</em>, 127810.
+        </p>
+        `,
+        sdgIcons: [6, 14, 15],
         shipTypes: {
             cruise: {
                 labelPos: new Vector3(21.816, -0.765, -0.964),
