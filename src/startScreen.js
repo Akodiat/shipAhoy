@@ -57,7 +57,7 @@ function showShipInfo() {
 mapInfoBtn.onclick = () => {
   if (mapPane.classList.contains("is-active")) {
     infoClickHandler({
-      valueInfo: "The map shows the amount of time vessels of the selected type spent in each cell."
+      valueInfo: "The map shows the amount of time vessels of the selected type spent in each cell for 2025."
     });
   } else {
     showShipInfo();
