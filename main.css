@@ -658,11 +658,20 @@ a {
   text-align: center;
 }
 
-#backButton {
+#seaMovementButton {
   position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+}
+
+#seaMovementButton[aria-pressed="false"] {
+  opacity: 0.5;
+}
+
+#backButton,
+#seaMovementButton {
+  position: fixed;
   z-index: 10000;
   background: rgba(255, 255, 255, 0.6) !important;
   padding: 10px 15px !important;
@@ -675,11 +684,19 @@ a {
   backdrop-filter: blur(10px);
 }
 
-#backButton:hover {
+#backButton {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#backButton:hover,
+#seaMovementButton:hover {
   background: rgba(200, 200, 200, 0.1) !important;
 }
 
 #backButton,
+#seaMovementButton,
 #acknowledgementButton {
   font-family: var(--font-main), sans-serif;
   color: black !important;

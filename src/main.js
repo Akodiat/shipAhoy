@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { color, pass, objectPosition, screenUV } from "three/tsl";
+import { color, pass, objectPosition, screenUV, uniform } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { WaterMesh } from "three/addons/objects/WaterMesh.js";
@@ -68,6 +68,14 @@ const annotationSizeDefault = 0.03;
 const annotationSizeHighlight = 0.035;
 const annotationVisitedColor = '#f00';
 const clock = new THREE.Clock();
+const seaTime = uniform(0);
+let seaMovementEnabled = true;
+const seaMovementButton = document.getElementById("seaMovementButton");
+seaMovementButton.addEventListener("click", () => {
+    seaMovementEnabled = !seaMovementEnabled;
+    seaMovementButton.title = seaMovementEnabled ? "Pause sea movement" : "Resume sea movement";
+    seaMovementButton.setAttribute("aria-pressed", String(seaMovementEnabled));
+});
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
@@ -259,6 +267,8 @@ function loadShip(name, onLoad, onError) {
         labelScene.add(annotationSprites);
 
         loaderElement.style.display = "none";
+        seaMovementButton.style.display = document.getElementById("startScreen").style.display === "none"
+            ? "inline-flex" : "none";
 
         // If we have a selected annotation, keep it open for the
         // new ship model if the annotation is present there too.
@@ -368,6 +378,7 @@ function init() {
         waterGeometry,
         {
             waterNormals: waterNormals,
+            timeNode: seaTime,
             sunDirection: new THREE.Vector3(),
             sunColor: 0xffffff,
             waterColor: 0x001e0f,
@@ -779,6 +790,8 @@ function onWindowResize() {
  * @param {number} delta Time delta in seconds since last frame
  */
 function animate(timestamp, delta = clock.getDelta()) {
+    if (seaMovementEnabled) seaTime.value += delta;
+
     if (stats) {
         stats.update();
     }
@@ -816,6 +829,7 @@ backBtn.addEventListener("click", () => {
     clearDetailModel();
     document.getElementById("loader").style.display = "none";
     backBtn.style.display = "none";
+    seaMovementButton.style.display = "none";
     document.getElementById("acknowledgementButton").style.display = "none";
     document.getElementById("titleboxWrapper").style.display = "none";
 
