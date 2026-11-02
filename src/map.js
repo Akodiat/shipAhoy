@@ -1,3 +1,4 @@
+import { t } from "./i18n.js";
 import shp from "../lib/shp.esm.js";
 
 import {annotations} from "./annotations.js";
@@ -28,7 +29,7 @@ class MapView {
 
         this.layerControl = leaflet.control.layers(
             {"OpenStreetMap": baseMap},
-            {"Sea map": seaMap}
+            {[t("map.seaMap")]: seaMap}
         ).addTo(this.map);
 
         this.loadMarineAreas("./resources/HELCOM_marine_area.latlng.zip");
@@ -36,6 +37,14 @@ class MapView {
         this.loadHeatmaps("../resources/data.avro");
 
         this.addLegend();
+        window.addEventListener("languagechange", () => {
+            this.layerControl.removeLayer(seaMap);
+            this.layerControl.addOverlay(seaMap, t("map.seaMap"));
+            if (this.helcomLayer) {
+                this.layerControl.removeLayer(this.helcomLayer);
+                this.layerControl.addOverlay(this.helcomLayer, t("map.marineAreas"));
+            }
+        });
 
         // Setup annotations to toggle corresponding heatmaps
         for (const annotation of annotations) {
@@ -79,7 +88,8 @@ class MapView {
             const helcomLayer = leaflet.geoJSON(geojson, {
                 attribution: "&copy; <a href=\"https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033\">EEA</a>"
             });
-            this.layerControl.addOverlay(helcomLayer, "HELCOM marine areas");
+            this.helcomLayer = helcomLayer;
+            this.layerControl.addOverlay(helcomLayer, t("map.marineAreas"));
         });
     }
 
@@ -171,7 +181,7 @@ class MapView {
                 "#e34a33",
                 "#b30000"
             ];
-            div.innerHTML += "<h4>Intensity</h4>";
+            div.innerHTML += `<h4 data-i18n="map.intensity">${t("map.intensity")}</h4>`;
             for (let i = 0; i < grades.length; i++) {
                 div.innerHTML +=
                     `<i style="background:${colors[i]}; width: 30px; height: 20px; float: left; margin-right: 8px; opacity: 0.7;"></i>` +

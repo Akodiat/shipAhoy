@@ -10,6 +10,11 @@ self.addEventListener("install", async event => {
         "../main.css"
     ]);
     cache.add("./annotation.js");
+    cache.add("./annotations.js");
+    cache.add("./app.js");
+    cache.add("./i18n.js");
+    cache.add("../translations/it.json");
+    cache.add("../translations/en.json");
     cache.add("./avscWorker.js");
     cache.add("./heatmapWorker.js");
     cache.add("./Lut.js");
@@ -46,7 +51,7 @@ self.addEventListener("install", async event => {
     cache.add("../lib/threeModules/objects/WaterMesh.js");
     cache.add("../lib/threeModules/tsl/display/GaussianBlurNode.js");
     cache.add("../lib/threeModules/utils/BufferGeometryUtils.js");
-    cache.add("../resources/cargoship.glb");
+    cache.add("../resources/cruiseship.1k.glb");
     cache.add("../resources/close.svg");
     cache.add("../resources/data.avro");
     cache.add("../resources/HELCOM_marine_area.latlng.zip");

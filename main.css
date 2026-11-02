@@ -669,7 +669,7 @@ a {
   opacity: 0.5;
 }
 
-#backButton,
+#languageButton,
 #seaMovementButton {
   position: fixed;
   z-index: 10000;
@@ -684,18 +684,17 @@ a {
   backdrop-filter: blur(10px);
 }
 
-#backButton {
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+#languageButton {
+  top: 20px;
+  right: 90px;
 }
 
-#backButton:hover,
+#languageButton:hover,
 #seaMovementButton:hover {
   background: rgba(200, 200, 200, 0.1) !important;
 }
 
-#backButton,
+#languageButton,
 #seaMovementButton,
 #acknowledgementButton {
   font-family: var(--font-main), sans-serif;

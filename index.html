@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="it" data-theme="light">
 
 <head>
 	<title>Ship Ahoy!</title>
@@ -16,11 +16,6 @@
 	<script src="lib/vega.5.30.0.js"></script>
 	<script src="lib/vega-lite.5.21.0.js"></script>
 	<script src="lib/vega-embed.6.26.0.js"></script>
-
-	<script src="https://unpkg.com/h3-js@^4.0.0"></script>
-    <script src="https://unpkg.com/deck.gl@^9.0.0/dist.min.js"></script>
-    <script src="https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.css" rel="stylesheet" />
 
 </head>
 
@@ -40,49 +35,15 @@
 			<div>
 				<h1>Ship Ahoy!</h1>
 				<img id="loaderLogo" src="favicon.png"><br>
-				Loading: <progress id="loaderProgress" value="0" max="100" />
+				<span data-i18n="controls.loading">Caricamento:</span> <progress id="loaderProgress" value="0" max="100"></progress>
 			</div>
 		</div>
-
-		<div id="startScreen" style="display:none">
-		<article class="pico">
-			<div class="start-body">
-				<h1 id="shipName"></h1>
-				<div class="selector-row">
-
-
-					<div class="visual-wrap">
-						<div class="visual-stage">
-							<div class="preview-wrap visual-pane is-active">
-								<canvas id="previewCanvas"></canvas>
-								<button id="enterButton" class="primary enter-button" disabled>Enter</button>
-							</div>
-							<div id="bgMapContainer" class="visual-pane"></div>
-							<button id="prevShip" class="arrow" aria-label="Previous ship" type="button"></button>
-							<button id="nextShip" class="arrow" aria-label="Next ship" type="button"></button>
-						</div>
-						<button id="mapInfoButton" class="map-info-button" type="button" title="Ship information"></button>
-						<button id="toggleStartView" class="view-toggle" type="button" aria-pressed="false">Show map</button>
-					</div>
-					<div class="stats-wrap">
-						<div id="hudBars" class="hud-bars" aria-label="Ship stats"></div>
-					</div>
-
-				</div>
-
-				<div class="info-row">
-					<div id="shipDesc" class="ship-desc"></div>
-				</div>
-
-			</div>
-		</article>
-	</div>
 
 	<div id="main">
 		<button id="seaMovementButton" class="pico secondary" type="button" title="Pause sea movement" aria-pressed="true" style="display:none">
 			<img src="resources/waves_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.svg" alt="Sea movement" width="24" height="24">
 		</button>
-		<button id="backButton" class="pico secondary" style="display:none">↩︎ Change ship</button>
+		<button id="languageButton" class="pico secondary" type="button">English</button>
 		<div id="threeContainer"></div>
 		<div id="annotationLabel" class="annotation"></div>
 		<div id="infobox" style="visibility:hidden">
@@ -100,68 +61,42 @@
 		<div id="titleboxWrapper" style="display:none">
 			<article id="titlebox">
 				<h1>Ship Ahoy!</h1>
-				<p>
+				<p data-i18n="app.tagline">
 					Navigating away from limited visibility, to unveil the environmental pressures and impacts from
 					maritime
 					transport.
 				</p>
-				<small>
+				<small data-i18n="app.contact">
 					This is still a work in progress! If you have any questions or if you want to contribute,
 					please contact Ida-Maja Hassellöv <br>(<a
 						href="mailto:ida-maja@chalmers.se">ida-maja@chalmers.se</a>).
 				</small>
 			</article>
 
-			<button id="acknowledgementButton" class="pico secondary"
+			<button data-i18n="acknowledgements.button" id="acknowledgementButton" class="pico secondary"
 				onclick="document.getElementById('acknowledgementModal').open = true">
 				Acknowledgements
 			</button>
 		</div>
 
-		<dialog id="acknowledgementModal">
-			<article>
-				<header>
-					<button aria-label="Close" rel="prev"
-						onclick="document.getElementById('acknowledgementModal').open = false"></button>
-					<p><strong>Acknowledgements</strong></p>
-				</header>
-				<p>
-				<article>Thank you to everyone who have contributed with content for this project! </article>
-				<article>Special thanks to: Anna Lunde Hermansson,
-							Dr Jessica Redfern,
-							Dr Erik Ytreberg,
-							Dr Fayas Kanchiralla,
-							Dr Cathryn Clarke Murray,
-							Prof Rickard Bensow,
-							Dr Jenette Mujingni,
-							Dr Kent Salo,
-							Dr Jonas Sjöblom,
-							Dr Selma Brynolf
-				</article>
-
-				This application was developed as part of an <a target="_blank" href="https://infravis.se/">InfraVis</a>
-				visualisation support project. <a target="_blank" href="https://github.com/Akodiat/shipAhoy/">Source
-					code</a>
-
-				<p>
-					Discharge data &copy; Jalkanen et al: <a target="_blank"
-						href="https://zenodo.org/records/4063643">10.5281/zenodo.4063643</a>.
-				</p>
-
-				<p>
-					Map data &copy; <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
-					and <a target="_blank" href="http://www.openseamap.org">OpenSeaMap</a> contributors. Marine areas
-					&copy; <a target="_blank"
-						href="https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033">EEA</a>.
-				</p>
-				</p>
-			</article>
-		</dialog>
+        <dialog id="acknowledgementModal">
+            <article>
+                <header>
+                    <button title="Chiudi" data-i18n-title="controls.close" rel="prev" onclick="document.getElementById('acknowledgementModal').open = false"></button>
+                    <p data-i18n="acknowledgements.heading"></p>
+                </header>
+                <p data-i18n="acknowledgements.thanks"></p>
+                <p data-i18n="acknowledgements.contributors"></p>
+                <p data-i18n="acknowledgements.project"></p>
+                <p data-i18n="acknowledgements.dischargeData"></p>
+                <p data-i18n="acknowledgements.mapData"></p>
+            </article>
+        </dialog>
 
 		<dialog id="imageModal">
 			<article>
 				<header>
-					<button aria-label="Close" rel="prev"
+					<button title="Chiudi" data-i18n-title="controls.close" rel="prev"
 						onclick="document.getElementById('imageModal').open = false"></button>
 					<p><strong id="imageModalHeader"></strong></p>
 				</header>
@@ -177,7 +112,7 @@
 		</dialog>
 	</div>
 
-	<script type="module" src="src/startScreen.js"></script>
+	<script type="module" src="src/app.js"></script>
 </body>
 
 </html>

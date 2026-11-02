@@ -513,7 +513,9 @@
     "enter": "Enter",
     "seaMovement": "Sea movement",
     "changeShip": "↩︎ Change ship",
-    "close": "Close"
+    "close": "Close",
+    "overview": "Return to overview",
+    "loadError": "Unable to load the ship. Reload the page to try again."
   },
   "annotationSections": {
     "sdgsAtRisk": "SDGs at risk",

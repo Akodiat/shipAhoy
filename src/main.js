@@ -1,3 +1,4 @@
+import { t } from "./i18n.js";
 import * as THREE from "three";
 import { color, pass, objectPosition, screenUV, uniform } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
@@ -73,14 +74,14 @@ let seaMovementEnabled = true;
 const seaMovementButton = document.getElementById("seaMovementButton");
 seaMovementButton.addEventListener("click", () => {
     seaMovementEnabled = !seaMovementEnabled;
-    seaMovementButton.title = seaMovementEnabled ? "Pause sea movement" : "Resume sea movement";
+    seaMovementButton.title = t(seaMovementEnabled ? "controls.pauseSeaMovement" : "controls.resumeSeaMovement");
     seaMovementButton.setAttribute("aria-pressed", String(seaMovementEnabled));
 });
 
-function updateSeaMovementButtonVisibility() {
-    const startScreenVisible = document.getElementById("startScreen").style.display !== "none";
+function updateOverviewButtonsVisibility() {
     const annotationOpen = document.getElementById("infobox").style.display !== "none";
-    seaMovementButton.style.display = !startScreenVisible && !annotationOpen ? "inline-flex" : "none";
+    seaMovementButton.style.display = !annotationOpen ? "inline-flex" : "none";
+    document.getElementById("languageButton").style.display = annotationOpen ? "none" : "";
 }
 
 const raycaster = new THREE.Raycaster();
@@ -90,97 +91,14 @@ const textureLoader = new THREE.TextureLoader();
 const dummyModel = new Promise(resolve =>
     gltfLoader.load("resources/dummy.glb", gltf => resolve(gltf.scene))
 );
-const backBtn = document.getElementById("backButton");
 const oceanOnlyLookAt = [80, 80, 180, -20, 14, 20];
 
-const merchantFleetSource = `
-    <div class="stat-citation">IMO register analytics by Marine Benchmark using source data from S&P Global</div>
-`;
-
-const ships = [
-    {
-        name: "container",
-        displayName: "Container ship",
-        shipDensityDataName: "Cargo",
-        path: "resources/cargoship.glb",
-        dummyPosition: new THREE.Vector3(0.03046760852235187, 19.541751861572273, 110.10362384348201),
-        smokeStackPos: new THREE.Vector3(0.5, 45, -57),
-        defaultLookat: [
-            80, 50, 160, // Position
-            -20, 5, 20   // Target
-        ],
-        description: "Container vessels transport all types of goods around the world. In 2026, there were 6767 container vessels registered at the International Maritime Organization.",
-        descriptionSource: merchantFleetSource,
-        stats: {
-            length: { value: "190 m", labelInfo: "HELCOM maritime assessment 2018" },
-            width: { value: "32 m", labelInfo: "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities", valueInfo: "Most commercial merchant vessels have L/B ratios in the range of 5.5 to 7.0. Assume L/B of 6 for container vessels which results in 32 m." },
-            tonnage: { value: "36100 GT", labelInfo: "HELCOM maritime assessment 2018" },
-            crew: { value: 24, labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
-            passenger: { value: "N/A", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)" },
-            speed: { value: "25 kn", labelInfo: "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)" },
-            fuel: { value: "N/A" },
-            propellers: { value: 1, labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
-            propellerSize: { value: "N/A" },
-        }
-    },
-    {
-        name: "cruise",
-        displayName: "Cruise ship",
-        shipDensityDataName: "Passenger",
-        path: "resources/cruiseship.1k.glb",
-        dummyPosition: new THREE.Vector3(-0.7476845712329316, 25.5747184753418, 138.30462720218242),
-        defaultLookat: [
-            75, 70, 230, // Position
-            -20, 5, 20   // Target
-        ],
-        description: "Cruise ships can be compared to small floating towns, sometimes carrying many thousand passengers. In 2026, there were 1137 cruise ships registered at the International Maritime Organization.",
-        descriptionSource: merchantFleetSource,
-        stats: {
-            length: { value: "110 m", labelInfo: "HELCOM maritime assessment 2018" },
-            width: { value: "40 m", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478", valueInfo: "In the article the authors model a reference ship and the same width is assumed here. Note that the authors assumed a much longer vessel (350 m) so the ratio might not be correct as two different sources were used for the length and width." },
-            tonnage: { value: "17300 GT", labelInfo: "HELCOM maritime assessment 2018" },
-            crew: { value: 35, labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
-            passenger: { value: 1865, labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)", valueInfo: "In 2014, cruise ships had a median capacity of ca 1900 people including staff and passengers" },
-            speed: { value: "22 kn", labelInfo: "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478 In the article the authors model" },
-            fuel: { value: "N/A" },
-            propellers: { value: 2, labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
-            propellerSize: { value: "N/A" },
-        }
-    },
-    {
-        name: "tanker",
-        displayName: "Chemical tanker",
-        shipDensityDataName: "Tanker",
-        path: "resources/chemtanker.glb",
-        dummyPosition: new THREE.Vector3(-0.046705809572519456, 17.849744992083682, 72.862765165738),
-        defaultLookat: [
-            80, 50, 160, // Position
-            -20, 5, 20   // Target
-        ],
-        description: "Chemical tankers transport liquid substances, chemical products and biofuels. In 2026, there were 7687 vessels registered at the International Maritime Organization as pure chemical or product/chemical tankers.",
-        descriptionSource: merchantFleetSource,
-        stats: {
-            length: { value: "164 m", labelInfo: "HELCOM maritime assessment 2018" },
-            width: { value: "27 m", labelInfo: "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities", valueInfo: "Tankers vary considerably in their dimensional ratios, but the larger vessels tend to have a moderate L∕B in the range of 5.5 to 6.5”. Assume an L/B ratio of 6, which gives 27 m." },
-            tonnage: { value: "25500 GT", labelInfo: "HELCOM maritime assessment 2018" },
-            crew: { value: 27, labelInfo: "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf" },
-            passenger: { value: "N/A", labelInfo: "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)" },
-            speed: { value: "14 kn", labelInfo: "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)" },
-            fuel: { value: "N/A" },
-            propellers: { value: 1, labelInfo: "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf" },
-            propellerSize: { value: "N/A" },
-        },
-        statInfoLabel: { crew: "Crew headcount incl. officers" },
-
-    }
-];
-
-function advanceShip(step) {
-    const name = currentShip ? currentShip.name : ships[0].name;
-    const i = ships.findIndex(s => s.name === name);
-    const iNew = mod(i + step, ships.length);
-    loadShip(ships[iNew].name);
-}
+const ships = [{
+    name: "cruise",
+    path: "resources/cruiseship.1k.glb",
+    dummyPosition: new THREE.Vector3(-0.7476845712329316, 25.5747184753418, 138.30462720218242),
+    defaultLookat: [75, 70, 230, -20, 5, 20]
+}];
 
 function loadShip(name, onLoad, onError) {
     const requestId = ++loadShipRequestId;
@@ -273,7 +191,7 @@ function loadShip(name, onLoad, onError) {
         }
         labelScene.add(annotationSprites);
         loaderElement.style.display = "none";
-        updateSeaMovementButtonVisibility();
+        updateOverviewButtonsVisibility();
 
         // If we have a selected annotation, keep it open for the
         // new ship model if the annotation is present there too.
@@ -532,7 +450,6 @@ function init() {
     })
 
     document.addEventListener("keydown", event => {
-        if (document.getElementById("startScreen").style.display !== "none") return;
 
         switch (event.key) {
             case "c": animateCamera(); break;
@@ -550,10 +467,6 @@ function init() {
             case "Backspace": clearAnnotationSelection(); break;
             case "ArrowLeft": advanceAnnotation(-1); break;
             case "ArrowRight": advanceAnnotation(1); break;
-            case "ArrowUp": advanceShip(-1); break;
-            case "ArrowDown": advanceShip(1); break;
-            case "PageUp": advanceShip(-1); break;
-            case "PageDown": advanceShip(1); break;
         }
     });
 }
@@ -595,7 +508,7 @@ function advanceAnnotation(step) {
 
 window.selectAnnotationByName = (annotationName) => {
     const sprite = annotationSprites.children.find(
-        a => a.annotation.spec.name === annotationName
+        a => a.annotation.originalSpec.name === annotationName || a.annotation.spec.name === annotationName
     );
     if (sprite) selectAnnotation(sprite.annotation);
 }
@@ -603,6 +516,7 @@ window.selectAnnotationByName = (annotationName) => {
 function selectAnnotation(a) {
     if (!currentShip || !a) return;
 
+    selectedAnnotation = a.sprite;
     const requestId = ++detailModelRequestId;
     const shipName = currentShip.name;
     const p = a.spec.shipTypes?.[currentShip.name];
@@ -613,7 +527,7 @@ function selectAnnotation(a) {
         return;
     }
 
-    if (a.sprite && document.getElementById("startScreen").style.display === "none") {
+    if (a.sprite) {
         a.sprite.visited = true;
         a.sprite.material.color.set(annotationVisitedColor);
     }
@@ -629,7 +543,7 @@ function selectAnnotation(a) {
     document.getElementById("textbox").innerHTML =
         `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
     document.getElementById("infobox").style.display = "flex";
-    updateSeaMovementButtonVisibility();
+    updateOverviewButtonsVisibility();
 
     a.onSelect();
 
@@ -706,7 +620,7 @@ function clearAnnotationSelection() {
     controls.maxDistance = 500;
     controls.setLookAt(...currentShip.defaultLookat, true);
     document.getElementById("infobox").style.display = "none";
-    updateSeaMovementButtonVisibility();
+    updateOverviewButtonsVisibility();
     selectedAnnotation = undefined;
     mapView.clearSelection();
 
@@ -734,7 +648,6 @@ function clearDetailModel() {
 }
 
 function onPointerMove(event) {
-    if (document.getElementById("startScreen").style.display !== "none") return;
 
     if (highlightedAnnotation) {
         highlightedAnnotation.material.color.set(highlightedAnnotation.visited ? annotationVisitedColor : '#ffffff');
@@ -830,34 +743,6 @@ function animate(timestamp, delta = clock.getDelta()) {
     }
 }
 
-backBtn.addEventListener("click", () => {
-    loadShipRequestId++;
-    detailModelRequestId++;
-    clearDetailModel();
-    document.getElementById("loader").style.display = "none";
-    backBtn.style.display = "none";
-    seaMovementButton.style.display = "none";
-    document.getElementById("acknowledgementButton").style.display = "none";
-    document.getElementById("titleboxWrapper").style.display = "none";
-
-    if (currentShip?.model) {
-        modelGroup.remove(currentShip.model);
-        currentShip = undefined;
-    }
-    labelScene.remove(annotationSprites);
-    annotationSprites = new THREE.Group();
-    selectedAnnotation = undefined;
-    highlightedAnnotation = undefined;
-    document.getElementById("infobox").style.display = "none";
-    mapView.clearSelection();
-    annotationLabel.style.display = "none";
-    smoke.visible = false;
-    water.visible = true;
-    controls.setLookAt(...oceanOnlyLookAt, false);
-
-    document.getElementById("startScreen").style.display = "flex";
-    window.dispatchEvent(new Event("shipselectoropen"));
-});
 
 //reset page afte 5 minutes of inactivity
 (() => {
@@ -884,3 +769,16 @@ backBtn.addEventListener("click", () => {
 })();
 
 export { ships, init, loadShip, registerSW };
+
+window.addEventListener("languagechange", () => {
+    seaMovementButton.title = t(seaMovementEnabled ? "controls.pauseSeaMovement" : "controls.resumeSeaMovement");
+    if (highlightedAnnotation) annotationLabel.textContent = highlightedAnnotation.annotation.spec.name;
+    if (selectedAnnotation) selectAnnotation(selectedAnnotation.annotation);
+});
+document.getElementById("textbox").addEventListener("click", event => {
+    const image = event.target.closest("[data-image-index]");
+    if (!image || !selectedAnnotation) return;
+    const item = selectedAnnotation.annotation.spec.images[image.dataset.imageIndex];
+    window.populateImageModal(item.header, item.path, item.description, item.attribution);
+    document.getElementById("imageModal").open = true;
+});

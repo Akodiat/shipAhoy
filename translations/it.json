@@ -116,5 +116,26 @@
             }
         },
         "plotCaption": "Grafico a barre che mostra la percentuale della flotta che utilizza combustibili convenzionali rispetto a quelli alternativi (GNL, GPL, metanolo, idrogeno e ammoniaca). I dati sono tratti da <a target=\"_blank\" href=\"https://afi.dnvgl.com/Statistics\">Alternative Fuels Insights - DNV</a> (consultato a maggio 2025)."
+    },
+    "controls": {
+        "overview": "Torna alla panoramica",
+        "loadError": "Impossibile caricare la nave. Ricarica la pagina per riprovare.",
+        "pauseSeaMovement": "Metti in pausa il mare",
+        "resumeSeaMovement": "Riprendi il movimento del mare",
+        "seaMovement": "Movimento del mare",
+        "loading": "Caricamento:",
+        "close": "Chiudi"
+    },
+    "annotationSections": {
+        "sdgsAtRisk": "Obiettivi di sviluppo sostenibile a rischio",
+        "environmentalImpact": "Impatto ambientale",
+        "humanImpact": "Impatto umano",
+        "images": "Immagini",
+        "references": "Riferimenti"
+    },
+    "map": {
+        "seaMap": "Carta nautica",
+        "marineAreas": "Aree marine HELCOM",
+        "intensity": "Intensità"
     }
 }
