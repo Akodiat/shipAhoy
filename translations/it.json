@@ -1,0 +1,120 @@
+{
+    "app": {
+        "name": "Ship Ahoy!",
+        "tagline": "Allontanarsi dalla scarsa visibilità per rivelare le pressioni e gli impatti ambientali del trasporto marittimo.",
+        "contact": "Questo lavoro è ancora in corso! Per qualsiasi domanda o se desideri contribuire, contatta Ida-Maja Hassellöv <br>(<a href=\"mailto:ida-maja@chalmers.se\">ida-maja@chalmers.se</a>)."
+    },
+    "acknowledgements": {
+        "button": "Ringraziamenti",
+        "heading": "<strong>Ringraziamenti</strong>",
+        "thanks": "Grazie a tutti coloro che hanno contribuito con contenuti a questo progetto!",
+        "contributors": "Un ringraziamento speciale a: Anna Lunde Hermansson, Dr Jessica Redfern, Dr Erik Ytreberg, Dr Fayas Kanchiralla, Dr Cathryn Clarke Murray, Prof Rickard Bensow, Dr Jenette Mujingni, Dr Kent Salo, Dr Jonas Sjöblom, Dr Selma Brynolf",
+        "project": "Questa applicazione è stata sviluppata nell'ambito di un progetto di supporto alla visualizzazione di <a target=\"_blank\" href=\"https://infravis.se/\">InfraVis</a>. <a target=\"_blank\" href=\"https://github.com/Akodiat/shipAhoy/\">Codice sorgente</a>",
+        "dischargeData": "Dati sugli scarichi &copy; Jalkanen et al: <a target=\"_blank\" href=\"https://zenodo.org/records/4063643\">10.5281/zenodo.4063643</a>.",
+        "mapData": "Dati cartografici &copy; contributori di <a target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> e <a target=\"_blank\" href=\"http://www.openseamap.org\">OpenSeaMap</a>. Aree marine &copy; <a target=\"_blank\" href=\"https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033\">EEA</a>."
+    },
+    "sdg": {
+        "goal1": "Sconfiggere la povertà",
+        "goal2": "Sconfiggere la fame",
+        "goal3": "Salute e benessere",
+        "goal4": "Istruzione di qualità",
+        "goal5": "Parità di genere",
+        "goal6": "Acqua pulita e servizi igienico-sanitari",
+        "goal7": "Energia pulita e accessibile",
+        "goal8": "Lavoro dignitoso e crescita economica",
+        "goal9": "Imprese, innovazione e infrastrutture",
+        "goal10": "Ridurre le disuguaglianze",
+        "goal11": "Città e comunità sostenibili",
+        "goal12": "Consumo e produzione responsabili",
+        "goal13": "Agire per il clima",
+        "goal14": "La vita sott'acqua",
+        "goal15": "La vita sulla terra",
+        "goal16": "Pace, giustizia e istituzioni solide",
+        "goal17": "Partnership per gli obiettivi"
+    },
+    "underwaterRadiatedNoise": {
+        "name": "Rumore subacqueo irradiato",
+        "description": "<p> Il rumore subacqueo è considerato una forma di inquinamento energetico. Una panoramica sul rumore subacqueo generato dalle navi e i conseguenti impatti ambientali è stata pubblicata dall'EMSA nel 2022 <a target=\"_blank\" href=\"https://www.emsa.europa.eu/protecting-the-marine-environment/underwater-noise/download/6881/4503/23.html\">[1]</a>. </p> <p> “Nel 2014 l'Organizzazione Marittima Internazionale ha approvato linee guida volontarie per ridurre il rumore subacqueo prodotto dalle navi commerciali <a target=\"_blank\" href=\"www.imo.org/en/MediaCentre/HotTopics/Pages/Noise.aspx\">[2]</a>. Tali linee guida si concentravano su caratteristiche progettuali in grado di ridurre le principali fonti di rumore subacqueo, ovvero le eliche, la forma dello scafo e i macchinari di bordo. In linea con queste indicazioni, nel 2015 Maersk ha sottoposto a retrofit cinque grandi navi portacontainer e ha riscontrato che la riduzione della cavitazione dell'elica diminuiva i livelli di pressione sonora a bassa frequenza di 6-8 dB, migliorando al contempo l'efficienza del carburante.” <a target=\"_blank\" href=\"https://www.science.org/doi/10.1126/science.aba4658\">[3]</a> </p> <p> L'UE ha preso l'iniziativa di regolamentare il rumore subacqueo <a target=\"_blank\" href=\"https://environment.ec.europa.eu/news/zero-pollution-and-biodiversity-first-ever-eu-wide-limits-underwater-noise-2022-11-29_en\">[4]</a>. Si tratta di un ottimo passo, ma il monitoraggio resta una sfida. </p>"
+    },
+    "scrubberWater": {
+        "name": "Acque di scarico degli scrubber",
+        "description": "<p> Gli scrubber vengono installati sulle navi per consentire a queste di continuare a utilizzare i combustibili  tradizionali ad elevato tenore di zolfo, rispettando comunque le normative più severe che limitano il contenuto di ossidi di zolfo nei gas di scarico. In uno scrubber, l'acqua viene spruzzata sui gas di scarico, riducendo la concentrazione di SOx a livelli conformi alla normativa. L'acqua utilizzata dello scrubber non solo assorbe gli SOx, formando acido solforico e diventando fortemente acida, ma cattura anche altri contaminanti (ad es. metalli e sostanze organiche) che vengono poi scaricati direttamente nell'ambiente marino. </p> <p> L'uso degli scrubber introduce una nuova fonte di inquinamento per l'ambiente marino, con effetti avversi significativi sugli organismi marini anche a concentrazioni molto basse. L'uso di uno scrubber comporta inoltre un consumo di carburante superiore del 2-3%, con un’impronta climatica maggiore rispetto a quella di una nave priva di scrubber. </p>",
+        "Impatto ambientale": "Lo scarico delle acque degli scrubber determina un aumento del carico di contaminanti nell'ambiente marino, tra cui metalli, idrocarburi policiclici aromatici (IPA) e IPA alchilati. L'aggiunta di un acido forte (acido solforico) può contribuire a ridurre la capacità tampone (ossia l'alcalinità) dei mari, con possibili effetti sul ciclo del carbonio. L'aumento delle emissioni di gas serra contribuirà al riscaldamento globale.",
+        "Impatto umano": "Ridurre gli SOx e il particolato nei gas di scarico può avere effetti positivi sulla salute umana. Tuttavia, recenti studi suggeriscono che lo scrubber produca un numero maggiore di particelle di dimensioni più piccole, che sono quelle con i maggiori effetti dannosi sull'apparato respiratorio.",
+        "immagini": {
+            "scrubberSystem": {
+                "header": "Scrubber a ciclo aperto e a ciclo chiuso",
+                "description": "Illustrazione di due diversi sistemi di scrubber, a ciclo aperto e a ciclo chiuso: nel ciclo aperto (A) l'acqua di mare viene continuamente pompata e scaricata, mentre nel ciclo chiuso (B) la maggior parte dell'acqua viene rimessa in circolo con l'aggiunta di una soluzione alcalina. I sistemi ibridi possono funzionare sia a ciclo aperto sia a ciclo chiuso. Progetto EMERGE",
+                "attribution": "Illustrazione: Anna Lunde Hermansson"
+            },
+            "seaUrchin": {
+                "header": "Esposizione dei ricci di mare",
+                "description": "Alcune anomalie osservate nelle larve di Psammechinus miliaris (riccio di mare) dopo 72 ore di esposizione all'acqua dello scrubber. Gli effetti avversi sul successo della fecondazione e sullo sviluppo larvale sono stati osservati anche alle diluizioni più basse dell'acqua dello scrubber, a conferma che essa potrebbe avere effetti avversi sull'intero ciclo vitale degli organismi marini.",
+                "attribution": "Zapata-Restrepo,L., Williams,I., (2025) [Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water](https://doi.org/10.1016/j.marenvres.2025.107157), Marine Environmental Research."
+            },
+            "mussel": {
+                "header": "Esposizione dei mitili",
+                "description": "Alcune anomalie osservate nelle larve di Mytilus edulis (cozza) dopo 72 ore di esposizione all'acqua dello scrubber. Frecce: ipertrofia del mantello. Punta di freccia: anomalia della cerniera. Gli effetti avversi sul successo della fecondazione e sullo sviluppo larvale sono stati osservati anche alle diluizioni più basse dell'acqua dello scrubber, a conferma che essa potrebbe avere effetti avversi sull'intero ciclo vitale degli organismi marini.",
+                "attribution": "Zapata-Restrepo,L., Williams,I., (2025) [Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water](https://doi.org/10.1016/j.marenvres.2025.107157), Marine Environmental Research."
+            },
+            "vanadium": {
+                "header": "Stima dell'apporto di vanadio nel 2018",
+                "description": "Stima dell'apporto di vanadio nella Zona Economica Esclusiva svedese nel 2018: lo scarico delle acque di scrubber a ciclo aperto è una fonte significativa. Nel 2018, nel Mar Baltico solo 178 navi erano dotate di scrubber.",
+                "attribution": "Ytreberg, E., Hansson, K., Lunde Hermansson, A., Parsmo, R., Lagerström, M., Jalkanen, J.P., Hassellöv, I.M., 2022. [Metal and PAH loads from ships and boats, relative other sources, in the Baltic Sea](https://doi.org/10.1016/j.marpolbul.2022.113904). Mar. Pollut. Bull. 182, 113904."
+            }
+        },
+        "plotCaption": "Grafico che mostra il numero di navi che hanno installato (o scelto di installare) scrubber dal 2007 al 2028. I dati sono tratti da <a target=\"_blank\" href=\"https://afi.dnvgl.com/Statistics\">Alternative Fuels Insights - DNV</a> (consultato a maggio 2025).",
+        "chart": {
+            "description": "Scrubber installati DNV AFI",
+            "encoding": {
+                "x": {
+                    "title": "Anno"
+                },
+                "y": {
+                    "title": "N. di navi (dati raccolti a maggio 2025)"
+                },
+                "tooltip": {
+                    "numberOfShips": {
+                        "title": "Numero di navi"
+                    },
+                    "year": {
+                        "title": "Anno"
+                    }
+                }
+            }
+        }
+    },
+    "exhaustGas": {
+        "name": "Gas di scarico",
+        "description": "<p> La maggior parte della flotta commerciale odierna funziona ancora con combustibili fossili convenzionali: olio combustibile pesante (HFO), gasolio marino (MGO) e combustibili ibridi (oli combustibili a bassissimo tenore di zolfo, VLSFO, e a tenore di zolfo ultra-basso, ULSFO) rappresentano oltre il 99% della quota di mercato dei combustibili della flotta in esercizio (vedi il grafico a barre qui sotto, notando la scala non lineare). </p> <p> I gas di scarico della combustione convenzionale sono costituiti da gas serra (ad es. anidride carbonica, protossido di azoto e acqua), ossidi di azoto (NOx), ossidi di zolfo (SOx), composti organici volatili (COV) e particolato (PM) composto da fuliggine/black carbon (comprese sostanze organiche non volatili) e ceneri (contenenti metalli). </p> <p> Oltre a emettere gas serra, con una flotta mercantile che si stima sia responsabile di quasi il 3% delle emissioni globali di CO2, i prodotti della combustione possono contribuire all'acidificazione (CO2 e SOx), a morti premature per malattie respiratorie (ad es. PM) e alla diffusione a breve e lunga distanza di sostanze pericolose (ad es. metalli e sostanze organiche). </p> <p> Sono state adottate alcune misure per ridurre l'impatto negativo dei gas di scarico sulla qualità dell'aria e sulla salute umana, tra cui l'introduzione di combustibili alternativi (ad es. metanolo e GNL), la riduzione catalitica selettiva per abbattere gli NOx e gli scrubber per ridurre gli SOx. Tuttavia, l'uso degli scrubber ha comportato una maggiore pressione sull'ambiente marino e un'impronta climatica più elevata (vedi <a onclick=\"selectAnnotationByName('Scrubber water')\">Acque di scarico degli scrubber</a>). </p>",
+        "chart": {
+            "encoding": {
+                "x": {
+                    "title": "Quota di mercato del combustibile (%)"
+                },
+                "y": {
+                    "title": "Tipo di combustibile"
+                },
+                "tooltip": {
+                    "fuelType": {
+                        "title": "Tipo di combustibile"
+                    },
+                    "fuelMarketShare": {
+                        "title": "Quota di mercato del combustibile (%)"
+                    }
+                }
+            },
+            "categories": {
+                "fuel": {
+                    "conventionalFuel": "Combustibile convenzionale",
+                    "lng": "GNL",
+                    "lpg": "GPL",
+                    "methanol": "Metanolo",
+                    "hydrogen": "Idrogeno",
+                    "ammonia": "Ammoniaca"
+                }
+            }
+        },
+        "plotCaption": "Grafico a barre che mostra la percentuale della flotta che utilizza combustibili convenzionali rispetto a quelli alternativi (GNL, GPL, metanolo, idrogeno e ammoniaca). I dati sono tratti da <a target=\"_blank\" href=\"https://afi.dnvgl.com/Statistics\">Alternative Fuels Insights - DNV</a> (consultato a maggio 2025)."
+    }
+}

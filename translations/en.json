@@ -1,0 +1,729 @@
+{
+  "annotations": {
+    "anchorage": {
+      "name": "Anchorage",
+      "environmentalImpact": "Underwater noise, destruction of seabed habitat",
+      "humanImpact": "Damage to underwater infrastructure (e.g. cables)"
+    },
+    "propulsionMomentum": {
+      "name": "Propulsion momentum",
+      "description": "In 2023, the north-western Mediterranean Sea was designated a Particularly Sensitive Sea Area by the International Maritime Organization (IMO) with associated protective measures to reduce the number of ship strikes of whales (MEPC 380(80)).",
+      "environmentalImpact": "Ship strikes of marine mammals, groundings. For more information about ship strikes, see the <a target=\"_blank\" href=\"https://iwc.int/management-and-conservation/ship-strikes\">International Whaling Commision</a>",
+      "images": {
+        "nearMiss": {
+          "header": "A near-miss between a whale and a container vessel. Picture: CINMS/NOAA",
+          "description": "A near-miss between a whale and a container vessel.",
+          "attribution": "CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)"
+        },
+        "carriedWhale": {
+          "header": "A struck whale can be carried unnoticed, far from the site of the collision.",
+          "description": "A struck whale can be carried unnoticed, far from the site of the collision.",
+          "attribution": "CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)"
+        },
+        "humpback": {
+          "header": "A ship struck humpback. Picture: NOAA",
+          "description": "A ship struck humpback",
+          "attribution": "CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)"
+        },
+        "yacht": {
+          "header": "Any type of vessel and species of cetacean can be involved. Picture: Fabian Ritter, MEER e.V.",
+          "description": "Any type of vessel and species of cetacean can be involved",
+          "attribution": "CINMS/NOAA, [International Whaling Commision](https://iwc.int/management-and-conservation/ship-strikes)"
+        }
+      },
+      "plotCaption": "Ship strikes per ocean. Data from a 2022 analysis by the IWC. https://iwc.int/management-and-conservation/ship-strikes",
+      "chart": {
+        "description": "Ship strikes per ocean by assessment class",
+        "encoding": {
+          "y": {
+            "title": "Ocean"
+          },
+          "x": {
+            "title": "Cases"
+          },
+          "color": {
+            "title": "Assessment"
+          },
+          "tooltip": {
+            "ocean": {
+              "title": "Ocean"
+            },
+            "assessment": {
+              "title": "Assessment"
+            },
+            "cases": {
+              "title": "Cases"
+            }
+          }
+        },
+        "categories": {
+          "ocean": {
+            "atlantic": "Atlantic",
+            "pacific": "Pacific",
+            "indian": "Indian",
+            "southern": "Southern",
+            "arctic": "Arctic"
+          },
+          "status": {
+            "definite": "Definite",
+            "probable": "Probable",
+            "possible": "Possible"
+          }
+        }
+      }
+    },
+    "biofouling": {
+      "name": "Biofouling",
+      "description": "<p> All structures in the marine environment are exposed to fouling pressure, where the ship hull, piping, and sea chests are subject to biological growth. The usual ecological succession order starts with microbial films, followed by algal mats and subsequent growth of barnacles, worms, and mussels that in turn can act as shelters for other species. <p> Biofouling results in the spread of invasive species and also a higher climate footprint due to the fuel penalty from increased roughness of the hull. </p> <p> Measures against biofouling involves antifouling paints (see <a onclick=\"selectAnnotationByName('Antifouling')\">Antifouling</a>), ballast water treatment systems (see <a onclick=\"selectAnnotationByName('Ballast water')\">Ballast water</a>), and antifouling agents in sea chests (see <a onclick=\"selectAnnotationByName('Cooling water')\">Cooling water</a>). </p>",
+      "environmentalImpact": "Spreading of invasive species and increased emissions of e.g. green house gases, particles and NOx due to higher fuel consumption resulting from increased drag, friction and manouverability. Increased air emissions impact air quality and global warming.",
+      "humanImpact": "Higher emissions can reduce air quality and increase the risk of respiratory complications and adverse health effects.",
+      "images": {
+        "tubewormPanel": {
+          "header": "Biofouling 1 - Australian tubeworm",
+          "description": "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+          "attribution": "Photo: Magnus Dahlström"
+        },
+        "tubewormCloseup": {
+          "header": "Biofouling 2 - Australian tubeworm",
+          "description": "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+          "attribution": "Photo: Magnus Dahlström"
+        },
+        "tubewormColony": {
+          "header": "Biofouling 3 - Australian tubeworm",
+          "description": "Australian tubeworm (Ficopomatus enigmaticus) is a well-known alien species that is mainly spread via ship hulls. The Australian tubeworm is widespread on the South English coast, Californa and South America and the photo shows the first specimen that was detected in Sweden (in 2013) in Malmö., CHANGE-project.",
+          "attribution": "Photo: Magnus Dahlström"
+        }
+      }
+    },
+    "antifouling": {
+      "name": "Antifouling",
+      "description": "<p> Antifouling coatings are applied to the ship hull to avoid attachment and growth of sessile species (see <a onclick=\"selectAnnotationByName('Biofouling')\">Biofouling</a>) and reduce the fuel penalty, of increased surface roughness, to secure manoeuvring capabilities and also to prevent spreading of invasive species. Antifouling coatings are often biocide based, releasing toxic compounds (often copper) to the marine environment. Today, biocide free alternatives are also available on the market. </p> <p> Inefficient antifouling performance, where the ship hull gets covered by a thin layer of slime, can increase the fuel consumption by 30% and contribute to the spreading of invasive species. However, anti-fouling coatings that leak biocides will contribute to an increased contaminant load of copper and other biocides with potential toxic effects in the marine environment. </p>",
+      "environmentalImpact": "Release of chemicals and paint particles (including (micro)plastics) from antifouling coating may adversely impact marine life. In-water hull cleaning can also result in release of fouling organisms (see <a onclick=\"selectAnnotationByName('Biofouling')\">Biofouling</a>) and contribute to the spreading of invasive species.",
+      "humanImpact": "Trophic transfer by the bioaccumulation of chemicals risk to adversely affect human health. The application and maintenance of antifouling coatings involves a potential risk of chemical exposure to workers.",
+      "images": {
+        "inertCoating": {
+          "header": "Inert coating",
+          "description": "Fouling on static idle panels. Panel painted with inert coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
+          "attribution": "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, [A novel tool for cost and emission reduction related to ship underwater hull maintenance](http://dx.doi.org/10.1016/j.jclepro.2022.131882), J. Clean. Prod. 356 (2022), 131882."
+        },
+        "copperCoating": {
+          "header": "Biocidal copper coating",
+          "description": "Fouling on static idle panels. Panel painted with biocidal copper coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
+          "attribution": "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, [A novel tool for cost and emission reduction related to ship underwater hull maintenance](http://dx.doi.org/10.1016/j.jclepro.2022.131882), J. Clean. Prod. 356 (2022), 131882."
+        },
+        "siliconeCoating": {
+          "header": "Biocidefree silicon coating",
+          "description": "Fouling on static idle panels. Panel painted with foul-release biocide-free silicone coating. Submerged 250 days in Tjärnö, Skagerrak on the Swedish Westcoast. Salinity 26 psu.",
+          "attribution": "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, [A novel tool for cost and emission reduction related to ship underwater hull maintenance](http://dx.doi.org/10.1016/j.jclepro.2022.131882), J. Clean. Prod. 356 (2022), 131882."
+        },
+        "hullmaster": {
+          "header": "HullMASTER",
+          "description": "Illustration showing the HullMASTER tool.",
+          "attribution": "D.R. Oliveira, M. Lagerström, L. Granhag, S. Werner, A.I. Larsson, E. Ytreberg, [A novel tool for cost and emission reduction related to ship underwater hull maintenance](http://dx.doi.org/10.1016/j.jclepro.2022.131882), J. Clean. Prod. 356 (2022), 131882."
+        }
+      }
+    },
+    "echo": {
+      "name": "Echo"
+    },
+    "ballastWater": {
+      "name": "Ballast water",
+      "description": "<p> Ballast water is used to ensure vessels stability and optimal vessel trim. Ballast water is pumped into ballast tanks when a ship has delivered cargo to a port and is departing with less cargo or no cargo. Ballast water is then transported and released at the next port-of-call where the ship picks up more cargo. When a ship is receiving or delivering cargo to a number of ports, it may release or take on a portion of ballast water at each port and the ship’s ballast water can contain a mix of waters from multiple ports. </p> <p> Ballast water discharge has been identified as a main vector in spreading of non-indigenous species that under some circumstances may become invasive causing disruptive changes of local ecosystems. Since 2017 the Ballast Water Management Convention entered into force, implying that ships today must install ballast water treatment systems to reduce the risk of spreading invasive species across the globe. One example is shore crabs, and while the European shore crab is posing a problem in Asia and the American west coast, the Asian shore crab is posing a problem in European waters. </p> <p> The recent global requirements to treat the water at ballasting and/or de-ballasting can contribute to contaminant load of (often halogenated) disinfection by-products. </p>",
+      "images": {
+        "dischargeHotspots": {
+          "header": "Ballast water discharge hotspots in the EU 2018",
+          "description": "Ballast water discharge in European seas in 2018. Bar height indicate the magnitude of discharge. Bars are calculated for 0.5×0.5 deg grid cells. [Dataset metadata](https://metadata.helcom.fi/geonetwork/srv/eng/catalog.search#/metadata/df0b81ff-824a-4550-8948-fb71221baacd)."
+        },
+        "shoreCrab": {
+          "header": "Female Asian shore crab with newly hatched larvae in a glass beaker. Foto: Björn Källström. Reproduced with permission from Granhag et al. 2026.",
+          "description": "Female Asian shore crab with newly hatched larvae in a glass beaker.",
+          "attribution": "Foto: Björn Källström. Reproduced with permission from [Granhag et al. 2026](https://www.naturvardsverket.se/4a1e5d/globalassets/media/publikationer-pdf/7200/978-91-620-7214-8.pdf)."
+        }
+      },
+      "references": "<p> Granhag, L., Källström, B., Fredriksson, S., Gren, I.-M., Brunnabend, S.-E. and Arneborg, L. (2026). <a target=\"_blank\" href=\"https://www.naturvardsverket.se/4a1e5d/globalassets/media/publikationer-pdf/7200/978-91-620-7214-8.pdf\">Handlingsplan för invasiva arter i akvatisk miljö</a>. Rapport 7412. 79 pp. ISBN: 978-91-620-7214-8. </p> <p> Bailey, S. A., Brown, L., Campbell, M. L., Canning-Clode, J., Carlton, J. T., Castro, N., Chainho, P., Chan, F. T., Creed, J. C., Curd, A., Darling, J., Fofonoff, P., Galil, B. S., Hewitt, C. L., Inglis, G. J., Keith, I., Mandrak, N. E., Marchini, A., McKenzie, C. H.,…Zhan, A. B. (2020). <a target=\"_blank\" href=\"https://doi.org/10.1111/ddi.13167\">Trends in the detection of aquatic non-indigenous species across global marine, estuarine and freshwater ecosystems: A 50-year perspective</a>. Diversity and Distributions, 26(12), 1780-1797. </p> <p> Bailey, S. A., Henein, C. M., Gorgula, S., Barton, D. P., Hayes, B., Abeysekara, S., Drake, L. A., Hernandez, M. R., MacIsaac, H. J., Merksamer, M., Omura, T., Outinen, O., Reavie, E. D., Riggio, M., Subramanian, M., Takahashi, N., Wang, Z., Lee, K., &amp; Shon, M. (2025). <a target=\"_blank\" href=\"https://doi.org/10.3391/mbi.2025.16.3.02\">Implementation of the Ballast Water Management Convention: taking stock of progress and remaining challenges</a>. Management of Biological Invasions, 16(3), 601-614. </p>"
+    },
+    "sewage": {
+      "name": "Sewage",
+      "description": "<p> The generation of sewage onboard will depend on the number of persons onboard, both crew and passengers. Large cruise vessels can be compared to small floating towns and often have sewage treatment plants onboard, to be able to meet discharge limits that may apply in sensitive sea areas, such as the Baltic Sea. Analogous with sewage generated from households and public facilities, the onboard generated sewage contains organic matter and nutrients such as nitrogen and phosphorus that contribute to eutrophication. In severely eutrophied areas, the excess nutrients cause intensive algal blooms, and subsequently spreading of anoxic zones in the bottom water during degradation of the large volumes of algal biomass. Eutrophication and anoxic zones may in turn reduce the possibilities for e.g. commercially important fish to reproduce (Moldanova et al. 2021). In addition to nutrients, sewage may also contain pharmaceutical residues that may affect marine organisms negatively. Sewage discharges are regulated through MARPOL Annex IV. </p>",
+      "images": {
+        "discharges": {
+          "header": "Figure reproduced with permission from Jalkanen et al. 2021.",
+          "description": "Sewage discharges from shipping.",
+          "attribution": "Figure reproduced with permission from [Jalkanen et al. 2021](https://doi.org/10.5194/os-17-699-2021)."
+        }
+      },
+      "references": "<p> Jalkanen, J. P., Johansson, L., Wilewska-Bien, M., Granhag, L., Ytreberg, E., Eriksson, K. M., Yngsell, D., Hassellöv, I.-M., Magnusson, K., Raudsepp, U., Maljutenko, I., Winnes, H., &amp; Moldanova, J. (2021). <a target=\"_blank\" href=\"https://doi.org/10.5194/os-17-699-2021\">Modelling of discharges from Baltic Sea shipping</a>. <em>Ocean Science, 17</em>(3), 699-728. </p> <p> Moldanová, J., Hassellöv, I.-M., Matthias, V., Fridell, E., Jalkanen, J.-P., Ytreberg, E., Quante, M., Tröltzsch, J., Maljutenko, I., Raudsepp, U., &amp; Eriksson, K. M. (2021). <a target=\"_blank\" href=\"https://doi.org/10.1007/s13280-021-01597-9\">Framework for the environmental impact assessment of operational shipping</a>. <em>Ambio</em>. </p>"
+    },
+    "greyWater": {
+      "name": "Grey water",
+      "description": "<p> The volume of grey water, i.e. effluents from laundry, galley (kitchen), sinks and showers, will depend on the number of persons, both crew and passengers, onboard the ship. Grey water is generally produced in large volumes per day, yet there is no regulation in place with respect to discharge. Sampling of grey water onboard ships is challenging, and different ships may have different solutions for how to handle the grey water: as separate waste streams for laundry, galley etc., partly mixed with sewage, and there are ships that discharge grey water in port reception facilities. An increasing number of reports have pointed at grey water as a source of microplastics to the marine environment. </p>",
+      "images": {
+        "samples": {
+          "header": "Samples of grey water from one vessel, for continued chemical analysis in lab. Photo reproduced with permission from Mujingni et al. 2024.",
+          "description": "Samples of grey water from one vessel, for continued chemical analysis in lab.",
+          "attribution": "Photo reproduced with permission from [Mujingni et al. 2024](https://doi.org/10.1016/j.marpolbul.2024.116993)."
+        },
+        "sampling": {
+          "header": "Sampling grey water. Photo reproduced with permission from Mujingni et al. 2024.",
+          "description": "Sampling grey water.",
+          "attribution": "Photo reproduced with permission from [Mujingni et al. 2024](https://doi.org/10.1016/j.marpolbul.2024.116993)."
+        },
+        "microplastics": {
+          "header": "Photo reproduced with permission from Mujingni et al. 2026.",
+          "description": "Photo reproduced with permission from Mujingni et al. 2026.",
+          "attribution": "Photo reproduced with permission from [Mujingni et al. 2026](https://doi.org/10.1016/j.envpol.2026.127810)."
+        }
+      },
+      "references": "<p> Mujingni, J. T., Ytreberg, E., Hassellöv, I. M., Rathnamali, G. B. M., Hassellöv, M., &amp; Salo, K. (2024). <a target=\"_blank\" href=\"https://doi.org/10.1016/j.marpolbul.2024.116993\">Sampling strategy, quantification, characterization and hazard potential assessment of greywater from ships in the Baltic Sea</a>. <em>Marine Pollution Bulletin, 208</em>, 116993. </p> <p> Mujingni, J. T., Ytreberg, E., Hassellöv, I. M., Rathnamali, G. B. M., Hassellöv, M., &amp; Salo, K. (2026). <a target=\"_blank\" href=\"https://doi.org/10.1016/j.envpol.2026.127810\">Quantification of microplastics in ship-generated greywater and their contribution to Baltic marine pollution</a>. <em>Environmental Pollution, 395</em>, 127810. </p>"
+    },
+    "tankCleaning": {
+      "name": "Tank cleaning",
+      "description": "<p> Discharges of tank cleaning residues to the marine environment stem from chemical tankers washing their tanks to avoid cross contamination between cargos. Current regulations on liquid bulk products (excluding mineral oils) often allow discharge of these cargo residues to sea. Common substances transported in the Baltic Sea entail sodium hydroxide, methanol and biofuels such as fatty acid methyl esters and tall oil. </p>",
+      "environmentalImpact": "The environmental impact of tank cleaning effluents is challenging to assess, partly due to the large heterogeneities among the discharged substances, but mainly because lack of available data on when, where, what products and how large volumes that are discharged. It is, however, evident that these effluents are regularly discharged to marine protected areas (Larsson et al., 2024). Moreover, there are indications that tank cleaning residues from some of these liquid bulk products may exceed levels that are considered safe for the marine environment (Lunde Hermansson & Hassellöv, 2022).",
+      "images": {
+        "underwaterOutlet": {
+          "header": "Underwater outlet. Courtesy of the Swedish Coastguard.",
+          "description": "Underwater outlet"
+        },
+        "tankerCleaning": {
+          "header": "Tall oil tanker tank cleaning operation. Courtesy of the Swedish Coastguard.",
+          "description": "Tall oil tanker tank cleaning operation"
+        },
+        "tankCleaning": {
+          "header": "Tall oil tank cleaning operation. Courtesy of the Swedish Coastguard.",
+          "description": "Tall oil tank cleaning operation"
+        }
+      },
+      "references": "<p> Larsson, K., Carlson, U., &amp; Stålnacke, E. (2024). Recurrent discharges of non-petroleum substances from chemical tankers in Swedish marine Natura 2000 sites are against the aims of EU Directives. <em>Ambio</em>. <a target=\"_blank\" href=\"https://doi.org/10.1007/s13280-024-02103-7\">https://doi.org/10.1007/s13280-024-02103-7</a> </p> <p> Lunde Hermansson, A., &amp; Hassellöv, I.-M. (2022). <em>Tank cleaning and its impact on the marine environment. Report No. 2022:06. Swedish Institute for the Marine Environment</em>. <a target=\"_blank\" href=\"https://havsmiljoinstitutet.se/publikationer/rapportserie/2022/2022-6-tank-cleaning-and-its-impact-on-the-marine-environment\">https://havsmiljoinstitutet.se/publikationer/rapportserie/2022/2022-6-tank-cleaning-and-its-impact-on-the-marine-environment</a> </p>"
+    },
+    "coolingWater": {
+      "name": "Cooling water",
+      "description": "<p> Most vessels are dependent on water for cooling when the propulsion of ship generates excess heat in for example the engines, generators and compressors that must be diverted. Seawater is mostly used as cooling agent, being relatively low-tempered and constantly available. </p> <p> To prevent biological growth in sea chest and piping, most cooling systems are connected to a marine growth protection system, where the most common systems release copper ions as a result of electrolysis. </p> <p> There is limited data on how much copper that is being consumed and discharged to the marine environment, but recent findings suggest that effective dosages need to be 2-3 orders of magnitude higher than manufacturer recommendations. Effective dosages have been reported to be in the range 156-1740 μg L-1, compared to the 2gL-1 recommended by the manufacturers” <a target=\"_blank\" href=\"https://www.sciencedirect.com/science/article/abs/pii/S0025326X25002462\">[1]</a>. </p>"
+    },
+    "scrubberWater": {
+      "name": "Scrubber water",
+      "description": "<p> Scrubbers are installed on ships to enable the vessel to continue to run on conventional high sulfur fuels while still being compliant to stricter regulations limiting the sulfur oxide content in ships exhaust. In a scrubber, water is sprayed over the exhaust, reducing the concentration of SOx in the exhaust to compliant levels. The scrubber water is not only taking upp SOx, forming sulfuric acid and becoming highly acidic, but also scavenges other contaminants (e.g. metals and organic substances) that are instead discharged directly to the marine environment. </p> <p> The use of scrubbers introduces a new contamination source to the marine environment with substantial adverse effects on marine organisms at very low concentrations. The use of a scrubber also implies a fuel penalty with 2-3%, with higher climate footprint compared to a ship without a scrubber. </p>",
+      "environmentalImpact": "The discharge of scrubber water result in increased contaminant load of metals, polycyclic aromatic hydrocarbons (PAHs) and alkylated PAHs to the marine environment. The addition of a strong acid (sulfuric acid) may contribute to reduced buffer capacity (i.e. alkalinity) of the seas that can affect the carbon cycle. Increased emissions of green house gases will contribute to global warming.",
+      "humanImpact": "Reducing SOx and particles in the exhaust can be positive with respect to human health. However, recent findings suggest that the scrubber produces higher numbers of the smaller particles with the largest damaging effects on the respiratory system.",
+      "images": {
+        "scrubberSystem": {
+          "header": "Open vs closed loop scrubber system",
+          "description": "Illustration of two different scrubber system, open and closed loop, where the open loop (A) continuously pump in and discharge seawater while the closed loop (B) recirculates most water with addition of an alkaline solution. Hybrid systems can run in open and closed loop mode., EMERGE-project",
+          "attribution": "Illustration: Anna Lunde Hermansson"
+        },
+        "seaUrchin": {
+          "header": "Sea urchin exposure",
+          "description": "Some abnormalities observed in Psammechinus miliaris (sea urchin) larvae at 72 h exposure to scrubber water. The adverse effects on fertilization success and larvae development were observed even at the lowest dilutions of scrubber water, confirming that scrubber water could present adverse effects on the whole life cycle of the marine organisms.",
+          "attribution": "Zapata-Restrepo,L., Williams,I., (2025) [Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water](https://doi.org/10.1016/j.marenvres.2025.107157), Marine Environmental Research."
+        },
+        "mussel": {
+          "header": "Mussel exposure",
+          "description": "Some abnormalities observed in Mytilus edulis (mussel) larvae at 72 h exposure to scrubber water. Arrows: hypertrophy of the mantle. Arrowhead: hinge abnormality. The adverse effects on fertilization success and larvae development were observed even at the lowest dilutions of scrubber water, confirming that scrubber water could present adverse effects on the whole life cycle of the marine organisms.",
+          "attribution": "Zapata-Restrepo,L., Williams,I., (2025) [Mytilus edulis and Psammechinus miliaris as bioindicators of ecotoxicological risk by maritime exhaust gas scrubber water](https://doi.org/10.1016/j.marenvres.2025.107157), Marine Environmental Research."
+        },
+        "vanadium": {
+          "header": "Estimated vanadium input 2018",
+          "description": "Estimated input of vanadium to the Swedish Exclusive Economic Zone in 2018, open loop scrubber water discharge is a significant source. In 2018, only 178 vessels had scrubbers in the Baltic Sea",
+          "attribution": "Ytreberg, E., Hansson, K., Lunde Hermansson, A., Parsmo, R., Lagerström, M., Jalkanen, J.P., Hassellöv, I.M., 2022. [Metal and PAH loads from ships and boats, relative other sources, in the Baltic Sea](https://doi.org/10.1016/j.marpolbul.2022.113904). Mar. Pollut. Bull. 182, 113904."
+        }
+      },
+      "plotCaption": "Plot showing number of ships that have installed (or opted to install) scrubbers from 2007-2028. Data is collected from <a target=\"_blank\" href=\"https://afi.dnvgl.com/Statistics\">Alternative Fuels Insights - DNV</a> (Accessed May 20259.",
+      "chart": {
+        "description": "Scrubber installed DNV AFI",
+        "encoding": {
+          "x": {
+            "title": "Year"
+          },
+          "y": {
+            "title": "Nr of ships (Data collected May 2025)"
+          },
+          "tooltip": {
+            "numberOfShips": {
+              "title": "Number of ships"
+            },
+            "year": {
+              "title": "Year"
+            }
+          }
+        }
+      }
+    },
+    "bilgeWater": {
+      "name": "Bilge water",
+      "description": "<p> Bilge water is a mixture of water, oily fluids, lubricants and grease, cleaning fluids and other waste that accumulate in the lowest part of the vessel. The different onboard sources include engines, piping and other constructions throughout the machinery space. The discharge of bilge water is generally allowed as long as the oily content has been reduced to compliant levels in accordance with MARPOL Annex I. </p>"
+    },
+    "propellerShaftLubricants": {
+      "name": "Propeller shaft lubricants",
+      "description": "<p> The propeller shaft connects the main engine and the propeller through the stern tube. The stern tube goes through the ship hull and contains bearings, sealing and a lubrication system that may leak due to imperfect sealing and/or damage. </p>"
+    },
+    "solidWasteFoodWaste": {
+      "name": "Solid waste (food waste)"
+    },
+    "exhaustGas": {
+      "name": "Exhaust gas",
+      "description": "<p> The majority of today's commercial fleet are still running on conventional fossil bunker fuels where heavy fuel oil (HFO), marine gas oil (MGO) and hybrid fuels (very low sulpfur fuel oils (VLSFO) and ultra-low sulfur fuel oils (ULSFO) holds >99% of the fuel market share of the operating fleet (see bar chart below, noting the non-linear scale). </p> <p> The exhaust gas from conventional combustion constitutes of greenhouse gases (e.g. carboon dioxide, nitrous oxide and water), nitrogen oxides (NOx), sulfur oxides (SOx), volatile organic compounds (VOCs) and particles (PM) consisting of soot/black carbon (including non-volatile organic substances) and ash (containing metals). </p> <p> In addition of emitting greenhouse gases, where the commercial shipping fleet are estimated to account for almost 3% of the global CO2 emissions, the combustion products can contribute to acidification (CO2 and SOx), premature deaths from respiratory diseases (e.g. PM) and long- and short-range spreading of hazardous substances (e.g. metals and organic substances). </p> <p> Some measures have been taken to reduce the negative impact of exhaust gases on air quality and human health, including the introduction of alternative fuels (e.g. methanol and LNG), selective catalytic reduction to reduce NOx and scrubbers to reduce SOx. However, the use of scrubbers has resulted in increased pressure on the marine environment and higher climate footprint (see <a onclick=\"selectAnnotationByName('Scrubber water')\">Scrubber water</a>). </p>",
+      "chart": {
+        "encoding": {
+          "x": {
+            "title": "Fuel market share (%)"
+          },
+          "y": {
+            "title": "Fuel type"
+          },
+          "tooltip": {
+            "fuelType": {
+              "title": "Fuel type"
+            },
+            "fuelMarketShare": {
+              "title": "Fuel market share (%)"
+            }
+          }
+        },
+        "categories": {
+          "fuel": {
+            "conventionalFuel": "Conventional fuel",
+            "lng": "LNG",
+            "lpg": "LPG",
+            "methanol": "Methanol",
+            "hydrogen": "Hydrogen",
+            "ammonia": "Ammonia"
+          }
+        }
+      },
+      "plotCaption": "Bar chart showing the percent of fleet using conventional vs alternative fuels (LNG, LPG, methanol, hydrogen and ammonia). Data is collected from <a target=\"_blank\" href=\"https://afi.dnvgl.com/Statistics\">Alternative Fuels Insights - DNV</a> (Accessed May 2025)."
+    },
+    "illumination": {
+      "name": "Illumination"
+    },
+    "wavesAndTurbulence": {
+      "name": "Waves and turbulence"
+    },
+    "powertrain": {
+      "name": "Powertrain",
+      "description": "Burning fuel in engines produce mechnical power but have higher emissions. Fuel cell have lesser emissions and produce electricity through electrochemical reaction of different fuels. Battery-electric uses stored electricity and have zero emission but have limited energy capacity."
+    },
+    "fueltank": {
+      "name": "Fueltank"
+    },
+    "underwaterRadiatedNoise": {
+      "name": "Underwater radiated noise",
+      "description": "<p> Underwater noise is considered a type of energy pollution. An overview of ship generated underwater noise, and the resulting environmental impacts was published by EMSA in 2022 <a target=\"_blank\" href=\"https://www.emsa.europa.eu/protecting-the-marine-environment/underwater-noise/download/6881/4503/23.html\">[1]</a>. </p> <p> “In 2014, the International Maritime Organization approved voluntary guidelines for reducing underwater noise from commercial ships <a target=\"_blank\" href=\"www.imo.org/en/MediaCentre/HotTopics/Pages/Noise.aspx\">[2]</a>. These guidelines focused on design features that could reduce the primary sources of underwater noise, namely the propellers, hull form, and on-board machinery. Following these guidelines, in 2015, Maersk underwent a retrofit of five large container ships and found that reducing propeller cavitation decreased low-frequency sound pressure levels by 6 to 8 dB while improving fuel efficiency.” <a target=\"_blank\" href=\"https://www.science.org/doi/10.1126/science.aba4658\">[3]</a> </p> <p> EU has taken the initiative to regulate underwater noise <a target=\"_blank\" href=\"https://environment.ec.europa.eu/news/zero-pollution-and-biodiversity-first-ever-eu-wide-limits-underwater-noise-2022-11-29_en\">[4]</a>. This is great but still challenging to monitor. </p>"
+    },
+    "containerLoss": {
+      "name": "Container loss",
+      "description": "<p> During rough conditions at sea, containers may fall overboard and sink to the sea floor. The estimates on the annual number of containers lost at sea vary greatly, but the World Shipping Council (WSC) has estimated the average number to be 1,629 containers lost per year between 2008 and 2021, but these casualties are unevenly distributed. Recovery rates are estimated to be low, 2.6% between 1994 and 2019, according to the Surfrider Foundation Europe. </p> <p> One of the most famous losses occurred in 1992, when a container with 28,000 rubber ducks was lost in the North Pacific. The rubber ducks have since been utilised as tracers providing oceanographers information about global current patterns. </p> <p> Fisheries and Oceans Canada has undertaken a systematic approach to map and inspect containers on the seafloor. In addition, oceanographic modelling can be a valuable tool to predict where debris and chemical substances from the container cargo may end up in the marine environment over time. </p>",
+      "images": {
+        "driftingContainers": {
+          "header": "Figure 2. Examples of drifting shipping containers. (A,B) Examples of adrift rafted container stacks. (C) Single adrift container immersed longitudinally (source: U.S. Coast Guard). Figure reproduced with permission from McNabb et al. 2025.",
+          "description": "Examples of drifting shipping containers: adrift rafted container stacks and a single adrift container immersed longitudinally.",
+          "attribution": "U.S. Coast Guard. Figure reproduced with permission from [McNabb et al. 2025](https://publications.gc.ca/collections/collection_2026/mpo-dfo/fs97-18/Fs97-18-408-eng.pdf)."
+        },
+        "sunkenContainers": {
+          "header": "Figure 4. Remotely operated vehicle (ROV) imagery of damaged sunken containers from the 2021 M/V Zim Kingston incident (source: DFO). Figure reproduced with permission from McNabb et al. 2025.",
+          "description": "Remotely operated vehicle (ROV) imagery of damaged sunken containers from the 2021 M/V Zim Kingston incident.",
+          "attribution": "DFO. Figure reproduced with permission from [McNabb et al. 2025](https://publications.gc.ca/collections/collection_2026/mpo-dfo/fs97-18/Fs97-18-408-eng.pdf)."
+        }
+      },
+      "references": "<p> McNabb, B.J., Blanken, H.C., Herborg, L.-M., Gillespie, K., Murray, C.C., Bigg, M., and Dunham, A. 2025. <a target=\"_blank\" href=\"https://publications.gc.ca/collections/collection_2026/mpo-dfo/fs97-18/Fs97-18-408-eng.pdf\">Current Status of Modelling Trajectories of Lost Shipping Containers in the Oceans</a>. Can. Tech. Rep. Hydrogr. Ocean Sci. 408: vi + 68 p. </p> <p> Clyde, G., Gartner, H., Herborg, L.-M., Bigg, M., Barrett, P., Stanley, C., Detering, J., Norgard, T., Du Preez, C. 2025. <a target=\"_blank\" href=\"https://doi.org/10.60825/wxw5-d071\">NorthEast Pacific Deep-sea Exploration Project (NEPDEP) Expedition Report (PAC2023-034): Cold Seeps and the MV Zim Kingston Shipping Incident</a>. Can. Tech. Rep. Fish. Aquat. Sci. 3660: x + 121 p. </p> <p> Saliba, M., Frantzi, S., &amp; van Beukering, P. (2022). <a target=\"_blank\" href=\"https://doi.org/10.1016/j.marpolbul.2022.113939\">Shipping spills and plastic pollution: A review of maritime governance in the North Sea</a>. Marine Pollution Bulletin, 181, 113939. </p> <p> World Shipping Council (2022). <a target=\"_blank\" href=\"https://www.worldshipping.org/s/Containers_Lost_at_Sea_2022.pdf\">Containers lost at sea – 2022 update</a>. </p> <p> Hohn, D. 2012. <em>Moby-Duck: The True Story of 28,800 Bath Toys Lost at Sea &amp; of the Beachcombers, Oceanographers, Environmentalists &amp; Fools Including the Author Who Went in Search of Them</em>. 416 pp. ISBN: 978-0143120506. </p>"
+    }
+  },
+  "hazards": {
+    "healthHazard": "Health hazard",
+    "harmful": "Harmful",
+    "harmfulToTheEnvironment": "Harmful to the environment",
+    "corrosive": "Corrosive"
+  },
+  "ships": {
+    "container": {
+      "displayName": "Container ship",
+      "shipDensityDataName": "Cargo",
+      "description": "Container vessels transport all types of goods around the world. In 2026, there were 6767 container vessels registered at the International Maritime Organization.",
+      "descriptionSource": "<div class=\"stat-citation\">IMO register analytics by Marine Benchmark using source data from S&P Global</div>",
+      "stats": {
+        "length": {
+          "value": "190 m",
+          "labelInfo": "HELCOM maritime assessment 2018"
+        },
+        "width": {
+          "value": "32 m",
+          "labelInfo": "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities",
+          "valueInfo": "Most commercial merchant vessels have L/B ratios in the range of 5.5 to 7.0. Assume L/B of 6 for container vessels which results in 32 m."
+        },
+        "tonnage": {
+          "value": "36100 GT",
+          "labelInfo": "HELCOM maritime assessment 2018"
+        },
+        "crew": {
+          "labelInfo": "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf"
+        },
+        "passenger": {
+          "value": "N/A",
+          "labelInfo": "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)"
+        },
+        "speed": {
+          "value": "25 kn",
+          "labelInfo": "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)"
+        },
+        "fuel": {
+          "value": "N/A"
+        },
+        "propellers": {
+          "labelInfo": "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf"
+        },
+        "propellerSize": {
+          "value": "N/A"
+        }
+      }
+    },
+    "cruise": {
+      "displayName": "Cruise ship",
+      "shipDensityDataName": "Passenger",
+      "description": "Cruise ships can be compared to small floating towns, sometimes carrying many thousand passengers. In 2026, there were 1137 cruise ships registered at the International Maritime Organization.",
+      "descriptionSource": "<div class=\"stat-citation\">IMO register analytics by Marine Benchmark using source data from S&P Global</div>",
+      "stats": {
+        "length": {
+          "value": "110 m",
+          "labelInfo": "HELCOM maritime assessment 2018"
+        },
+        "width": {
+          "value": "40 m",
+          "labelInfo": "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478",
+          "valueInfo": "In the article the authors model a reference ship and the same width is assumed here. Note that the authors assumed a much longer vessel (350 m) so the ratio might not be correct as two different sources were used for the length and width."
+        },
+        "tonnage": {
+          "value": "17300 GT",
+          "labelInfo": "HELCOM maritime assessment 2018"
+        },
+        "crew": {
+          "labelInfo": "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf"
+        },
+        "passenger": {
+          "labelInfo": "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)",
+          "valueInfo": "In 2014, cruise ships had a median capacity of ca 1900 people including staff and passengers"
+        },
+        "speed": {
+          "value": "22 kn",
+          "labelInfo": "Gianni, M., Pietra, A., Coraddu, A., & Taccani, R. (2022). Impact of SOFC Power Generation Plant on Carbon Intensity Index (CII) Calculation for Cruise Ships. https://doi.org/10.3390/jmse10101478 In the article the authors model"
+        },
+        "fuel": {
+          "value": "N/A"
+        },
+        "propellers": {
+          "labelInfo": "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf"
+        },
+        "propellerSize": {
+          "value": "N/A"
+        }
+      }
+    },
+    "tanker": {
+      "displayName": "Chemical tanker",
+      "shipDensityDataName": "Tanker",
+      "description": "Chemical tankers transport liquid substances, chemical products and biofuels. In 2026, there were 7687 vessels registered at the International Maritime Organization as pure chemical or product/chemical tankers.",
+      "descriptionSource": "<div class=\"stat-citation\">IMO register analytics by Marine Benchmark using source data from S&P Global</div>",
+      "stats": {
+        "length": {
+          "value": "164 m",
+          "labelInfo": "HELCOM maritime assessment 2018"
+        },
+        "width": {
+          "value": "27 m",
+          "labelInfo": "Gaythwaite, John W.. (2016). Design of Marine Facilities - Engineering for Port and Harbor Structures (3rd Edition). American Society of Civil Engineers (ASCE). Retrieved from https://app.knovel.com/hotlink/toc/id:kpDMFEPHS4/design-marine-facilities/design-marine-facilities",
+          "valueInfo": "Tankers vary considerably in their dimensional ratios, but the larger vessels tend to have a moderate L∕B in the range of 5.5 to 6.5”. Assume an L/B ratio of 6, which gives 27 m."
+        },
+        "tonnage": {
+          "value": "25500 GT",
+          "labelInfo": "HELCOM maritime assessment 2018"
+        },
+        "crew": {
+          "labelInfo": "INSIGHTS INTO SEAFARER TRAINING AND SKILLS NEEDED TO SUPPORT A DECARBONIZED SHIPPING INDUSTRY, DNV, 2022 https://www.ics-shipping.org/wp-content/uploads/2022/11/LINK-2-document-DNV-Report-Insights-into-Seafarer-Training-and-Skills-for-Decarbonized-Shipping-Nov-2022.pdf"
+        },
+        "passenger": {
+          "value": "N/A",
+          "labelInfo": "HELCOM maritime assessment 2018 (Note that the original source that is cited in the report is several years older)"
+        },
+        "speed": {
+          "value": "14 kn",
+          "labelInfo": "Regulated Slow Steaming in Maritime Transport An Assessment of Options, Costs and Benefits, CE Delft, 2012 https://theicct.org/wp-content/uploads/2021/06/CEDelft_slow_steaming_2012.pdf (Note: original source from 2009)"
+        },
+        "fuel": {
+          "value": "N/A"
+        },
+        "propellers": {
+          "labelInfo": "Basic principles of ship propulsion, MAN energy solutions https://www.man-es.com/docs/default-source/document-sync/basic-principles-of-ship-propulsion-eng.pdf"
+        },
+        "propellerSize": {
+          "value": "N/A"
+        }
+      },
+      "statInfoLabel": {
+        "crew": "Crew headcount incl. officers"
+      }
+    }
+  },
+  "stats": {
+    "length": "Length",
+    "width": "Width",
+    "tonnage": "Tonnage",
+    "crew": "Crew",
+    "passenger": "Passenger",
+    "speed": "Speed",
+    "fuel": "Fuel",
+    "propellers": "Propellers",
+    "propellerSize": "Propeller Size"
+  },
+  "sdg": {
+    "goal1": "SDG 1: No poverty",
+    "goal2": "SDG 2: Zero hunger",
+    "goal3": "SDG 3: Good health and well-being",
+    "goal4": "SDG 4: Quality education",
+    "goal5": "SDG 5: Gender equality",
+    "goal6": "SDG 6: Clean water and sanitation",
+    "goal7": "SDG 7: Affordable and clean energy",
+    "goal8": "SDG 8: Decent work and economic growth",
+    "goal9": "SDG 9: Industry, innovation and infrastructure",
+    "goal10": "SDG 10: Reduced inequalities",
+    "goal11": "SDG 11: Sustainable cities and communities",
+    "goal12": "SDG 12: Responsible consumption and production",
+    "goal13": "SDG 13: Climate action",
+    "goal14": "SDG 14: Life below water",
+    "goal15": "SDG 15: Life on land",
+    "goal16": "SDG 16: Peace, justice and strong institutions",
+    "goal17": "SDG 17: Partnerships for the goals"
+  },
+  "selector": {
+    "noDescription": "No description available",
+    "mapDescription": "The map shows the amount of time vessels of the selected type spent in each cell for 2025.",
+    "loadError": "Unable to load the selected ship.",
+    "initializationError": "Unable to initialize the ship selector.",
+    "mapInformation": "Map information",
+    "shipInformation": "Ship information",
+    "showShip": "Show ship",
+    "showMap": "Show map",
+    "moreInfo": "More info on {statLabel}",
+    "unknownValue": "—",
+    "previousShip": "Previous ship",
+    "nextShip": "Next ship",
+    "shipStats": "Ship stats"
+  },
+  "controls": {
+    "pauseSeaMovement": "Pause sea movement",
+    "resumeSeaMovement": "Resume sea movement",
+    "loading": "Loading:",
+    "enter": "Enter",
+    "seaMovement": "Sea movement",
+    "changeShip": "↩︎ Change ship",
+    "close": "Close"
+  },
+  "annotationSections": {
+    "sdgsAtRisk": "SDGs at risk",
+    "environmentalImpact": "Environmental impact",
+    "humanImpact": "Human impact",
+    "images": "Images",
+    "references": "References"
+  },
+  "map": {
+    "seaMap": "Sea map",
+    "marineAreas": "HELCOM marine areas",
+    "intensity": "Intensity",
+    "credits": {
+      "openStreetMap": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>",
+      "openSeaMap": "&copy; <a href=\"http://www.openseamap.org\">OpenSeaMap</a> contributors",
+      "eea": "&copy; <a href=\"https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033\">EEA</a>",
+      "dischargeData": "&copy; Jalkanen et al <a href=\"https://zenodo.org/records/4063643\">10.5281/zenodo.4063643</a>."
+    },
+    "durationMinutes": "{count} minutes",
+    "shipDuration": "{shipType}: {duration}",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "layers": "Layers",
+    "libraryName": "Leaflet",
+    "libraryDescription": "A JavaScript library for interactive maps",
+    "layer": {
+      "AFP_CuO": "AFP_CuO",
+      "AFP_CuPyr": "AFP_CuPyr",
+      "AFP_DCOIT": "AFP_DCOIT",
+      "AFP_Zineb": "AFP_Zineb",
+      "AFP_ZnO": "AFP_ZnO",
+      "AFP_ZnPyr": "AFP_ZnPyr",
+      "BILGE_W": "BILGE_W",
+      "BalW": "BalW",
+      "GREY_W": "GREY_W",
+      "N_foodWaste": "N_foodWaste",
+      "N_sewage": "N_sewage",
+      "SCRUB_W_CLOSED": "SCRUB_W_CLOSED",
+      "SCRUB_W_OPEN": "SCRUB_W_OPEN",
+      "SEWAGE": "SEWAGE",
+      "STERN_TUBE": "STERN_TUBE"
+    }
+  },
+  "charts": {
+    "actions": {
+      "viewActions": "Click to view actions",
+      "viewCompiled": "View Compiled Vega",
+      "openEditor": "Open in Vega Editor",
+      "savePng": "Save as PNG",
+      "viewSource": "View Source",
+      "saveSvg": "Save as SVG",
+      "vegaLiteSourceTitle": "Vega-Lite JSON Source",
+      "vegaSourceTitle": "Vega JSON Source"
+    }
+  },
+  "manifest": {
+    "name": "Ship Ahoy!",
+    "description": "Navigating away from limited visibility, to unveil the environmental pressures and impacts from maritime transport"
+  },
+  "app": {
+    "name": "Ship Ahoy!",
+    "tagline": "Navigating away from limited visibility, to unveil the environmental pressures and impacts from maritime transport.",
+    "contact": "This is still a work in progress! If you have any questions or if you want to contribute, please contact Ida-Maja Hassellöv <br>(<a href=\"mailto:ida-maja@chalmers.se\">ida-maja@chalmers.se</a>)."
+  },
+  "acknowledgements": {
+    "button": "Acknowledgements",
+    "heading": "<strong>Acknowledgements</strong>",
+    "thanks": "Thank you to everyone who have contributed with content for this project!",
+    "contributors": "Special thanks to: Anna Lunde Hermansson, Dr Jessica Redfern, Dr Erik Ytreberg, Dr Fayas Kanchiralla, Dr Cathryn Clarke Murray, Prof Rickard Bensow, Dr Jenette Mujingni, Dr Kent Salo, Dr Jonas Sjöblom, Dr Selma Brynolf",
+    "project": "This application was developed as part of an <a target=\"_blank\" href=\"https://infravis.se/\">InfraVis</a> visualisation support project. <a target=\"_blank\" href=\"https://github.com/Akodiat/shipAhoy/\">Source code</a>",
+    "dischargeData": "Discharge data &copy; Jalkanen et al: <a target=\"_blank\" href=\"https://zenodo.org/records/4063643\">10.5281/zenodo.4063643</a>.",
+    "mapData": "Map data &copy; <a target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> and <a target=\"_blank\" href=\"http://www.openseamap.org\">OpenSeaMap</a> contributors. Marine areas &copy; <a target=\"_blank\" href=\"https://sdi.eea.europa.eu/catalogue/srv/eng/catalog.search#/metadata/5a8c5848-e131-4196-a14d-85197f284033\">EEA</a>."
+  },
+  "imageText": {
+    "sewage": {
+      "basinsOfTotal": "Basins [% of total]",
+      "inl": "INL",
+      "rig": "RIG",
+      "bot": "BOT",
+      "kat": "KAT",
+      "fin": "FIN",
+      "bal": "BAL",
+      "monthlyOfTotal": "Monthly [% of total]",
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec",
+      "ropax": "RoPax",
+      "vehicleCarriers": "Vehicle Carriers",
+      "cargoShips": "Cargo Ships",
+      "containerShips": "Container ships",
+      "tankers": "Tankers",
+      "cruisers": "Cruisers",
+      "other": "Other",
+      "sweden": "Sweden",
+      "finland": "Finland",
+      "bahamas": "Bahamas",
+      "estonia": "Estonia",
+      "denmark": "Denmark",
+      "malta": "Malta",
+      "lithuania": "Lithuania",
+      "germany": "Germany",
+      "latvia": "Latvia",
+      "unitedKingdom": "United_Kingdom",
+      "italy": "Italy",
+      "norway": "Norway",
+      "netherlands": "Netherlands",
+      "sewageNitrogenReleaseKg": "Sewage Nitrogen release [kg]"
+    },
+    "ytreberg2022Vanadin": {
+      "vTonnesYear": "V (tonnes/year)",
+      "rivers": "Rivers",
+      "atmosphericDeposition": "Atmospheric deposition",
+      "directPointSources": "Direct point sources",
+      "shipsLeisureBoats": "Ships & leisure boats",
+      "swedishEezOnly": "*Swedish EEZ only",
+      "ships": "Ships",
+      "leisureBoats": "Leisure boats",
+      "openLoop": "open loop",
+      "closedLoop": "closed loop",
+      "scrubberWater": "Scrubber water",
+      "bilgeWater": "Bilge water",
+      "greyWater": "Grey water",
+      "sewage": "Sewage",
+      "antifoulingPaint": "Antifouling paint",
+      "nA": "n/a"
+    },
+    "antifoulingHullmaster": {
+      "hullmasterDecisionSupportToolForShipping": "HullMASTER - DECISION SUPPORT TOOL FOR SHIPPING",
+      "hullMaintenanceStrategiesForEmissionReduction": "Hull Maintenance Strategies for Emission Reduction",
+      "toolInput": "Tool Input",
+      "modelsCalculations": "Models & calculations",
+      "toolOutput": "Tool Output",
+      "shipType": "SHIP TYPE",
+      "route": "ROUTE",
+      "antifoulingSystem": "ANTIFOULING SYSTEM",
+      "dryDocking": "DRY DOCKING",
+      "hullCleaning": "HULL CLEANING",
+      "foulingGrowthModel": "FOULING GROWTH MODEL",
+      "foulingRating": "Fouling rating",
+      "idleTime": "Idle time",
+      "coatingRoughness": "+ coating roughness",
+      "penaltyPrediction": "PENALTY PREDICTION",
+      "biocideModel": "BIOCIDE MODEL",
+      "releaseRate": "Release rate",
+      "inWaterHullCleaning": "In-water hull cleaning",
+      "dryDockingTimeline": "Dry-docking",
+      "time": "Time",
+      "costComparisonToBauScenarioForIncreasedSustainability": "COST COMPARISON TO BAU SCENARIO FOR INCREASED SUSTAINABILITY",
+      "operatorCosts": "Operator costs",
+      "socioEnvironmentalCosts": "Socio-environmental costs",
+      "marineEcotoxicity": "Marine ecotoxicity",
+      "expense": "Expense",
+      "saving": "Saving",
+      "climateChange": "Climate change",
+      "humanHealth": "Human health",
+      "marineEutrophication": "Marine eutrophication",
+      "bau": "BAU"
+    },
+    "scrubberSystem": {
+      "a": "A.",
+      "b": "B.",
+      "inletWater": "INLET WATER",
+      "dischargeWater": "DISCHARGE WATER",
+      "processTank": "PROCESS TANK",
+      "bleedOff": "BLEED OFF",
+      "sludge": "SLUDGE",
+      "alkaliTank": "ALKALI TANK",
+      "heatExchange": "HEAT EXCHANGE",
+      "coolingWater": "COOLING WATER"
+    },
+    "scrubberSeaurchinExposed": {
+      "normalLarvae": "Normal larvae",
+      "additionalCrossbarredBodyRod": "Additional crossbarred body rod",
+      "partsOfBodyRodMissingOrShorterArms": "Parts of body rod missing or shorter arms",
+      "apicallyCrossedBodyRod": "Apically “crossed” body rod"
+    },
+    "scrubberMusselExposure": {
+      "control": "Control",
+      "exposedToScrubberWater": "Exposed to scrubber water"
+    },
+    "penselkrabba": {
+      "caption": "Figure 9. A female Asian brush-clawed shore crab (Hemigrapsus takanoi) with newly hatched larvae in a glass beaker during the experiment. (photo: Björn Källström)"
+    },
+    "sdg": {
+      "goal1": "No poverty",
+      "goal2": "Zero hunger",
+      "goal3": "Good health and well-being",
+      "goal4": "Quality education",
+      "goal5": "Gender equality",
+      "goal6": "Clean water and sanitation",
+      "goal7": "Affordable and clean energy",
+      "goal8": "Decent work and economic growth",
+      "goal9": "Industry, innovation and infrastructure",
+      "goal10": "Reduced inequalities",
+      "goal11": "Sustainable cities and communities",
+      "goal12": "Responsible consumption and production",
+      "goal13": "Climate action",
+      "goal14": "Life below water",
+      "goal15": "Life on land",
+      "goal16": "Peace, justice and strong institutions",
+      "goal17": "Partnerships for the goals"
+    }
+  }
+}
