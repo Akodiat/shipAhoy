@@ -76,6 +76,13 @@ seaMovementButton.addEventListener("click", () => {
     seaMovementButton.title = seaMovementEnabled ? "Pause sea movement" : "Resume sea movement";
     seaMovementButton.setAttribute("aria-pressed", String(seaMovementEnabled));
 });
+
+function updateSeaMovementButtonVisibility() {
+    const startScreenVisible = document.getElementById("startScreen").style.display !== "none";
+    const annotationOpen = document.getElementById("infobox").style.display !== "none";
+    seaMovementButton.style.display = !startScreenVisible && !annotationOpen ? "inline-flex" : "none";
+}
+
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const gltfLoader = new GLTFLoader();
@@ -265,10 +272,8 @@ function loadShip(name, onLoad, onError) {
             annotationSprites.add(annotation.sprite);
         }
         labelScene.add(annotationSprites);
-
         loaderElement.style.display = "none";
-        seaMovementButton.style.display = document.getElementById("startScreen").style.display === "none"
-            ? "inline-flex" : "none";
+        updateSeaMovementButtonVisibility();
 
         // If we have a selected annotation, keep it open for the
         // new ship model if the annotation is present there too.
@@ -624,6 +629,7 @@ function selectAnnotation(a) {
     document.getElementById("textbox").innerHTML =
         `<h2>${a.spec.name}</h2>` + `<div id="body-text">${a.content}</div>`;
     document.getElementById("infobox").style.display = "flex";
+    updateSeaMovementButtonVisibility();
 
     a.onSelect();
 
@@ -700,6 +706,7 @@ function clearAnnotationSelection() {
     controls.maxDistance = 500;
     controls.setLookAt(...currentShip.defaultLookat, true);
     document.getElementById("infobox").style.display = "none";
+    updateSeaMovementButtonVisibility();
     selectedAnnotation = undefined;
     mapView.clearSelection();
 
